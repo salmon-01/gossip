@@ -1,4 +1,3 @@
-import { mockUsers } from '@/mocks/mockUsers';
 import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from "react-icons/hi2";
 import { User } from '@/app/types';
 
@@ -12,7 +11,7 @@ export default function ({user}: PostProps) {
     <>
     <div className='flex flex-col bg-gray-200 rounded-md px-2 pt-2 pb-4 mt-2'>
         <div className='flex items-center h-6 w-full'>
-          <img src={mockUsers[0].profile_img} alt="Profile picture" className="w-6 h-6 rounded-full shadow-md bg-black mr-3"  />
+          <img src={user.profile_img} alt="Profile picture" className="w-6 h-6 rounded-full shadow-md bg-black mr-3"  />
           <div className='font-bold items-center'>
           {user.display_name}
           </div>
