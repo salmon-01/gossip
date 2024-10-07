@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function ProfileStats() {
+export default function ProfileStats({user}) {
   return (
-    <div>profileStats</div>
+    <>
+    <span className='mr-2'>{user.followersCount} followers</span>
+    <span>{user.followingCount} following</span>
+    </>
   )
 }

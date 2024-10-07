@@ -77,7 +77,7 @@ export default function page({params}) {
 const profileDataToUse = username =='john_doe'? profileData : anotherProfileData;
   return (
     <>
-      <div>page</div>
+      
       <ProfileHeader user={profileDataToUse.user} />
       <ProfileStats user={profileDataToUse.user} />
       <ProfileContent voiceNotes={profileDataToUse.voiceNotes} username={username} />
