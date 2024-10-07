@@ -46,3 +46,59 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout');
   redirect('/home');
 }
+
+export async function signOut() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  redirect('/login');
+}
+
+export async function populateUser(formData: FormData) {
+  const supabase = createClient();
+
+  const profile_img = formData.get('profile_img') as string;
+  const username = formData.get('username') as string;
+  const display_name = formData.get('display_name') as string;
+  const badge = formData.get('badge') as string;
+  const bio = formData.get('bio') as string;
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('Error fetching user:', userError);
+    redirect('/error');
+  }
+
+  const userId = user.id;
+
+  const { error: updateAuthError } = await supabase.auth.updateUser({
+    data: { display_name },
+  });
+
+  if (updateAuthError) {
+    console.error(
+      'Error updating display_name in auth.users:',
+      updateAuthError
+    );
+    redirect('/error');
+  }
+
+  const { error: profileError } = await supabase.from('profiles').upsert({
+    user_id: userId,
+    username,
+    profile_img,
+    badge,
+    bio,
+  });
+
+  if (profileError) {
+    console.error('Error inserting/updating profile data:', profileError);
+    redirect('/error');
+  }
+
+  revalidatePath('/');
+  redirect('/home');
+}
