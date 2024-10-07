@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { login, signup } from './login/actions';
 
 export default function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -9,13 +10,6 @@ export default function LoginPage() {
     password: '',
   });
   const router = useRouter();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, you'd validate credentials here
-    console.log('Logging in with:', credentials);
-    router.push('/home');
-  };
 
   const handleDemoLogin = () => {
     setCredentials({
@@ -37,7 +31,7 @@ export default function LoginPage() {
             Share your voice with the world
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
               <label
@@ -56,7 +50,7 @@ export default function LoginPage() {
                 onChange={(e) =>
                   setCredentials({ ...credentials, email: e.target.value })
                 }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 placeholder="you@example.com"
               />
             </div>
@@ -77,12 +71,11 @@ export default function LoginPage() {
                 onChange={(e) =>
                   setCredentials({ ...credentials, password: e.target.value })
                 }
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 placeholder="••••••••"
               />
             </div>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -109,10 +102,16 @@ export default function LoginPage() {
 
           <div>
             <button
-              type="submit"
+              formAction={login}
               className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
+            </button>
+            <button
+              formAction={signup}
+              className="group relative mt-4 flex w-full justify-center rounded-md bg-zinc-800 px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sign up
             </button>
           </div>
         </form>
