@@ -12,8 +12,8 @@ export default function VoiceNoteList({voiceNotes, user}) {
         <span className='ml-2 text-gray-500'>@{user.username}</span>
         <div>{note.title}</div>
         <audio controls src={note.audioUrl}></audio>
-        
-      
+
+ 
       </div>
     ))}
 
