@@ -1,4 +1,4 @@
-import NavBar from '../components/NavBar';
+import NavBar from '../ui/NavBar';
 
 export default function MainLayout({
   children,
@@ -6,7 +6,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-gray-100 pb-16 text-black">
       {children}
       <NavBar />
     </div>
