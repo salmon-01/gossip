@@ -1,4 +1,3 @@
-import RecordPost from '@/app/ui/RecordPost';
 import SignOutBtn from '@/app/ui/signOutBtn';
 
 export default async function Homepage() {
