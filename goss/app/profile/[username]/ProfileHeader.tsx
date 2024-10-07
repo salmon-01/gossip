@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function profileHeader() {
+export default function ProfileHeader() {
   return (
-    <div>profileHeader</div>
+    <div>P</div>
   )
 }

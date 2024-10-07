@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function profileStats() {
+export default function ProfileStats() {
   return (
     <div>profileStats</div>
   )

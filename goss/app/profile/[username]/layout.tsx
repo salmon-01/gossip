@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function layout() {
+export default function ProfileLayout({ children }) {
   return (
-    <div>layout</div>
+    <main>{children}</main>
   )
 }
