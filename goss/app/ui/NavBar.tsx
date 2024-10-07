@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HiOutlineHome, HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineUser } from 'react-icons/hi2';
+import RecordPost from './RecordPost';
 
 function NavBar({ username }: { username: string | null }) {
   const pathname = usePathname();
