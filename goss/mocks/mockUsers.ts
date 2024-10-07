@@ -1,0 +1,40 @@
+import { User } from '@/app/types';
+
+export const mockUsers: User[] = [
+  {
+    user_id: 'ae12',
+    username: 'MockyBoy',
+    badge: 'badge',
+    profile_img: '/dogface.jpg',
+    bio: '',
+    created_at: new Date(),
+    updated_at: new Date(),
+    display_name: 'MockyMan',
+    email: 'mocker@mock.com',
+    phone: 7888888,
+  },
+  {
+    user_id: 'MrLovesS',
+    username: 'ILoveS',
+    badge: 'badge',
+    profile_img: '/kier.jpg',
+    bio: '',
+    created_at: new Date(),
+    updated_at: new Date(),
+    display_name: 'ILoveS',
+    email: 'mocker@mock.com',
+    phone: 7888888,
+  },
+  {
+    user_id: 'ae12',
+    username: 'ScottishTruck',
+    badge: 'badge',
+    profile_img: '/scottish_truck.jpg',
+    bio: '',
+    created_at: new Date(),
+    updated_at: new Date(),
+    display_name: 'Scottish Truck',
+    email: 'mocker@mock.com',
+    phone: 7888888,
+  },
+];
