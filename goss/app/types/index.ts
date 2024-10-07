@@ -22,3 +22,11 @@ export interface User {
   email: string;
   phone: number;
 }
+
+export interface Post {
+  id: string;
+  created_at: Date;
+  audio: string;
+  caption: string;
+  user_id: string;
+}
