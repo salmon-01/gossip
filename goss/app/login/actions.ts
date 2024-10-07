@@ -105,7 +105,6 @@ export async function populateUser(formData: FormData) {
 
 export async function createPost(formData: FormData) {
   const supabase = createClient();
-
   const caption = formData.get('caption') as string;
 
   const {
