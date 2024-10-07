@@ -11,6 +11,12 @@ function NavBar({ username }: { username: string | null }) {
 
   return (
     <nav className="fixed bottom-0 w-full rounded-t-lg bg-gray-50">
+      {isActive('/home') && (
+        <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform">
+          <RecordPost />
+        </div>
+      )}
+
       <div className="flex justify-around py-5">
         <Link href="/home" aria-label="Home">
           <HiOutlineHome

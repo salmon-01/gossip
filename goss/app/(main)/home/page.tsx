@@ -1,7 +1,6 @@
-import SignOutBtn from "@/app/ui/signOutBtn";
+import SignOutBtn from '@/app/ui/signOutBtn';
 
 export default async function Homepage() {
-
   return (
     <div className="flex min-h-screen items-center justify-center">
       <main className="p-4 text-center">
