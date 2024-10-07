@@ -1,5 +1,4 @@
 import CreatePost from '@/app/ui/CreatePost';
-import Post from '@/app/ui/Post';
 
 export default function Create() {
   return (
