@@ -1,7 +1,12 @@
 import { mockUsers } from '@/mocks/mockUsers';
 import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from "react-icons/hi2";
+import { User } from '@/app/types';
 
-export default function () {
+interface PostProps {
+  user: User;
+}
+
+export default function ({user}: PostProps) {
 
   return (
     <>
@@ -9,10 +14,10 @@ export default function () {
         <div className='flex items-center h-6 w-full'>
           <img src={mockUsers[0].profile_img} alt="Profile picture" className="w-6 h-6 rounded-full shadow-md bg-black mr-3"  />
           <div className='font-bold items-center'>
-          {mockUsers[0].display_name}
+          {user.display_name}
           </div>
           <div className='mx-2 text-gray-600 text-xs items-center'>
-          @{mockUsers[0].username}
+          @{user.username}
           </div>
           <div className='ml-auto flex items-center space-x-2'>
             <HiOutlineHandThumbUp size={20}/>
