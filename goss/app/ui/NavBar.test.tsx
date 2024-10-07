@@ -9,8 +9,9 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('NavBar component', () => {
+  const mockUsername = 'testuser';
   test('renders navigation links correctly', () => {
-    render(<NavBar />);
+    render(<NavBar username={mockUsername}/>);
 
     // Check if the links are rendered
     expect(screen.getByLabelText('Home')).toBeInTheDocument();
@@ -23,7 +24,7 @@ describe('NavBar component', () => {
     // Mock the pathname to be "/search"
     vi.mocked(usePathname).mockReturnValue('/search');
 
-    render(<NavBar />);
+    render(<NavBar username={mockUsername}/>);
 
     const searchIcon = screen.getByLabelText('Search');
     const homeIcon = screen.getByLabelText('Home');
@@ -38,6 +39,14 @@ describe('NavBar component', () => {
     expect(homeIcon.firstChild).toHaveStyle({
       color: '#7b53bb',
       strokeWidth: '1',
+    });
+
+    test('renders profile link with correct username', () => {
+      render(<NavBar username={mockUsername} />); // Pass the username prop
+  
+      // Check that the Profile link contains the username in its href
+      const profileLink = screen.getByLabelText('Profile');
+      expect(profileLink).toHaveAttribute('href', `/profile/${mockUsername}`);
     });
   });
 });

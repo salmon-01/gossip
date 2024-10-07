@@ -1,23 +1,20 @@
-'use client'; // Make this component a client component
+'use client'; // Keep this as a client component
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Import usePathname hook
-import { HiOutlineHome } from 'react-icons/hi2';
-import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
-import { HiOutlineBell } from 'react-icons/hi2';
-import { HiOutlineUser } from 'react-icons/hi2';
+import { usePathname } from 'next/navigation';
+import { HiOutlineHome, HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineUser } from 'react-icons/hi2';
 
-function NavBar() {
-  const pathname = usePathname(); // Get current path on the client-side
+function NavBar({ username }: { username: string | null }) {
+  const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path; // Client-side check
+  const isActive = (path: string) => pathname === path;
 
   return (
     <nav className="fixed bottom-0 w-full rounded-t-lg bg-gray-50">
       <div className="flex justify-around py-5">
         <Link href="/home" aria-label="Home">
           <HiOutlineHome
-            color={isActive('/home') ? '#9333ea' : '#7b53bb'} // Change color if active
+            color={isActive('/home') ? '#9333ea' : '#7b53bb'}
             size={32}
             style={{ strokeWidth: isActive('/home') ? 2.5 : 1 }}
           />
@@ -25,7 +22,7 @@ function NavBar() {
 
         <Link href="/search" aria-label="Search">
           <HiOutlineMagnifyingGlass
-            color={isActive('/search') ? '#9333ea' : '#7b53bb'} // Change color if active
+            color={isActive('/search') ? '#9333ea' : '#7b53bb'}
             size={32}
             style={{ strokeWidth: isActive('/search') ? 2.5 : 1 }}
           />
@@ -33,17 +30,18 @@ function NavBar() {
 
         <Link href="/notifications" aria-label="Notifications">
           <HiOutlineBell
-            color={isActive('/notifications') ? '#9333ea' : '#7b53bb'} // Change color if active
+            color={isActive('/notifications') ? '#9333ea' : '#7b53bb'}
             size={32}
             style={{ strokeWidth: isActive('/notifications') ? 2.5 : 1 }}
           />
         </Link>
 
-        <Link href="/profile" aria-label="Profile">
+        {/* Use the username in the profile link */}
+        <Link href={`/${username}`} aria-label="Profile">
           <HiOutlineUser
-            color={isActive('/profile') ? '#9333ea' : '#7b53bb'} // Change color if active
+            color={isActive(`/profile`) ? '#9333ea' : '#7b53bb'}
             size={32}
-            style={{ strokeWidth: isActive('/profile') ? 2.5 : 1 }}
+            style={{ strokeWidth: isActive(`/profile/${username}`) ? 2.5 : 1 }}
           />
         </Link>
       </div>
