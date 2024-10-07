@@ -1,6 +1,39 @@
-import { populateUser } from "@/app/login/actions";
+import { populateUser } from '@/app/login/actions';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-const ProfileSetup = () => {
+const ProfileSetup = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect('/login');
+  }
+
+  const userId = user!.id;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('user_id', userId)
+    .single();
+
+  const { data: authData } = await supabase
+    .from('auth.users')
+    .select('display_name')
+    .eq('id', userId)
+    .single();
+
+  const hasUsername = profileData?.username;
+  const hasDisplayName = authData?.display_name;
+
+  if (hasUsername && hasDisplayName) {
+    return redirect('/home');
+  }
+
   return (
     <div>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
