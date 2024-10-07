@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function VoiceNoteList({voiceNotes, user}) {
+export default function VoiceNoteList(/*{voiceNotes, user}*/) {
   return (
     <>
-    {/*replace this with note component */}
+    {/* replace this with note component
     {voiceNotes.map(note =>(
       <div key={note.id} className='bg-gray-100 m-4 rounded-xl p-2'>
 
@@ -15,7 +15,7 @@ export default function VoiceNoteList({voiceNotes, user}) {
 
  
       </div>
-    ))}
+    ))} */}
 
     </>
   )
