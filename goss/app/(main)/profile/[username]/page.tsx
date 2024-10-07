@@ -2,6 +2,7 @@ import React from 'react'
 import ProfileHeader from './ProfileHeader'
 import ProfileStats from './ProfileStats'
 import ProfileContent from './ProfileContent'
+import ProfileNav from './profileNav'
 
 const profileData = {
   user: {
@@ -73,14 +74,15 @@ export default function page({params}) {
 
   // fetch data ased on username
 //const profileData = getProfileData(username);
+const loggedInUser = 'john_doe';
 
-const profileDataToUse = username =='john_doe'? profileData : anotherProfileData;
+const profileDataToUse = username ===loggedInUser? profileData : anotherProfileData;
   return (
     <>
-      
-      <ProfileHeader user={profileDataToUse.user} />
+      <ProfileHeader user={profileDataToUse.user} loggedInUser={loggedInUser} />
       <ProfileStats user={profileDataToUse.user} />
-      <ProfileContent voiceNotes={profileDataToUse.voiceNotes} username={username} />
+  
+      <ProfileContent voiceNotes={profileDataToUse.voiceNotes} user={profileDataToUse.user} />
     </>
   )
 }
