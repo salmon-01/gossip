@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '../../utils/supabase/server';
 
 export async function login(formData: FormData) {
   const supabase = createClient();
@@ -96,6 +96,36 @@ export async function populateUser(formData: FormData) {
 
   if (profileError) {
     console.error('Error inserting/updating profile data:', profileError);
+    redirect('/error');
+  }
+
+  revalidatePath('/');
+  redirect('/home');
+}
+
+export async function createPost(formData: FormData) {
+  const supabase = createClient();
+  const caption = formData.get('caption') as string;
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('Error fetching user:', userError);
+    redirect('/error');
+  }
+
+  const userId = user.id;
+
+  const { error: postError } = await supabase.from('posts').upsert({
+    user_id: userId,
+    caption,
+  });
+
+  if (postError) {
+    console.error('Error creating post:', postError);
     redirect('/error');
   }
 

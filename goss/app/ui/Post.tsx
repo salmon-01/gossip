@@ -1,12 +1,13 @@
-import { mockUsers } from '@/mocks/mockUsers';
 import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from "react-icons/hi2";
-import { User } from '@/app/types';
+import { User, Post } from '@/app/types';
+import moment from 'moment';
 
 interface PostProps {
   user: User;
+  post: Post;
 }
 
-export default function ({user}: PostProps) {
+export default function ({user, post}: PostProps) {
 
   return (
     <>
@@ -24,7 +25,15 @@ export default function ({user}: PostProps) {
             <HiOutlineHandThumbDown size={20}/>
           </div>
         </div>
-        <div className='mt-3 w-full flex items-center'>
+        <div className='mt-1 w-full flex items-center justify-around text-xs'>
+          <div className='italic'>
+          {`"${post.caption}"`} 
+          </div>
+          <div>
+          {moment(post.created_at).format('L, HH:mm')}
+          </div>
+        </div>
+        <div className='mt-1 w-full flex items-center'>
           <audio className='w-full h-9' controls src=""></audio>
         </div>
       </div>
