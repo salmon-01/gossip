@@ -11,7 +11,7 @@ export default function ({user, post}: PostProps) {
 
   return (
     <>
-    <div className='flex flex-col bg-gray-200 rounded-md px-2 pt-2 pb-4 mt-2'>
+    <div className='flex flex-col bg-gray-200 rounded-md px-2 pt-2 pb-4 mt-2 w-full'>
         <div className='flex items-center h-6 w-full'>
           <img src={user.profile_img} alt="Profile picture" className="w-6 h-6 rounded-full shadow-md bg-black mr-3"  />
           <div className='font-bold items-center'>
