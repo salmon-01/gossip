@@ -146,26 +146,10 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   return (
     <div className="flex items-center justify-center">
       <div className="mt-10 flex flex-col items-center gap-8">
-        <HiOutlineMicrophone size={100} className="items-center text-center" />
-        <div className="flex items-center justify-between">
-          {microphonePermissionState === 'granted' && isRecording && (
-            <div className="flex w-fit animate-pulse items-center gap-4 rounded-full bg-red-800 px-3 py-1 text-white">
-              <svg
-                className="h-5 w-5"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-                <path
-                  fillRule="evenodd"
-                  d="M8.6 1c1.6.1 3.1.9 4.2 2 1.3 1.4 2 3.1 2 5.1 0 1.6-.6 3.1-1.6 4.4-1 1.2-2.4 2.1-4 2.4-1.6.3-3.2.1-4.6-.7-1.4-.8-2.5-2-3.1-3.5C.9 9.2.8 7.5 1.3 6c.5-1.6 1.4-2.9 2.8-3.8C5.4 1.3 7 .9 8.6 1zm.5 12.9c1.3-.3 2.5-1 3.4-2.1.8-1.1 1.3-2.4 1.2-3.8 0-1.6-.6-3.2-1.7-4.3-1-1-2.2-1.6-3.6-1.7-1.3-.1-2.7.2-3.8 1-1.1.8-1.9 1.9-2.3 3.3-.4 1.3-.4 2.7.2 4 .6 1.3 1.5 2.3 2.7 3 1.2.7 2.6.9 3.9.6z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <p className="text-sm font-medium">Recording</p>
-            </div>
-          )}
+        <div
+          className={`relative ${isRecording ? 'animate-pulse' : ''} rounded-full bg-red-500 p-6`}
+        >
+          <HiOutlineMicrophone size={100} className="text-white" />
         </div>
         {microphonePermissionState === 'prompt' && (
           <div className="flex w-fit items-center gap-4 rounded-full bg-red-800 px-3 py-1 text-white">
