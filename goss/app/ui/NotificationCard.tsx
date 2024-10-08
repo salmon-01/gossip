@@ -3,10 +3,14 @@ import { Notification } from '../types/index';
 import { formatDistanceToNow } from 'date-fns';
 
 interface NotificationProps {
-  notification: Notification; // Using the Notification interface
+  notification: Notification;
+  className?: string;
 }
 
-const NotificationCard: React.FC<NotificationProps> = ({ notification }) => {
+const NotificationCard: React.FC<NotificationProps> = ({
+  notification,
+  className = '',
+}) => {
   const formattedDate = formatDistanceToNow(new Date(notification.created_at), {
     addSuffix: true,
   });
@@ -33,7 +37,9 @@ const NotificationCard: React.FC<NotificationProps> = ({ notification }) => {
 
   return (
     <div
-      className={`mb-4 rounded-lg border p-4 ${notification.is_read ? 'bg-gray-100' : 'bg-white'}`}
+      className={`mb-4 rounded-lg border p-4 ${
+        notification.is_read ? 'bg-gray-100' : 'bg-white'
+      } ${className}`} // Combine default styles with custom className if provided
     >
       <Link href={`/${notification.sender.username}`}>
         <div className="flex items-center justify-between gap-4">

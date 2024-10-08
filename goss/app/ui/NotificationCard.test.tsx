@@ -18,7 +18,8 @@ vi.mock('next/link', () => ({
 
 describe('NotificationCard component', () => {
   const notification: Notification = {
-    id: 1,
+    id: 'e232133',
+    sender_id: 'eweq2321',
     type: 'new_comment',
     context: 'This is a comment.',
     created_at: new Date().toISOString(),
@@ -26,6 +27,10 @@ describe('NotificationCard component', () => {
     sender: {
       username: 'senderuser',
       profile_img: 'sender_image_url',
+    },
+    recipient: {
+      username: 'recipientuser',
+      profile_img: 'recipient_image_url',
     },
   };
 
