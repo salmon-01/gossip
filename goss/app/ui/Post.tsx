@@ -1,14 +1,49 @@
+import { useRef, useState } from 'react';
 import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from 'react-icons/hi2';
-import { User, Post } from '@/app/types';
+import WaveSurfer from 'wavesurfer.js';
 import moment from 'moment';
-import Link from 'next/link';
+
+import { User, Post } from '@/app/types';
+
 
 interface PostProps {
   user: User;
   post: Post;
 }
 
-export default function ({ user, post }: PostProps) {
+export default function PostComponent({ user, post }: PostProps) {
+  const waveformRef = useRef<HTMLDivElement | null>(null);
+  const waveSurferRef = useRef<WaveSurfer | null>(null); // Store WaveSurfer instance
+  const [isWaveSurferReady, setWaveSurferReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); // Track if the audio is playing
+
+  const initializeWaveSurfer = () => {
+    if (!waveSurferRef.current && waveformRef.current) {
+      // Create and initialize WaveSurfer only if it doesn't already exist
+      waveSurferRef.current = WaveSurfer.create({
+        container: waveformRef.current,
+        waveColor: '#ddd',
+        progressColor: '#007bff',
+        height: 80,
+        barWidth: 2,
+        cursorWidth: 1,
+      });
+
+      // Load the audio file
+      waveSurferRef.current.load(post.audio);
+
+      // Mark the waveform as ready for playback
+      setWaveSurferReady(true);
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (waveSurferRef.current) {
+      waveSurferRef.current.playPause(); // Toggle play/pause
+      setIsPlaying(!isPlaying); // Update play state
+    }
+  };
+
   return (
     <>
       <div className="mt-2 flex w-full flex-col rounded-md bg-gray-200 px-2 pb-4 pt-2">
@@ -32,8 +67,30 @@ export default function ({ user, post }: PostProps) {
           <div className="italic">{`"${post.caption}"`}</div>
           <div>{moment(post.created_at).format('L, HH:mm')}</div>
         </div>
-        <div className="mt-1 flex w-full items-center">
-          <audio className="h-9 w-full" controls src=""></audio>
+        <div className="mt-1 flex w-full flex-col items-center">
+          {post.audio ? (
+            <>
+              {!isWaveSurferReady && (
+                <button
+                  onClick={initializeWaveSurfer}
+                  className="rounded-md bg-blue-500 p-2 text-white"
+                >
+                  Load Audio
+                </button>
+              )}
+              <div className="mt-2 w-full" ref={waveformRef}></div>
+              {isWaveSurferReady && (
+                <button
+                  onClick={handlePlayPause}
+                  className="mt-2 rounded-md bg-green-500 p-2 text-white"
+                >
+                  {isPlaying ? 'Pause' : 'Play'}
+                </button>
+              )}
+            </>
+          ) : (
+            <p>No audio found!</p>
+          )}
         </div>
         </Link>
       </div>

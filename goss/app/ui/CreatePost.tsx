@@ -8,6 +8,7 @@ import { createClient } from '@/utils/supabase/client';
 export default function CreatePost() {
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
   };
@@ -52,6 +53,7 @@ export default function CreatePost() {
       console.error('Error:', error);
     }
   };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
