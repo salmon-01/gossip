@@ -4,7 +4,6 @@ import { useSessionContext } from '@/app/context/SessionContext';
 
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
-import { mockUsers } from '@/mocks/mockUsers';
 import { createClient } from '@/utils/supabase/client';
 
 export default function CreatePost() {
@@ -90,9 +89,7 @@ export default function CreatePost() {
               ></audio>
             )}
           </div>
-          {/* <HiOutlineMicrophone size={32} /> */}
           <AudioRecorder onAudioSave={handleAudioSave} />
-          {/* <HiOutlineTrash size={32} /> */}
         </div>
         <div className="mt-2 flex justify-center">
           <button

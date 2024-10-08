@@ -82,11 +82,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     }
   };
 
-  // Handle on click select audio device
-  const handleClickSelectAudioDevice = (id: string) => {
-    setSelectedAudioDevice(id);
-  };
-
   // Handle on click start recording
   const handleClickStartRecord = () => {
     if (selectedAudioDevice) {
@@ -118,12 +113,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     }
   };
 
-  // Get audio URL from saved chunks
-  const getAudioRef = () => {
-    const recordedChunksArray = savedAudios[0];
-    return URL.createObjectURL(new Blob(recordedChunksArray));
-  };
-
   // Handle delete audio
   const handleDeleteAudio = () => {
     setSavedAudios((prev) => prev.filter((_, itemIndex) => itemIndex !== 0));
@@ -145,18 +134,17 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="mt-10 flex flex-col items-center gap-8">
-        <div className="relative flex items-center justify-center">
+      <div className="mt-16 flex flex-col items-center gap-8">
+        <div className="relative mb-10 flex items-center justify-center">
           {/* Outer pulsating circle that's dimmed in colour */}
           <div
             className={`absolute rounded-full ${isRecording ? 'animate-pulse bg-red-300' : ''} h-48 w-48`}
           ></div>
-
           {/* Inner circle containing the microphone */}
           <div
             className={`relative ${isRecording ? 'animate-pulse' : ''} rounded-full bg-red-500 p-6`}
           >
-            <HiOutlineMicrophone size={100} className="text-white" />
+            <HiOutlineMicrophone size={130} className="text-white" />
           </div>
         </div>
         {microphonePermissionState === 'prompt' && (
@@ -190,7 +178,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && !isRecording && (
           <button
             type="button"
-            className="mt-5 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-8 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStartRecord}
           >
             Record
@@ -199,7 +187,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && isRecording && (
           <button
             type="button"
-            className="mt-5 w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-8 w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStopRecord}
           >
             Stop
@@ -234,11 +222,11 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
                     <p className="text-sm font-semibold leading-6 text-gray-900">{`Recording`}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-x-4">
+                {/* <div className="flex items-center gap-x-4">
                   <div className="hidden sm:flex sm:flex-col sm:items-end">
                     <audio src={getAudioRef()} controls></audio>
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
           </div>
