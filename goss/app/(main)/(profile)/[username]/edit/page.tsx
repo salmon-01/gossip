@@ -51,6 +51,7 @@ export default function ProfilePage() {
     if (error) {
       console.error('Error updating profile:', error);
     } else {
+      router.push(`/${username}`);
       console.log('Profile updated successfully:', data);
     }
   };
@@ -58,7 +59,8 @@ export default function ProfilePage() {
   // Handle the cancel button
   const handleCancel = () => {
     if (username) {
-      router.push(`/${username}`); // Navigate to the user's profile page
+      router.push(`/${username}`);  
+       
     } else {
       console.error('No username found');
     }
