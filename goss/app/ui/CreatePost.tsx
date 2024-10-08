@@ -1,4 +1,5 @@
 'use client';
+
 import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
@@ -14,7 +15,6 @@ export default function CreatePost() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-
     e.preventDefault();
     if (!audioBlob) return;
     const supabase = createClient();
@@ -24,7 +24,7 @@ export default function CreatePost() {
       error: userError,
     } = await supabase.auth.getUser();
     const userId = user!.id;
-    
+
     try {
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('voice-notes')
@@ -62,14 +62,14 @@ export default function CreatePost() {
             <img
               src={mockUsers[0].profile_img}
               alt="Profile picture"
-              className="mr-3 h-8 w-8 rounded-full bg-black shadow-md"
+              className="mr-3 mt-5 h-12 w-12 rounded-full bg-black shadow-md"
             />
             <input
               type="text"
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="w-full rounded-md px-1"
+              className="mt-5 w-full rounded-md px-2 py-2"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
@@ -82,9 +82,9 @@ export default function CreatePost() {
               ></audio>
             )}
           </div>
-          <HiOutlineMicrophone size={32} />
+          {/* <HiOutlineMicrophone size={32} /> */}
           <AudioRecorder onAudioSave={handleAudioSave} />
-          <HiOutlineTrash size={32} />
+          {/* <HiOutlineTrash size={32} /> */}
         </div>
         <div className="mt-2 flex justify-center">
           <button

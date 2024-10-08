@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
 
 interface AudioDevice {
   id: string;
@@ -8,7 +9,7 @@ interface AudioDevice {
 }
 
 interface AudioRecorderProps {
-  onAudioSave: (audioBlob: Blob) => void; 
+  onAudioSave: (audioBlob: Blob) => void;
 }
 
 const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
@@ -32,8 +33,10 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       mediaRecorder.current.addEventListener('stop', () => {
-        const audioBlob = new Blob(recordedChunks.current, { type: 'audio/webm' });
-        onAudioSave(audioBlob); 
+        const audioBlob = new Blob(recordedChunks.current, {
+          type: 'audio/webm',
+        });
+        onAudioSave(audioBlob);
       });
     }
   };
@@ -140,13 +143,10 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
       });
   }, []);
 
-
   return (
-    <div className="flex">
-      <div className="mt-40 flex flex-col gap-8">
-        <h1 className="text-4xl font-bold text-gray-800">
-          Record a voice note
-        </h1>
+    <div className="flex items-center justify-center">
+      <div className="mt-10 flex flex-col items-center gap-8">
+        <HiOutlineMicrophone size={100} className="items-center text-center" />
         <div className="flex items-center justify-between">
           {microphonePermissionState === 'granted' && isRecording && (
             <div className="flex w-fit animate-pulse items-center gap-4 rounded-full bg-red-800 px-3 py-1 text-white">
@@ -198,7 +198,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && !isRecording && (
           <button
             type="button"
-            className="w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStartRecord}
           >
             Record
@@ -222,7 +222,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             Request permission
           </button>
         )}
-
         {microphonePermissionState === 'granted' && (
           <div className="mt-8 flex space-x-8">
             {/* Audios Section */}
@@ -231,7 +230,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
                 <h3 className="text-md font-semibold text-gray-800">Audios</h3>
                 <div className="flex items-center gap-8 gap-x-4">
                   <svg
-                    className="h-4 w-4 cursor-pointer text-red-500"
+                    className="h-10 w-10 cursor-pointer text-red-500"
                     fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 448 512"
