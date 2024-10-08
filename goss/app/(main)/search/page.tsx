@@ -1,12 +1,29 @@
-import RecordPost from '@/app/ui/RecordPost';
+'use client';
 
-export default function Search() {
+import { useQuery } from '@tanstack/react-query';
+
+export default function TestQuery() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['test'],
+    queryFn: async () => {
+      return ['Hello', 'World'];
+    },
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching data.</div>;
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <main className="p-4 text-center">
-        <h1 className="mb-4 text-2xl font-bold">Search</h1>
-        <p>Welcome to your Goss search!</p>
-      </main>
+    <div>
+      <h1>Test Query</h1>
+      {data.map((item, index) => (
+        <p key={index}>{item}</p>
+      ))}
     </div>
   );
 }

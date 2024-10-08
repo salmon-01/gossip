@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function LoginPage() {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   const {
     data: { user },
