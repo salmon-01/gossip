@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Notification } from '../types/index';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -34,17 +35,22 @@ const NotificationCard: React.FC<NotificationProps> = ({ notification }) => {
     <div
       className={`mb-4 rounded-lg border p-4 ${notification.is_read ? 'bg-gray-100' : 'bg-white'}`}
     >
-      <div className="flex items-center justify-between gap-4">
-        <img
-          src={notification.sender.profile_img}
-          className="h-8 w-8 rounded-full"
-        />
-        <p>
-          <span className="font-bold">{notification.sender.username}</span>{' '}
-          {formatContext()}
-        </p>
-        <p className="text-sm text-gray-500">{formattedDate}</p>
-      </div>
+      <Link href={`/${notification.sender.username}`}>
+        <div className="flex items-center justify-between gap-4">
+          <img
+            src={notification.sender.profile_img}
+            className="h-8 w-8 rounded-full"
+            alt={`${notification.sender.username}'s profile image`}
+          />
+          <p>
+            <span className="font-bold hover:underline">
+              {notification.sender.username}
+            </span>{' '}
+            {formatContext()}
+          </p>
+          <p className="text-sm text-gray-500">{formattedDate}</p>
+        </div>
+      </Link>
     </div>
   );
 };
