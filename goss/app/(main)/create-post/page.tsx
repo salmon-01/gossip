@@ -1,6 +1,7 @@
 import CreatePost from '@/app/ui/CreatePost';
 
 export default function Create() {
+
   return (
     <div className="pb-16">
       <main className="p-4">
