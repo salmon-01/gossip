@@ -1,44 +1,25 @@
+
 'use client';
 
 import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
 import { useRouter } from 'next/navigation';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
   });
-  const [username, setUsername] = useState('');
+
   const supabase = createClient();
   const router = useRouter(); // Use Next.js router
 
-  // Fetch the logged-in user's profile data
-  const fetchUserProfile = async () => {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const { data: session } = useSessionContext();
+  const username = session?.profile.username;
 
-    if (authError) {
-      console.error('Error fetching user:', authError);
-      return;
-    }
 
-    if (user) {
-      // Fetch the username from the profiles table based on user_id
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('username')
-        .eq('user_id', user.id)
-        .single();
-
-      if (profileError) {
-        console.error('Error fetching profile:', profileError);
-      } else {
-        setUsername(profileData.username); // Store the username from the profile
-      }
-    }
-  };
-
-  fetchUserProfile(); // Fetch user info when rendering
+  // Fetch user info when rendering
 
   // Handle input change for name and bio
   const handleChange = (e) => {
@@ -53,25 +34,13 @@ export default function ProfilePage() {
   const updateProfile = async (e) => {
     e.preventDefault();
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError) {
-      console.error('Error fetching user:', authError);
-      return;
-    }
-
-    if (!user) {
-      console.error('No user is authenticated');
-      return;
-    }
-
     const { data, error } = await supabase
       .from('profiles')
       .update({
         display_name: profile.name,
         bio: profile.bio,
       })
-      .eq('user_id', user.id); // Use the user's ID from authentication
+      .eq('username', username); // Use the user's ID from authentication
 
     if (error) {
       console.error('Error updating profile:', error);
@@ -91,12 +60,12 @@ export default function ProfilePage() {
 
   return (
     <form className="w-full h-lvh mx-auto p-3" onSubmit={updateProfile}>
-            <button
+      <button
         type="button"
         onClick={handleCancel}
         className="font-bold p-2 text-xl"
       >
-       X
+        X
       </button>
 
 
@@ -135,3 +104,6 @@ export default function ProfilePage() {
     </form>
   );
 }
+
+
+
