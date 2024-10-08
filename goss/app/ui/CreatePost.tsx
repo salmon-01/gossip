@@ -81,7 +81,7 @@ export default function CreatePost() {
             />
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} />
-          <div className="mt-3 flex w-full items-center">
+          <div className="mt-3 flex w-full items-center justify-center">
             {audioBlob && (
               <audio
                 className="mx-1"

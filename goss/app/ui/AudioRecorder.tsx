@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
+import { FaStop } from 'react-icons/fa';
 
 interface AudioDevice {
   id: string;
@@ -216,7 +217,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && !isRecording && (
           <button
             type="button"
-            className="mt-8 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-14 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStartRecord}
           >
             Record
@@ -225,10 +226,11 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && isRecording && (
           <button
             type="button"
-            className="mt-8 w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-4 rounded-full bg-red-600 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStopRecord}
           >
-            Stop
+            {/* Stop */}
+            <FaStop className="h-6 w-6" />
           </button>
         )}
         {microphonePermissionState === 'prompt' && (
@@ -256,7 +258,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
                     <path d="M135.2 17.7 128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339c1.6 25.3 22.6 45 47.9 45h245.8c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
                   </svg>
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">{`Recording`}</p>
+                    <p className="text-sm font-semibold leading-6 text-gray-900">{`Delete`}</p>
                   </div>
                 </div>
               </div>
