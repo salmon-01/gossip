@@ -4,6 +4,7 @@ import Providers from './providers';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast'; // Import Toaster
+import { SessionProvider } from './context/SessionContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster />
-        <Providers>{children}</Providers>
+        <Providers>
+          <SessionProvider>{children}</SessionProvider>
+        </Providers>
       </body>
     </html>
   );
