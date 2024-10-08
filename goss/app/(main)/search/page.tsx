@@ -1,29 +1,28 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 export default function TestQuery() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['test'],
-    queryFn: async () => {
-      return ['Hello', 'World'];
-    },
-  });
+  const { data: session, isLoading, error } = useSessionContext();
+  const user = session?.profile;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!session) return <div>Not logged in</div>;
 
-  if (isError) {
-    return <div>Error fetching data.</div>;
-  }
+  console.log(session);
 
   return (
-    <div>
-      <h1>Test Query</h1>
-      {data.map((item, index) => (
-        <p key={index}>{item}</p>
-      ))}
+    <div className="flex items-center space-x-4">
+      {/* <img
+        src={
+          session.profile.profile_img || '/placeholder.svg?height=40&width=40'
+        }
+        alt={session.profile.username}
+        className="h-10 w-10 rounded-full"
+      /> */}
+      <span className="font-semibold">{user.username}</span>
+      <img src={user.profile_img} />
     </div>
   );
 }
