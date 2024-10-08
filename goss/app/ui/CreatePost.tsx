@@ -10,8 +10,6 @@ export default function CreatePost() {
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
 
-  const supabase = createClient();
-
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
   };
@@ -20,7 +18,16 @@ export default function CreatePost() {
     e.preventDefault();
     if (!audioBlob) return;
 
+    const supabase = createClient();
+
     const fileName = `audio-${Date.now()}.webm`;
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    const userId = user!.id;
 
     try {
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -40,7 +47,7 @@ export default function CreatePost() {
 
       const { data: postData, error: postError } = await supabase
         .from('posts')
-        .insert([{ caption: caption, audio: fileUrl }]);
+        .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
 
       if (postError) {
         console.error('Error creating post:', postError);
