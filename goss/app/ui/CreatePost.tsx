@@ -11,7 +11,6 @@ export default function CreatePost() {
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
 
-
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
   };
@@ -60,7 +59,6 @@ export default function CreatePost() {
     }
   };
 
-
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -92,7 +90,6 @@ export default function CreatePost() {
           <HiOutlineMicrophone size={32} />
           <AudioRecorder onAudioSave={handleAudioSave} />
           <HiOutlineTrash size={32} />
-
         </div>
         <div className="mt-2 flex justify-center">
           <button
