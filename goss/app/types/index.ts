@@ -8,6 +8,14 @@ export interface Notification {
   sender_id: number;
   created_at: string;
   is_read: boolean;
+  sender: {
+    profile_img: string;
+    username: string;
+  };
+  recipient: {
+    profile_img: string;
+    username: string;
+  };
 }
 
 export interface User {
