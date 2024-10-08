@@ -6,7 +6,12 @@ import { mockNotifications } from '../../../mocks/mockNotifications';
 import { fetchNotifications } from '@/app/api/fetchNotifications';
 
 export default function Notifications() {
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data: notifications = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => fetchNotifications(2),
   });
@@ -26,9 +31,9 @@ export default function Notifications() {
 
       {/* Container for notifications, centered in the screen */}
       <div className="flex flex-col items-center">
-        {mockNotifications.length === 0 && <p>You have no new notifications</p>}
-        {mockNotifications.length > 0 &&
-          mockNotifications.map((notification) => (
+        {notifications.length === 0 && <p>You have no new notifications</p>}
+        {notifications.length > 0 &&
+          notifications.map((notification) => (
             <NotificationCard
               key={notification.id}
               notification={notification}
