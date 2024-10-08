@@ -15,11 +15,11 @@ export default function Feed () {
   });
 
   if (isLoading) {
-    return <p>Loading notifications...</p>;
+    return <p>Loading posts...</p>;
   }
 
   if (isError) {
-    return <p>Error loading notifications: {error.message}</p>;
+    return <p>Error loading posts: {error.message}</p>;
   }
 
   return (

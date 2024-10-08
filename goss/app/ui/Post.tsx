@@ -1,6 +1,7 @@
 import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from 'react-icons/hi2';
 import { User, Post } from '@/app/types';
 import moment from 'moment';
+import Link from 'next/link';
 
 interface PostProps {
   user: User;
@@ -11,6 +12,7 @@ export default function ({ user, post }: PostProps) {
   return (
     <>
       <div className="mt-2 flex w-full flex-col rounded-md bg-gray-200 px-2 pb-4 pt-2">
+        <Link href={`/${user.username}`}>
         <div className="flex h-6 w-full items-center">
           <img
             src={user.profile_img}
@@ -33,6 +35,7 @@ export default function ({ user, post }: PostProps) {
         <div className="mt-1 flex w-full items-center">
           <audio className="h-9 w-full" controls src=""></audio>
         </div>
+        </Link>
       </div>
     </>
   );
