@@ -12,7 +12,7 @@ import RecordPost from './RecordPost';
 import { useSessionContext } from '../context/SessionContext';
 
 function NavBar() {
-  const { data: session, isLoading, error } = useSessionContext();
+  const { data: session } = useSessionContext();
   const username = session?.profile.username;
   const pathname = usePathname();
 
@@ -53,11 +53,15 @@ function NavBar() {
 
         {/* Use the username in the profile link */}
         <Link href={`/${username}`} aria-label="Profile">
-          <HiOutlineUser
-            color={isActive(`/profile`) ? '#9333ea' : '#7b53bb'}
-            size={32}
-            style={{ strokeWidth: isActive(`/profile/${username}`) ? 2.5 : 1 }}
+          <img
+            src={session?.profile.profile_img}
+            className="h-9 rounded-full"
           />
+          {/* <HiOutlineUser
+            color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
+            size={32}
+            style={{ strokeWidth: isActive(`/${username}`) ? 2.5 : 1 }}
+          /> */}
         </Link>
       </div>
     </nav>

@@ -2,10 +2,13 @@
 
 import NotificationCard from '@/app/ui/NotificationCard';
 import { useQuery } from '@tanstack/react-query';
-import { mockNotifications } from '../../../mocks/mockNotifications';
 import { fetchNotifications } from '@/app/api/fetchNotifications';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 export default function Notifications() {
+  const { data: session } = useSessionContext();
+  const user = session?.profile;
+
   const {
     data: notifications = [],
     isLoading,
@@ -13,7 +16,7 @@ export default function Notifications() {
     error,
   } = useQuery({
     queryKey: ['notifications'],
-    queryFn: () => fetchNotifications(2),
+    queryFn: () => fetchNotifications(user.user_id),
   });
 
   if (isLoading) {
