@@ -15,8 +15,11 @@ export default function ProfileHeader({ user, loggedInUser }) {
           <div className="ml-4">
             <div className="font-bold">{user.displayname}</div>
             <p className="text-sm text-gray-500">@{user.username}</p>
+            
           </div>
+  
         </div>
+       
 
         {/* Follow button */}
         {user.user_id === loggedInUser ? (
@@ -34,8 +37,9 @@ export default function ProfileHeader({ user, loggedInUser }) {
             </div>
           )
         }
-
       </div>
+
+      <p className=" w-11/12 mx-auto my-3">{user.bio}</p>
 
 
     </>
