@@ -8,7 +8,7 @@ interface AudioDevice {
 }
 
 interface AudioRecorderProps {
-  onAudioSave: (audioBlob: Blob) => void; // Pass the audio blob to the parent
+  onAudioSave: (audioBlob: Blob) => void; 
 }
 
 const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
@@ -23,8 +23,8 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     string | undefined
   >(undefined);
   const [savedAudios, setSavedAudios] = useState<any[][]>([]);
-  const recordedChunks: any[] = [];
 
+  const recordedChunks = useRef<any[]>([]);
   const mediaRecorder = useRef<any>(null);
 
   const handleClickStopRecord = () => {
@@ -32,7 +32,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       mediaRecorder.current.addEventListener('stop', () => {
-        const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const audioBlob = new Blob(recordedChunks.current, { type: 'audio/webm' });
         onAudioSave(audioBlob); 
       });
     }
@@ -88,6 +88,8 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   const handleClickStartRecord = () => {
     if (selectedAudioDevice) {
       setIsRecording(true);
+      recordedChunks.current = []; // Reset recorded chunks
+
       const audio =
         selectedAudioDevice.length > 0
           ? { deviceId: selectedAudioDevice }
@@ -97,15 +99,14 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         .getUserMedia({ audio: audio, video: false })
         .then((stream) => {
           const options = { mimeType: 'audio/webm' };
-          const recordedChunks: any[] = [];
           mediaRecorder.current = new MediaRecorder(stream, options);
 
           mediaRecorder.current.addEventListener('dataavailable', (e: any) => {
-            if (e.data.size > 0) recordedChunks.push(e.data);
+            if (e.data.size > 0) recordedChunks.current.push(e.data);
           });
 
           mediaRecorder.current.addEventListener('stop', () => {
-            setSavedAudios((prev) => [...prev, recordedChunks]);
+            setSavedAudios((prev) => [...prev, recordedChunks.current]);
             stream.getTracks().forEach((track) => track.stop());
           });
 
@@ -116,8 +117,8 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
 
   // Get audio URL from saved chunks
   const getAudioRef = () => {
-    const recordedChunks = savedAudios[0];
-    return URL.createObjectURL(new Blob(recordedChunks));
+    const recordedChunksArray = savedAudios[0];
+    return URL.createObjectURL(new Blob(recordedChunksArray));
   };
 
   // Handle delete audio
@@ -138,6 +139,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         };
       });
   }, []);
+
 
   return (
     <div className="flex">
