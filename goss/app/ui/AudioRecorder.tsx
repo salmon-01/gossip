@@ -33,7 +33,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
       mediaRecorder.current.stop();
       mediaRecorder.current.addEventListener('stop', () => {
         const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-        onAudioSave(audioBlob); // Send the audio blob to the parent
+        onAudioSave(audioBlob); 
       });
     }
   };
@@ -113,12 +113,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         });
     }
   };
-
-  // Handle on click stop recording
-  // const handleClickStopRecord = () => {
-  //   setIsRecording(false);
-  //   if (mediaRecorder.current) mediaRecorder.current.stop();
-  // };
 
   // Get audio URL from saved chunks
   const getAudioRef = () => {
