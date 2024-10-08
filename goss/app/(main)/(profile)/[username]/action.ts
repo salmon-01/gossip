@@ -17,18 +17,17 @@ export async function getProfileData(username: string) {
   }
 
   // Fetch the user metadata (displayname) from the Supabase Auth system
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  // const { data: userData, error: userError } = await supabase.auth.getUser();
 
-  if (userError) {
-    console.error("Error fetching user metadata:", userError);
-    return null; // Handle error appropriately
-  }
+  // if (userError) {
+  //   console.error("Error fetching user metadata:", userError);
+  //   return null; // Handle error appropriately
+  // }
   //console.log(userData)
-
 
   return {
     ...profileData,
-    displayname: userData?.user?.user_metadata?.display_name || null, // Add displayname from the user metadata
+    //displayname: userData?.user?.user_metadata?.display_name || null, // Add displayname from the user metadata
   };
 }
 
