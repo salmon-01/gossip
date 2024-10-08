@@ -1,39 +1,40 @@
 'use client';
-import { useState } from 'react';
-import { HiOutlineMicrophone, HiOutlineTrash } from "react-icons/hi2";
+import AudioRecorder from '@/app/ui/AudioRecorder';
 import { mockUsers } from '@/mocks/mockUsers';
 import { createPost } from '../login/actions';
 
-
-export default function CreatePost () {
-
-  const [caption, setCaption] = useState('');
-  
+export default function CreatePost() {
   return (
     <>
-    <form >
-      <div className='flex flex-col bg-gray-200 rounded-md px-2 pt-2 pb-4'>
-        <div className='flex items-center h-8 w-full'>
-          <img src={mockUsers[0].profile_img} alt="Profile picture" className="w-8 h-8 rounded-full shadow-md bg-black mr-3"  />
-          <input 
-            type="text"
-            name='caption'
-            value={caption}
-            placeholder='Write a caption'
-            className='rounded-md w-full px-1'
-            onChange={(e) => setCaption(e.target.value)}
-          />
+      <form>
+        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-4 pt-2">
+          <div className="flex h-8 w-full items-center">
+            <img
+              src={mockUsers[0].profile_img}
+              alt="Profile picture"
+              className="mr-3 h-8 w-8 rounded-full bg-black shadow-md"
+            />
+            <input
+              type="text"
+              name="caption"
+              placeholder="Write a caption"
+              className="w-full rounded-md px-1"
+            />
+          </div>
         </div>
-        <div className='mt-3 w-full flex items-center'>
-          <HiOutlineMicrophone size={32}/>
-          <audio className='mx-1' controls src=""></audio>
-          <HiOutlineTrash size={32}/>
+        <div>
+          <AudioRecorder />
         </div>
-      </div>
-      <div className='flex justify-center mt-2'>
-        <button type='submit' formAction={createPost} className='bg-purple-400 rounded-xl px-4 py-1 text-white'>Post</button>
-      </div>
-    </form>
+        <div className="mt-2 flex justify-center">
+          <button
+            type="submit"
+            formAction={createPost}
+            className="rounded-xl bg-purple-400 px-4 py-1 text-white"
+          >
+            Post
+          </button>
+        </div>
+      </form>
     </>
-  )
+  );
 }

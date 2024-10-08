@@ -104,29 +104,15 @@ const AudioRecorder: React.FC = () => {
     if (mediaRecorder.current) mediaRecorder.current.stop();
   };
 
-  // Handle download audio
-  const handleDownloadAudio = (index: number) => {
-    const recordedChunks = savedAudios[index];
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob(recordedChunks));
-    a.download = `Audio ${index + 1}.wav`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    a.remove();
-  };
-
   // Get audio URL from saved chunks
-  const getAudioRef = (index: number) => {
-    const recordedChunks = savedAudios[index];
+  const getAudioRef = () => {
+    const recordedChunks = savedAudios[0];
     return URL.createObjectURL(new Blob(recordedChunks));
   };
 
   // Handle delete audio
-  const handleDeleteAudio = (index: number) => {
-    setSavedAudios((prev) =>
-      prev.filter((_, itemIndex) => itemIndex !== index)
-    );
+  const handleDeleteAudio = () => {
+    setSavedAudios((prev) => prev.filter((_, itemIndex) => itemIndex !== 0));
   };
 
   // Check permissions on mount
@@ -150,19 +136,6 @@ const AudioRecorder: React.FC = () => {
           Record a voice note
         </h1>
         <div className="flex items-center justify-between">
-          {microphonePermissionState === 'granted' && (
-            <div className="flex w-fit items-center gap-4 rounded-full bg-green-800 px-3 py-1 text-white">
-              <svg
-                className="h-5 w-5"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm113-303L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"></path>
-              </svg>
-              <p className="text-sm font-medium">Has microphone permission</p>
-            </div>
-          )}
           {microphonePermissionState === 'granted' && isRecording && (
             <div className="flex w-fit animate-pulse items-center gap-4 rounded-full bg-red-800 px-3 py-1 text-white">
               <svg
@@ -240,80 +213,29 @@ const AudioRecorder: React.FC = () => {
 
         {microphonePermissionState === 'granted' && (
           <div className="mt-8 flex space-x-8">
-            {/* Devices Section */}
-            <div className="w-1/2 space-y-4">
-              <h3 className="text-md font-semibold text-gray-800">Devices</h3>
-              {availableAudioDevices.map((audioDevice) => (
-                <label
-                  key={audioDevice.id}
-                  className={`relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm sm:flex sm:justify-between ${
-                    selectedAudioDevice === audioDevice.id
-                      ? 'border-indigo-600 ring-2 ring-indigo-600'
-                      : ''
-                  }`}
-                  onClick={() => handleClickSelectAudioDevice(audioDevice.id)}
-                >
-                  <span className="flex items-center">
-                    <span className="flex flex-col text-sm">
-                      <span className="font-medium text-gray-900">
-                        {audioDevice.name}
-                      </span>
-                    </span>
-                  </span>
-                  <span
-                    className="pointer-events-none absolute -inset-px rounded-lg border-2"
-                    aria-hidden="true"
-                  ></span>
-                </label>
-              ))}
-            </div>
-
             {/* Audios Section */}
             {savedAudios.length > 0 && (
               <div className="w-1/2 space-y-4">
                 <h3 className="text-md font-semibold text-gray-800">Audios</h3>
-                <ul className="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
-                  {savedAudios.map((_, audioIndex) => (
-                    <li
-                      key={audioIndex}
-                      className="relative flex items-center justify-between gap-x-6 px-4 py-2 sm:px-6"
-                    >
-                      <div className="flex items-center gap-8 gap-x-4">
-                        <svg
-                          className="h-4 w-4 cursor-pointer text-red-500"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 448 512"
-                          onClick={() => handleDeleteAudio(audioIndex)}
-                        >
-                          <path d="M135.2 17.7 128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339c1.6 25.3 22.6 45 47.9 45h245.8c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
-                        </svg>
-                        <div className="min-w-0 flex-auto">
-                          <p className="text-sm font-semibold leading-6 text-gray-900">{`Audio ${
-                            audioIndex + 1
-                          }`}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-x-4">
-                        <div className="hidden sm:flex sm:flex-col sm:items-end">
-                          <audio src={getAudioRef(audioIndex)} controls></audio>
-                        </div>
-                        <svg
-                          className="h-5 w-5 flex-none cursor-pointer text-gray-400"
-                          fill="none"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          viewBox="0 0 24 24"
-                          onClick={() => handleDownloadAudio(audioIndex)}
-                        >
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex items-center gap-8 gap-x-4">
+                  <svg
+                    className="h-4 w-4 cursor-pointer text-red-500"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    onClick={() => handleDeleteAudio()}
+                  >
+                    <path d="M135.2 17.7 128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339c1.6 25.3 22.6 45 47.9 45h245.8c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                  </svg>
+                  <div className="min-w-0 flex-auto">
+                    <p className="text-sm font-semibold leading-6 text-gray-900">{`Recording`}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-x-4">
+                  <div className="hidden sm:flex sm:flex-col sm:items-end">
+                    <audio src={getAudioRef()} controls></audio>
+                  </div>
+                </div>
               </div>
             )}
           </div>

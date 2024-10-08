@@ -1,4 +1,3 @@
-import AudioRecording from '@/app/ui/AudioRecorder';
 import SignOutBtn from '@/app/ui/signOutBtn';
 
 export default async function Homepage() {
@@ -9,7 +8,6 @@ export default async function Homepage() {
         <p>Welcome to your Goss home page!</p>
         <div className="flex">
           <SignOutBtn />
-          <AudioRecording />
         </div>
       </main>
     </div>
