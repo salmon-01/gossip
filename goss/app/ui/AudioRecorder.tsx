@@ -146,10 +146,18 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   return (
     <div className="flex items-center justify-center">
       <div className="mt-10 flex flex-col items-center gap-8">
-        <div
-          className={`relative ${isRecording ? 'animate-pulse' : ''} rounded-full bg-red-500 p-6`}
-        >
-          <HiOutlineMicrophone size={100} className="text-white" />
+        <div className="relative flex items-center justify-center">
+          {/* Outer pulsating circle that's dimmed in colour */}
+          <div
+            className={`absolute rounded-full ${isRecording ? 'animate-pulse bg-red-300' : ''} h-48 w-48`}
+          ></div>
+
+          {/* Inner circle containing the microphone */}
+          <div
+            className={`relative ${isRecording ? 'animate-pulse' : ''} rounded-full bg-red-500 p-6`}
+          >
+            <HiOutlineMicrophone size={100} className="text-white" />
+          </div>
         </div>
         {microphonePermissionState === 'prompt' && (
           <div className="flex w-fit items-center gap-4 rounded-full bg-red-800 px-3 py-1 text-white">
@@ -182,7 +190,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && !isRecording && (
           <button
             type="button"
-            className="w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-5 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStartRecord}
           >
             Record
@@ -191,7 +199,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         {microphonePermissionState === 'granted' && isRecording && (
           <button
             type="button"
-            className="w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            className="mt-5 w-1/2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStopRecord}
           >
             Stop
@@ -208,7 +216,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         )}
         {microphonePermissionState === 'granted' && (
           <div className="mt-8 flex space-x-8">
-            {/* Audios Section */}
+            {/* Audio Section */}
             {savedAudios.length > 0 && (
               <div className="w-1/2 space-y-4">
                 <h3 className="text-md font-semibold text-gray-800">Audios</h3>
