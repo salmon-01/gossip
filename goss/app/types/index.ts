@@ -1,13 +1,20 @@
 // Typescript definitions go here
 
 export interface Notification {
-  id: number;
-  avatar: string;
+  id: string;
   type: string;
   context: string;
-  sender_id: number;
+  sender_id: string;
   created_at: string;
   is_read: boolean;
+  sender: {
+    profile_img: string;
+    username: string;
+  };
+  recipient: {
+    profile_img: string;
+    username: string;
+  };
 }
 
 export interface User {
