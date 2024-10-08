@@ -30,6 +30,18 @@ const fetchProfileData = async (username) => {
   return data;
 };
 
+const fetchUserPosts = async (user_id) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('user_id', user_id)
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
 export default function ProfilePage({ params }) {
   const { username } = params;
 
@@ -56,6 +68,18 @@ export default function ProfilePage({ params }) {
     enabled: !!username, // Only run query if username is available
   });
 
+
+    // Query for posts by the logged-in user
+    const {
+      data: postsData,
+      isLoading: isLoadingPosts,
+      error: postsError,
+    } = useQuery({
+      queryKey: ['posts', profileData?.user_id],
+      queryFn: () => fetchUserPosts(profileData?.user_id),
+      enabled: !!profileData?.user_id, // Only run query if user_id is available
+    });
+console.log(postsData)
   // Loading states
   if (isLoadingUser || isLoadingProfile) {
     return <div>Loading...</div>;
@@ -68,6 +92,14 @@ export default function ProfilePage({ params }) {
 
   if (profileError) {
     return <div>Error loading profile: {profileError.message}</div>;
+  }
+
+  if (!profileData) {
+    return <div>Profile not found</div>;
+  }
+
+  if (postsError) {
+    return <div>Error loading posts: {postsError.message}</div>;
   }
 
   if (!profileData) {
