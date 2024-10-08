@@ -30,3 +30,24 @@ export interface Post {
   caption: string;
   user_id: string;
 }
+
+export interface Session {
+  profile: {
+    username: string;
+    profile_img: string;
+    badge: string;
+    created_at: Date;
+    updated_at: Date;
+    bio: string;
+    display_name: string;
+    user_id: string;
+  };
+  user: {
+    id: string;
+    aud: string;
+    role: string;
+    email: string;
+    email_confirmed_at: Date;
+    phone: number;
+  };
+}
