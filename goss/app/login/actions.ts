@@ -74,20 +74,9 @@ export async function populateUser(formData: FormData) {
 
   const userId = user.id;
 
-  const { error: updateAuthError } = await supabase.auth.updateUser({
-    data: { display_name },
-  });
-
-  if (updateAuthError) {
-    console.error(
-      'Error updating display_name in auth.users:',
-      updateAuthError
-    );
-    redirect('/error');
-  }
-
   const { error: profileError } = await supabase.from('profiles').upsert({
     user_id: userId,
+    display_name,
     username,
     profile_img,
     badge,
