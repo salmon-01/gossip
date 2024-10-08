@@ -1,4 +1,6 @@
 import './globals.css';
+import React from 'react';
+import Providers from './providers';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast'; // Import Toaster
@@ -19,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
