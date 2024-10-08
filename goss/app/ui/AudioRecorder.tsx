@@ -28,6 +28,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   const recordedChunks = useRef<any[]>([]);
   const mediaRecorder = useRef<any>(null);
 
+  // ? Timer experiment
+  const [, setDummy] = useState<number>(0); // State to force re-render
+  const startTimeRef = useRef<number | null>(null); // Start time ref
+  const intervalRef = useRef<number | null>(null); // Interval ref
+  const elapsedTimeRef = useRef<string>('00:00'); // Ref to store elapsed time string
+
   const handleClickStopRecord = () => {
     setIsRecording(false);
     if (mediaRecorder.current) {
@@ -38,6 +44,63 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
         });
         onAudioSave(audioBlob);
       });
+    }
+
+    // ? Timer experiment
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear interval when recording stops
+      intervalRef.current = null;
+    }
+  };
+
+  // ? Timer experiment
+  const formatTime = (elapsedSeconds: number) => {
+    const mins = Math.floor(elapsedSeconds / 60);
+    const secs = elapsedSeconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
+  // Handle on click start recording
+  const handleClickStartRecord = () => {
+    if (selectedAudioDevice) {
+      setIsRecording(true);
+      recordedChunks.current = []; // Reset recorded chunks
+
+      // ? Timer experiment
+      startTimeRef.current = Date.now(); // Set start time
+      elapsedTimeRef.current = '00:00'; // Reset elapsed time
+
+      intervalRef.current = window.setInterval(() => {
+        const now = Date.now();
+        const elapsedSeconds = Math.floor(
+          (now - (startTimeRef.current || 0)) / 1000
+        );
+        elapsedTimeRef.current = formatTime(elapsedSeconds);
+        setDummy((prev) => prev + 1); // Force re-render by updating dummy state
+      }, 1000);
+
+      const audio =
+        selectedAudioDevice.length > 0
+          ? { deviceId: selectedAudioDevice }
+          : true;
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: audio, video: false })
+        .then((stream) => {
+          const options = { mimeType: 'audio/webm' };
+          mediaRecorder.current = new MediaRecorder(stream, options);
+
+          mediaRecorder.current.addEventListener('dataavailable', (e: any) => {
+            if (e.data.size > 0) recordedChunks.current.push(e.data);
+          });
+
+          mediaRecorder.current.addEventListener('stop', () => {
+            setSavedAudios((prev) => [...prev, recordedChunks.current]);
+            stream.getTracks().forEach((track) => track.stop());
+          });
+
+          mediaRecorder.current.start();
+        });
     }
   };
 
@@ -79,37 +142,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     }
     if (state === 'denied') {
       handleRequestPermission();
-    }
-  };
-
-  // Handle on click start recording
-  const handleClickStartRecord = () => {
-    if (selectedAudioDevice) {
-      setIsRecording(true);
-      recordedChunks.current = []; // Reset recorded chunks
-
-      const audio =
-        selectedAudioDevice.length > 0
-          ? { deviceId: selectedAudioDevice }
-          : true;
-
-      navigator.mediaDevices
-        .getUserMedia({ audio: audio, video: false })
-        .then((stream) => {
-          const options = { mimeType: 'audio/webm' };
-          mediaRecorder.current = new MediaRecorder(stream, options);
-
-          mediaRecorder.current.addEventListener('dataavailable', (e: any) => {
-            if (e.data.size > 0) recordedChunks.current.push(e.data);
-          });
-
-          mediaRecorder.current.addEventListener('stop', () => {
-            setSavedAudios((prev) => [...prev, recordedChunks.current]);
-            stream.getTracks().forEach((track) => track.stop());
-          });
-
-          mediaRecorder.current.start();
-        });
     }
   };
 
@@ -175,6 +207,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             <p className="text-sm font-medium">User declined permission</p>
           </div>
         )}
+        {/* Display elapsed time */}
+        {isRecording && (
+          <div className="font-sans text-2xl font-semibold text-gray-700">
+            {elapsedTimeRef.current}
+          </div>
+        )}
         {microphonePermissionState === 'granted' && !isRecording && (
           <button
             type="button"
@@ -207,7 +245,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             {/* Audio Section */}
             {savedAudios.length > 0 && (
               <div className="w-1/2 space-y-4">
-                <h3 className="text-md font-semibold text-gray-800">Audios</h3>
                 <div className="flex items-center gap-8 gap-x-4">
                   <svg
                     className="h-10 w-10 cursor-pointer text-red-500"
@@ -222,11 +259,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
                     <p className="text-sm font-semibold leading-6 text-gray-900">{`Recording`}</p>
                   </div>
                 </div>
-                {/* <div className="flex items-center gap-x-4">
-                  <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    <audio src={getAudioRef()} controls></audio>
-                  </div>
-                </div> */}
               </div>
             )}
           </div>

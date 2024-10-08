@@ -80,6 +80,7 @@ export default function CreatePost() {
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
+          <AudioRecorder onAudioSave={handleAudioSave} />
           <div className="mt-3 flex w-full items-center">
             {audioBlob && (
               <audio
@@ -89,7 +90,6 @@ export default function CreatePost() {
               ></audio>
             )}
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} />
         </div>
         <div className="mt-2 flex justify-center">
           <button
