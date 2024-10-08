@@ -17,8 +17,8 @@ const NotificationCard: React.FC<NotificationProps> = ({ notification }) => {
       <div className="flex items-center justify-between gap-4">
         <img src={notification.avatar} className="h-8 w-8 rounded-full" />
         <p>
-          <span className="font-bold">{notification.sender}</span>{' '}
-          {notification.content}
+          <span className="font-bold">{notification.sender_id}</span>{' '}
+          {notification.context}
         </p>
         <p className="text-sm text-gray-500">{formattedDate}</p>
       </div>
