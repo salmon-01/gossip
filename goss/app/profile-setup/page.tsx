@@ -17,18 +17,12 @@ const ProfileSetup = async () => {
 
   const { data: profileData } = await supabase
     .from('profiles')
-    .select('username')
+    .select('username, display_name')
     .eq('user_id', userId)
     .single();
 
-  const { data: authData } = await supabase
-    .from('auth.users')
-    .select('display_name')
-    .eq('id', userId)
-    .single();
-
   const hasUsername = profileData?.username;
-  const hasDisplayName = authData?.display_name;
+  const hasDisplayName = profileData?.display_name;
 
   if (hasUsername && hasDisplayName) {
     return redirect('/home');
@@ -55,7 +49,7 @@ const ProfileSetup = async () => {
                 <input
                   id="profile_img"
                   name="profile_img"
-                  type="image"
+                  type="file"
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 />
               </div>
