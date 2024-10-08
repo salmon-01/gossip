@@ -1,24 +1,40 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { usePathname } from 'next/navigation';
 import CreatePost from './CreatePost';
-import { mockUsers } from '@/mocks/mockUsers';
+import { useSessionContext } from '../context/SessionContext';
+
 
 // Mock useRouter and usePathname from next/navigation
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }));
 
+vi.mock('../context/SessionContext', () => ({
+  useSessionContext: vi.fn(),
+}));  
+
+
 describe('CreatePost component', () => {
-  render(<CreatePost user={mockUsers[1]} />)
+  const mockSession: Session = {
+    profile: {
+      username: 'testuser',
+      profile_img: 'profile_image_url',
+      badge: 'badge',
+      bio: 'Just vibes',
+    },
+  };
 
-  test('renders navigation links correctly', () => {
-    expect(screen.getByLabelText('Home')).toBeInTheDocument();
-    expect(screen.getByLabelText('Search')).toBeInTheDocument();
-    expect(screen.getByLabelText('Notifications')).toBeInTheDocument();
-    expect(screen.getByLabelText('Profile')).toBeInTheDocument();
-    
+  beforeEach(() => {
+    // Mock the session context to return a valid session object
+    vi.mocked(useSessionContext).mockReturnValue({
+      data: mockSession,
+    });
   });
+  
+  render(<CreatePost />)
 
+  test('', () => {
+    expect(screen.getByLabelText('Post')).toBeInTheDocument();
+  });
   
 });

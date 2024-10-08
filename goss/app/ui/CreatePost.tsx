@@ -2,10 +2,16 @@
 import { useState } from 'react';
 import { HiOutlineMicrophone, HiOutlineTrash } from "react-icons/hi2";
 import { createPost } from '../login/actions';
-import { User } from '../types';
+import { useSessionContext } from '../context/SessionContext';
 
 
-export default function CreatePost ({ user }: { user: User }) {
+export default function CreatePost () {
+  const { data: session, isLoading, error} = useSessionContext();
+  const user = session?.profile;
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!session) return <div>Not logged in</div>;
 
   const [caption, setCaption] = useState('');
   
