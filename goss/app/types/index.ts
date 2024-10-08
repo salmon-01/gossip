@@ -1,13 +1,20 @@
 // Typescript definitions go here
 
 export interface Notification {
-  id: number;
-  avatar: string;
+  id: string;
   type: string;
-  content: string;
-  sender: string;
+  context: string;
+  sender_id: string;
   created_at: string;
   is_read: boolean;
+  sender: {
+    profile_img: string;
+    username: string;
+  };
+  recipient: {
+    profile_img: string;
+    username: string;
+  };
 }
 
 export interface User {
@@ -29,4 +36,25 @@ export interface Post {
   audio: string;
   caption: string;
   user_id: string;
+}
+
+export interface Session {
+  profile: {
+    username: string;
+    profile_img: string;
+    badge: string;
+    created_at: Date;
+    updated_at: Date;
+    bio: string;
+    display_name: string;
+    user_id: string;
+  };
+  user: {
+    id: string;
+    aud: string;
+    role: string;
+    email: string;
+    email_confirmed_at: Date;
+    phone: number;
+  };
 }

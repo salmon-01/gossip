@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-
+import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '../../utils/supabase/server';
 
 export async function login(formData: FormData) {
@@ -56,7 +56,7 @@ export async function signOut() {
 export async function populateUser(formData: FormData) {
   const supabase = createClient();
 
-  const profile_img = formData.get('profile_img') as string;
+  const profile_img = formData.get('profile_img') as File;
   const username = formData.get('username') as string;
   const display_name = formData.get('display_name') as string;
   const badge = formData.get('badge') as string;
@@ -73,23 +73,31 @@ export async function populateUser(formData: FormData) {
   }
 
   const userId = user.id;
+  let profileImgUrl = '';
 
-  const { error: updateAuthError } = await supabase.auth.updateUser({
-    data: { display_name },
-  });
+  if (profile_img) {
+    const imageFileName = `${uuidv4()}.${profile_img.type.split('/')[1]}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(`${imageFileName}`, profile_img);
 
-  if (updateAuthError) {
-    console.error(
-      'Error updating display_name in auth.users:',
-      updateAuthError
-    );
-    redirect('/error');
+    if (uploadError) {
+      console.error('Error uploading image:', uploadError);
+      return redirect('/error');
+    }
+
+    const { data: publicUrlData } = await supabase.storage
+      .from('avatars')
+      .getPublicUrl(`${imageFileName}`);
+
+    profileImgUrl = publicUrlData.publicUrl;
   }
 
   const { error: profileError } = await supabase.from('profiles').upsert({
     user_id: userId,
+    display_name,
     username,
-    profile_img,
+    profile_img: profileImgUrl,
     badge,
     bio,
   });

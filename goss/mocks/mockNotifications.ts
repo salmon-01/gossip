@@ -23,7 +23,7 @@ export const mockNotifications = [
     content: ` started following you`,
     sender: 'Police K9',
     created_at: '2024-10-05T09:15:00Z',
-    avatar: '',
+    avatar: '/dogface.jpg',
     is_read: false,
   },
 ];

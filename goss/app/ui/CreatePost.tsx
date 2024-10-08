@@ -3,12 +3,14 @@
 import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
+
 import { mockUsers } from '@/mocks/mockUsers';
 import { createClient } from '@/utils/supabase/client';
 
 export default function CreatePost() {
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
@@ -58,6 +60,7 @@ export default function CreatePost() {
     }
   };
 
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -89,6 +92,7 @@ export default function CreatePost() {
           <HiOutlineMicrophone size={32} />
           <AudioRecorder onAudioSave={handleAudioSave} />
           <HiOutlineTrash size={32} />
+
         </div>
         <div className="mt-2 flex justify-center">
           <button

@@ -1,12 +1,28 @@
-import RecordPost from '@/app/ui/RecordPost';
+'use client';
 
-export default function Search() {
+import { useSessionContext } from '@/app/context/SessionContext';
+
+export default function TestQuery() {
+  const { data: session, isLoading, error } = useSessionContext();
+  const user = session?.profile;
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!session) return <div>Not logged in</div>;
+
+  console.log(session);
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <main className="p-4 text-center">
-        <h1 className="mb-4 text-2xl font-bold">Search</h1>
-        <p>Welcome to your Goss search!</p>
-      </main>
+    <div className="flex items-center space-x-4">
+      {/* <img
+        src={
+          session.profile.profile_img || '/placeholder.svg?height=40&width=40'
+        }
+        alt={session.profile.username}
+        className="h-10 w-10 rounded-full"
+      /> */}
+      <span className="font-semibold">{user.username}</span>
+      <img src={user.profile_img} />
     </div>
   );
 }
