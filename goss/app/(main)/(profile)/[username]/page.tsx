@@ -1,48 +1,84 @@
- import React from 'react'
- import ProfileHeader from './ProfileHeader'
- import ProfileStats from './ProfileStats'
- import ProfileContent from './ProfileContent'
- import ProfileNav from './profileNav'
+'use client';
 
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { createClient } from '@/utils/supabase/client';
+import ProfileHeader from './ProfileHeader';
+import ProfileStats from './ProfileStats';
+import ProfileContent from './ProfileContent';
 
-import { getProfileData } from './action' 
-import { createClient } from '@/utils/supabase/server';
-
-export default async function Page({ params }) {
+// Client-side data fetching functions
+const fetchUserSession = async () => {
   const supabase = createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error) throw error;
+  return user;
+};
 
-  // Fetch the logged-in user session (get user_id from session)
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+const fetchProfileData = async (username) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('username', username)
+    .single();
 
-  if (userError || !user) {
-    console.error("Error fetching logged-in user:", userError);
-    return <div>Error loading profile</div>;
-  }
+  if (error) throw error;
+  return data;
+};
 
-  // Logged-in user's UUID and username
-  
-  const loggedInUsername = user?.user_metadata.sub; // Fetch the username from user metadata
-
-  // Get the `username` from the URL params
+export default function ProfilePage({ params }) {
   const { username } = params;
 
-  // Fetch the profile data for the user in the URL
-  const viewedUserProfileData = await getProfileData(username);
+  // Query for logged-in user
+  const {
+    data: loggedInUser,
+    isLoading: isLoadingUser,
+    error: userError,
+  } = useQuery({
+    queryKey: ['user'],
+    queryFn: fetchUserSession,
+  });
 
-  // Determine which profile data to use: logged-in user's or the viewed user's
-  const profileDataToUse = loggedInUsername === username 
-    ? await getProfileData(loggedInUsername) // Fetch your own profile by username
-    : viewedUserProfileData; // Otherwise, use the viewed user's profile
+  const loggedInUsername = loggedInUser?.user_metadata?.sub;
 
-  if (!profileDataToUse) {
+  // Query for profile data
+  const {
+    data: profileData,
+    isLoading: isLoadingProfile,
+    error: profileError,
+  } = useQuery({
+    queryKey: ['profile', username],
+    queryFn: () => fetchProfileData(username),
+    enabled: !!username, // Only run query if username is available
+  });
+
+  // Loading states
+  if (isLoadingUser || isLoadingProfile) {
+    return <div>Loading...</div>;
+  }
+
+  // Error states
+  if (userError) {
+    return <div>Error loading user: {userError.message}</div>;
+  }
+
+  if (profileError) {
+    return <div>Error loading profile: {profileError.message}</div>;
+  }
+
+  if (!profileData) {
     return <div>Profile not found</div>;
   }
 
   return (
     <>
-      <ProfileHeader user={profileDataToUse} loggedInUser={loggedInUsername} />
-      <ProfileStats/>
-      <ProfileContent/>
+      <ProfileHeader user={profileData} loggedInUser={loggedInUsername} />
+      <ProfileStats />
+      <ProfileContent />
     </>
   );
 }
