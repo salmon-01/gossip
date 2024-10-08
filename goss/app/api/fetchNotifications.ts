@@ -11,6 +11,7 @@ export const fetchNotifications = async (userId: number) => {
     context,
     type,
     created_at,
+    is_read,
     user_id,
     sender_id,
     recipient:user_id (
