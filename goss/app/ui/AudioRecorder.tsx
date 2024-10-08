@@ -7,7 +7,11 @@ interface AudioDevice {
   name: string;
 }
 
-const AudioRecorder: React.FC = () => {
+interface AudioRecorderProps {
+  onAudioSave: (audioBlob: Blob) => void; // Pass the audio blob to the parent
+}
+
+const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [microphonePermissionState, setMicrophonePermissionState] = useState<
     'granted' | 'prompt' | 'denied'
@@ -19,8 +23,20 @@ const AudioRecorder: React.FC = () => {
     string | undefined
   >(undefined);
   const [savedAudios, setSavedAudios] = useState<any[][]>([]);
+  const recordedChunks: any[] = [];
 
   const mediaRecorder = useRef<any>(null);
+
+  const handleClickStopRecord = () => {
+    setIsRecording(false);
+    if (mediaRecorder.current) {
+      mediaRecorder.current.stop();
+      mediaRecorder.current.addEventListener('stop', () => {
+        const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+        onAudioSave(audioBlob); // Send the audio blob to the parent
+      });
+    }
+  };
 
   // Get available audio devices
   const getAvailableAudioDevices = (): Promise<AudioDevice[]> => {
@@ -99,10 +115,10 @@ const AudioRecorder: React.FC = () => {
   };
 
   // Handle on click stop recording
-  const handleClickStopRecord = () => {
-    setIsRecording(false);
-    if (mediaRecorder.current) mediaRecorder.current.stop();
-  };
+  // const handleClickStopRecord = () => {
+  //   setIsRecording(false);
+  //   if (mediaRecorder.current) mediaRecorder.current.stop();
+  // };
 
   // Get audio URL from saved chunks
   const getAudioRef = () => {
