@@ -1,4 +1,4 @@
-import NavBar from '../ui/NavBar';
+import NavBarWrapper from "../ui/NavBarWrapper";
 
 export default function MainLayout({
   children,
@@ -8,7 +8,7 @@ export default function MainLayout({
   return (
     <div className="min-h-screen bg-gray-100 pb-16 text-black">
       {children}
-      <NavBar />
+      <NavBarWrapper />
     </div>
   );
 }
