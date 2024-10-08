@@ -4,24 +4,51 @@ import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
 import { mockUsers } from '@/mocks/mockUsers';
-import { createPost } from '../login/actions';
+import { createClient } from '@/utils/supabase/client';
 
 export default function CreatePost() {
   const [caption, setCaption] = useState('');
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null); // Store the audio blob
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+
+  const supabase = createClient();
 
   const handleAudioSave = (audioBlob: Blob) => {
-    setAudioBlob(audioBlob); // Set the audio blob received from AudioRecorder
+    setAudioBlob(audioBlob);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!audioBlob) return;
 
-    console.log(audioBlob);
+    const fileName = `audio-${Date.now()}.webm`;
 
-    // Upload audio to Supabase storage
-    // ? Call the actions function here to connect with the 'createPost' action
+    try {
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('voice-notes')
+        .upload(fileName, audioBlob);
+
+      if (uploadError) {
+        console.error('Error uploading file:', uploadError);
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('voice-notes')
+        .getPublicUrl(fileName);
+
+      const fileUrl = publicUrlData.publicUrl;
+
+      const { data: postData, error: postError } = await supabase
+        .from('posts')
+        .insert([{ caption: caption, audio: fileUrl }]);
+
+      if (postError) {
+        console.error('Error creating post:', postError);
+        return;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -44,11 +71,13 @@ export default function CreatePost() {
             />
           </div>
           <div className="mt-3 flex w-full items-center">
-            <audio
-              className="mx-1"
-              controls
-              src={audioBlob ? URL.createObjectURL(audioBlob) : ''}
-            ></audio>
+            {audioBlob && (
+              <audio
+                className="mx-1"
+                controls
+                src={URL.createObjectURL(audioBlob)}
+              ></audio>
+            )}
           </div>
           <HiOutlineMicrophone size={32} />
           <AudioRecorder onAudioSave={handleAudioSave} />
