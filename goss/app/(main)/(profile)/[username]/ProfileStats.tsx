@@ -3,8 +3,9 @@ import React from 'react'
 export default function ProfileStats() {
   return (
     <>
-    <span className='mr-2 ml-4'>1 followers</span>
-    <span>1 following</span>
+    <span className=' ml-4'>1 </span><span className='mr-3 text-gray-600'>Followers</span>
+    <span>5 </span><span className=' text-gray-600'>Following</span>
+
     </>
   )
 }

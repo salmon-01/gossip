@@ -1,9 +1,7 @@
 'use client';
-
 import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
-
 import { mockUsers } from '@/mocks/mockUsers';
 import { createClient } from '@/utils/supabase/client';
 
@@ -16,20 +14,17 @@ export default function CreatePost() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     if (!audioBlob) return;
-
     const supabase = createClient();
-
     const fileName = `audio-${Date.now()}.webm`;
-
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
-
     const userId = user!.id;
-
+    
     try {
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('voice-notes')
