@@ -9,7 +9,7 @@ const ProfileSetup = async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) {
+  if (!user) {
     return redirect('/login');
   }
 
