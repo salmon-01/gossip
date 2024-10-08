@@ -11,7 +11,7 @@ vi.mock('next/navigation', () => ({
 describe('NavBar component', () => {
   const mockUsername = 'testuser';
   test('renders navigation links correctly', () => {
-    render(<NavBar username={mockUsername}/>);
+    render(<NavBar />);
 
     // Check if the links are rendered
     expect(screen.getByLabelText('Home')).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe('NavBar component', () => {
     // Mock the pathname to be "/search"
     vi.mocked(usePathname).mockReturnValue('/search');
 
-    render(<NavBar username={mockUsername}/>);
+    render(<NavBar/>);
 
     const searchIcon = screen.getByLabelText('Search');
     const homeIcon = screen.getByLabelText('Home');
@@ -42,7 +42,7 @@ describe('NavBar component', () => {
     });
 
     test('renders profile link with correct username', () => {
-      render(<NavBar username={mockUsername} />); // Pass the username prop
+      render(<NavBar />); // Pass the username prop
   
       // Check that the Profile link contains the username in its href
       const profileLink = screen.getByLabelText('Profile');
