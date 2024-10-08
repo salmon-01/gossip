@@ -31,13 +31,13 @@ export default function CreatePost () {
           />
         </div>
         <div className='mt-3 w-full flex items-center'>
-          <HiOutlineMicrophone size={32}/>
+          <HiOutlineMicrophone size={32} color='#9333ea'/>
           <audio className='mx-1' controls src=""></audio>
-          <HiOutlineTrash size={32}/>
+          <HiOutlineTrash size={32} color='#9333ea'/>
         </div>
       </div>
       <div className='flex justify-center mt-2'>
-        <button type='submit' formAction={createPost} className='bg-purple-400 rounded-xl px-4 py-1 text-white'>Post</button>
+        <button type='submit' formAction={createPost} className='bg-purple-500 rounded-xl px-4 py-1 text-white'>Post</button>
       </div>
     </form>
     </>
