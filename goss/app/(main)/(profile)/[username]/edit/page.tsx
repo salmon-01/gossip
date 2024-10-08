@@ -1,15 +1,15 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
-    name: '',
-    bio: '',
+    name: "",
+    bio: "",
   });
 
   const supabase = createClient();
@@ -17,9 +17,15 @@ export default function ProfilePage() {
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
-
-
-  // Fetch user info when rendering
+ 
+  useEffect(() => {
+    if (session) {
+      setProfile({
+        name: session.profile.display_name || '',
+        bio: session.profile.bio || '',
+      });
+    }
+  }, [session]);
 
   // Handle input change for name and bio
   const handleChange = (e) => {
