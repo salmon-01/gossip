@@ -4,8 +4,8 @@ export interface Notification {
   id: number;
   avatar: string;
   type: string;
-  content: string;
-  sender: string;
+  context: string;
+  sender_id: number;
   created_at: string;
   is_read: boolean;
 }

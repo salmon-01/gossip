@@ -2,10 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HiOutlineHome, HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineUser } from 'react-icons/hi2';
+import {
+  HiOutlineHome,
+  HiOutlineMagnifyingGlass,
+  HiOutlineBell,
+  HiOutlineUser,
+} from 'react-icons/hi2';
 import RecordPost from './RecordPost';
+import { useSessionContext } from '../context/SessionContext';
 
-function NavBar({ username }: { username: string | null }) {
+function NavBar() {
+  const { data: session, isLoading, error } = useSessionContext();
+  const username = session?.profile.username;
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
