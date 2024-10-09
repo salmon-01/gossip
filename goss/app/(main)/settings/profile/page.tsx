@@ -20,7 +20,7 @@ export default function ProfilePage() {
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
-  console.log(session)
+  //console.log(session)
  
   useEffect(() => {
     if (session) {
