@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import ProfileNav from './profileNav';
@@ -39,7 +39,6 @@ export default function ProfileLayout({ children, params }) {
     enabled: !!username, // Only run query if username is available
   });
 
-  
   if (isLoadingProfile) {
     return <div>Loading profile...</div>;
   }
@@ -48,7 +47,6 @@ export default function ProfileLayout({ children, params }) {
     return <div>Error loading profile: {profileError.message}</div>;
   }
 
-  
   if (!profileData) {
     return <div>Profile not found</div>;
   }
@@ -57,7 +55,7 @@ export default function ProfileLayout({ children, params }) {
     <>
       {/* Pass profile data to the header and stats components */}
       <ProfileHeader user={profileData} loggedInUser={loggedInUser} />
-      <ProfileStats  />
+      <ProfileStats user={profileData} />
       <ProfileNav username={username} />
       <main>{children}</main>
     </>

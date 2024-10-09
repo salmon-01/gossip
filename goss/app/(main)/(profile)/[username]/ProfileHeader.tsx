@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import FollowButton from '@/app/ui/FollowButton';
 
 export default function ProfileHeader({ user, loggedInUser }) {
-  // console.log("Logged-in user:", loggedInUser.username);
-  // console.log("Viewing user:", user.username);
+  console.log('Logged-in user:', loggedInUser);
+  console.log('Viewing user:', user);
   const loggedInUsername = loggedInUser ? loggedInUser.username : null;
   return (
     <>
@@ -16,23 +17,26 @@ export default function ProfileHeader({ user, loggedInUser }) {
           />
 
           <div className="ml-4">
-            <div className="font-bold text-xl">{user.display_name}</div>
+            <div className="text-xl font-bold">{user.display_name}</div>
             <p className="text-sm text-gray-500">@{user.username}</p>
           </div>
-
-
         </div>
 
         {/* Follow button */}
-        <p className="my-3 text-white  text-center w-24 border rounded  py-1 border-pink-700 text-sm bg-pink-400">{user.badge}</p>
+        <p className="my-3 w-24 rounded border border-pink-700 bg-pink-400 py-1 text-center text-sm text-white">
+          {user.badge}
+        </p>
       </div>
 
-      <div className='mx-auto my-3 w-11/12'>
-        <p className="mx-auto my-3 text-sm text-gray-500">{user.bio}</p>
+      <div className="mx-auto my-3 w-11/12">
+        <p className="mx-auto my-3 text-sm text-gray-500">
+          {user.bio} {user.follower_count}
+        </p>
 
         {user.username === loggedInUsername ? (
           <div>
-            <Link href={`/settings/profile`}
+            <Link
+              href={`/settings/profile`}
               className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
             >
               Edit profile
@@ -40,16 +44,10 @@ export default function ProfileHeader({ user, loggedInUser }) {
           </div>
         ) : (
           <div>
-            <button
-              className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
-            >
-              Follow
-            </button>
+            <FollowButton user={user} targetUserId={loggedInUser.user_id} />
           </div>
         )}
-
       </div>
-
     </>
   );
 }

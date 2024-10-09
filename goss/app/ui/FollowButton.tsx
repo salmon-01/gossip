@@ -5,18 +5,19 @@ import { createClient } from '@/utils/supabase/client';
 import toast from 'react-hot-toast';
 import { debounce } from 'lodash'; // Import Lodash debounce
 
-interface FollowButtonProps {
-  userId: string;
-  targetUserId: string;
-}
+// interface FollowButtonProps {
+//   userId: string;
+//   targetUserId: string;
+// }
 
 interface FollowStatus {
   status: 'active' | 'inactive';
 }
 
-const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
+const FollowButton = ({ user, targetUserId }) => {
   const queryClient = useQueryClient();
 
+  const userId = user.user_id;
   // Fetch initial follow status
   const { data: followStatus, isLoading: isFetchingStatus } = useQuery({
     queryKey: ['followStatus', userId, targetUserId],
@@ -53,9 +54,9 @@ const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
     onSuccess: (data) => {
       // Display success toast based on the new status
       if (data.status === 'active') {
-        toast.success(`You are now following them`);
+        toast.success(`You are now following ${user.username}`);
       } else {
-        toast.success(`You are no longer following them`);
+        toast.success(`You are no longer following ${user.username}`);
       }
 
       // // Invalidate the cache to refetch the latest data
@@ -92,10 +93,8 @@ const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`min-w-[100px] rounded px-4 py-2 ${
-        isFollowing
-          ? 'border border-black bg-white text-black'
-          : 'bg-blue-500 text-white'
+      className={`flex items-center justify-center rounded-lg border border-white px-5 py-3 drop-shadow-2xl ${
+        isFollowing ? 'bg-gray-300 text-black' : 'bg-purple-600 text-white'
       } ${isLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
     >
       {isLoading ? 'Loading...' : isFollowing ? 'Unfollow' : 'Follow'}
