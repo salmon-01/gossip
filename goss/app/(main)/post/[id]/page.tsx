@@ -7,6 +7,7 @@ import moment from 'moment';
 import Reactions from '@/app/ui/Reactions';
 import AddComment from '@/app/ui/AddComment';
 import CommentSection from '@/app/ui/CommentSection';
+import VoiceNote from '@/app/ui/VoiceNote';
 
 const supabase = createClient();
 
@@ -60,9 +61,7 @@ export default function PostPage() {
             {moment(postData.created_at).fromNow()}
           </div>
         </div>
-        <div className="mb-4">
-          <audio src={postData.audio} controls className="w-full"></audio>
-        </div>
+        <VoiceNote audioUrl={postData.audio}/>
         <Reactions />
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
         <AddComment />
