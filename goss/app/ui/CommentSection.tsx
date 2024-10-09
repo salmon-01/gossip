@@ -1,5 +1,7 @@
 import { useSessionContext } from '@/app/context/SessionContext';
 import moment from 'moment';
+import { useState } from 'react';
+import { BsThreeDots } from 'react-icons/bs';
 
 interface Comment {
   id: string;
@@ -12,10 +14,23 @@ interface Comment {
 
 interface CommentSectionProps {
   comments: Comment[];
+  onDeleteComment: (commentId: string) => void;
 }
 
-export default function CommentSection({ comments }: CommentSectionProps) {
+export default function CommentSection({
+  comments,
+  onDeleteComment,
+}: CommentSectionProps) {
   // if (isLoading) return <p>Loading comments...</p>;
+
+  const [menuOpen, setMenuOpen] = useState<Record<string, boolean>>({}); // Track menu state for each comment
+
+  const toggleMenu = (id: string) => {
+    setMenuOpen((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
 
   const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
@@ -31,7 +46,29 @@ export default function CommentSection({ comments }: CommentSectionProps) {
       <h3 className="mb-2 text-lg font-semibold">Comments</h3>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
-          <div key={comment.id} className="mb-4 rounded bg-gray-100 p-3">
+          <div
+            key={comment.id}
+            className="relative mb-4 rounded bg-gray-100 p-3"
+          >
+            {/* Three dots menu in the top-right corner of each individual comment */}
+            <div className="absolute right-2 top-2">
+              <button
+                onClick={() => toggleMenu(comment.id)}
+                className="text-gray-500 focus:outline-none"
+              >
+                <BsThreeDots className="h-6 w-6" />
+              </button>
+              {menuOpen[comment.id] && (
+                <div className="absolute right-0 w-32 rounded border border-gray-300 bg-white shadow-lg">
+                  <button
+                    onClick={() => onDeleteComment(comment.id)}
+                    className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
             <div className="mb-2 flex items-center">
               {user.profile_img ? (
                 <img
