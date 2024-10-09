@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
-import Link from 'next/link';
 
 interface PostProps {
   user: User;
