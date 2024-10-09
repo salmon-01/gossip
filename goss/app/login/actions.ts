@@ -111,6 +111,7 @@ export async function populateUser(formData: FormData) {
   redirect('/home');
 }
 
+// Not being used currently
 export async function createPost(formData: FormData) {
   const supabase = createClient();
   const caption = formData.get('caption') as string;
