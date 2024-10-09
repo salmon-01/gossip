@@ -2,9 +2,11 @@
 
 import { createClient } from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { useSessionContext } from '@/app/context/SessionContext';
 import { useParams } from 'next/navigation';
-import PostComponent from '@/app/ui/Post';
+import moment from 'moment';
+import Reactions from '@/app/ui/Reactions';
+import AddComment from '@/app/ui/AddComment';
+import CommentSection from '@/app/ui/CommentSection';
 
 const supabase = createClient();
 
@@ -35,11 +37,43 @@ export default function PostPage() {
   if (error) return <p>Error loading post: {error.message}</p>;
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <span>
-        <button onClick={() => window.history.back()}>Back</button>
-      </span>
-      <PostComponent post={postData} user={postData.profiles}/>
+    <div className="min-h-screen w-full">
+      <div className="mx-auto w-full max-w-md p-4">
+        <div className="mb-4">
+          <button onClick={() => window.history.back()} className="text-xl">
+            Back
+          </button>
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <img
+              src={postData.profiles.profile_img}
+              alt={`${postData.profiles.display_name}'s profile`}
+              className="h-16 w-16 rounded-full"
+            />
+            <div className="ml-3 flex flex-col">
+              <p className="font-semibold">{postData.profiles.display_name}</p>
+              <p className="text-gray-500">@{postData.profiles.username}</p>
+            </div>
+          </div>
+          <div className="text-sm text-gray-500">
+            {moment(postData.created_at).fromNow()}
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <audio src={postData.audio} controls className="w-full"></audio>
+        </div>
+
+        <Reactions />
+
+        <p className="mb-2 mt-6 font-semibold">Goss about it</p>
+
+        <AddComment />
+
+        <CommentSection />
+      </div>
     </div>
   );
 }
