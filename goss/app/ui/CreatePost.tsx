@@ -2,12 +2,16 @@
 
 import { useSessionContext } from '@/app/context/SessionContext';
 import { FaTrash } from 'react-icons/fa';
-import AudioRecorder from '@/app/ui/AudioRecorder';
-import { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
 import toast from 'react-hot-toast';
+import AudioRecorder from '@/app/ui/AudioRecorder';
+import { createClient } from '@/utils/supabase/client';
+import { useState } from 'react';
 
-export default function CreatePost() {
+interface CreatePostProps {
+  onPostCreated: () => void;
+}
+
+export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
 
@@ -51,13 +55,11 @@ export default function CreatePost() {
         console.error('Error uploading file:', uploadError);
         return;
       }
-
       const { data: publicUrlData } = supabase.storage
         .from('voice-notes')
         .getPublicUrl(fileName);
 
       const fileUrl = publicUrlData.publicUrl;
-
       const { data: postData, error: postError } = await supabase
         .from('posts')
         .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
@@ -69,6 +71,8 @@ export default function CreatePost() {
     } catch (error) {
       console.error('Error:', error);
     }
+
+    onPostCreated();
   };
 
   return (
