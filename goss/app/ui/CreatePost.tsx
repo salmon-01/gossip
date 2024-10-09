@@ -1,12 +1,19 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSessionContext } from '@/app/context/SessionContext';
-
+import { FaTrash } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import AudioRecorder from '@/app/ui/AudioRecorder';
-import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { useState } from 'react';
 
-export default function CreatePost() {
+interface CreatePostProps {
+  onPostCreated: () => void;
+}
+
+export default function CreatePost({ onPostCreated }: CreatePostProps) {
+  const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
 
@@ -21,31 +28,42 @@ export default function CreatePost() {
     setAudioBlob(audioBlob);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!audioBlob) return;
-    const supabase = createClient();
-    const fileName = `audio-${Date.now()}.webm`;
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-    const userId = user!.id;
+  const handleDeleteAudioNote = () => {
+    setAudioBlob(null);
+    toast('Audio deleted', {
+      style: {
+        border: '1px solid red',
+      },
+    });
+  };
 
-    try {
+  const createPostMutation = useMutation({
+    mutationFn: async () => {
+      const supabase = createClient();
+      const fileName = `audio-${Date.now()}.webm`;
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError) throw userError;
+
+      const userId = user!.id;
+
+      if (!audioBlob) {
+        throw new Error('Audio file is missing.');
+      }
+
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('voice-notes')
         .upload(fileName, audioBlob);
 
       if (uploadError) {
-        console.error('Error uploading file:', uploadError);
-        return;
+        throw new Error('Error uploading file');
       }
 
       const { data: publicUrlData } = supabase.storage
         .from('voice-notes')
         .getPublicUrl(fileName);
-
       const fileUrl = publicUrlData.publicUrl;
 
       const { data: postData, error: postError } = await supabase
@@ -53,12 +71,30 @@ export default function CreatePost() {
         .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
 
       if (postError) {
-        console.error('Error creating post:', postError);
-        return;
+        throw new Error('Error creating post');
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+
+      return postData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['posts'],
+      });
+      onPostCreated();
+      toast.success('Post created successfully!');
+      setCaption('');
+      setAudioBlob(null);
+    },
+    onError: (error: any) => {
+      console.error('Error creating post:', error);
+      toast.error('Failed to create post. Please try again.');
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!audioBlob) return;
+    createPostMutation.mutate();
   };
 
   return (
@@ -80,7 +116,7 @@ export default function CreatePost() {
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} />
+          <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
           <div className="mt-3 flex w-full items-center justify-center">
             {audioBlob && (
               <audio
@@ -90,15 +126,29 @@ export default function CreatePost() {
               ></audio>
             )}
           </div>
+          <div className="mb-3 mt-6 flex w-full items-center justify-center">
+            {audioBlob && (
+              <button
+                type="button"
+                className="text-md flex items-center rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-500"
+                onClick={handleDeleteAudioNote}
+              >
+                <FaTrash className="mr-2 h-4 w-4" />
+                Delete
+              </button>
+            )}
+          </div>
         </div>
-        <div className="mt-2 flex justify-center">
-          <button
-            type="submit"
-            className="rounded-xl bg-purple-400 px-4 py-1 text-white"
-          >
-            Post
-          </button>
-        </div>
+        {audioBlob && (
+          <div className="mt-6 flex justify-center">
+            <button
+              type="submit"
+              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
+            >
+              Post
+            </button>
+          </div>
+        )}
       </form>
     </>
   );

@@ -10,7 +10,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState({
     name: "",
     bio: "",
-    badge:"",
+    badge: "",
   });
 
   const [file, setFile] = useState(null);
@@ -20,7 +20,8 @@ export default function ProfilePage() {
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
- 
+  //console.log(session)
+
   useEffect(() => {
     if (session) {
       setProfile({
@@ -70,7 +71,7 @@ export default function ProfilePage() {
         console.error('Error getting file URL:', urlError);
         return;
       }
-  
+
 
       profileImageUrl = publicURL; // Save the file URL
     }
@@ -97,8 +98,8 @@ export default function ProfilePage() {
   // Handle the cancel button
   const handleCancel = () => {
     if (username) {
-      router.push(`/${username}`);  
-       
+      router.push(`/${username}`);
+
     } else {
       console.error('No username found');
     }
@@ -123,7 +124,7 @@ export default function ProfilePage() {
         name="profile_img"
         type="file"
         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm"
-        onChange={handleFileChange} 
+        onChange={handleFileChange}
       />
 
       <label htmlFor="name" className="block mb-1">Name</label>
