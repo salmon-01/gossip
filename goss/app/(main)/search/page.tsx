@@ -13,7 +13,7 @@ export default function TestQuery() {
   console.log(session);
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="min-h-screen w-full">
       {/* <img
         src={
           session.profile.profile_img || '/placeholder.svg?height=40&width=40'
