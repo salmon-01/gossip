@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function ProfileComments() {
+export default function ProfileComments({params}) {
+  const {username} = params
   return (
-    <div>ProfileComments</div>
+    <div>{username}</div>
   )
 }
