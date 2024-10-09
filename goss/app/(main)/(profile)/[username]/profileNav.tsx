@@ -6,11 +6,15 @@ import Link from 'next/link'
 
 export default function ProfileNav({ activeTab, setActiveTab }) {
   return (
-    <nav className=' flex w-full justify-evenly mt-4'>
-        <button onClick={() => setActiveTab('posts')} className={activeTab === 'posts' ? 'active' : ''}>
+    <nav className=' flex w-full justify-evenly mt-4 border-b '>
+      <button
+        onClick={() => setActiveTab('posts')}
+        className={activeTab === 'posts' ? 'border-b-4 border-purple-700 ' : ''}>
         Posts
       </button>
-      <button onClick={() => setActiveTab('replies')} className={activeTab === 'replies' ? 'active' : ''}>
+      <button
+        onClick={() => setActiveTab('replies')}
+        className={activeTab === 'replies' ? 'border-b-4 border-purple-700' : ''}>
         Replies
       </button>
     </nav>
