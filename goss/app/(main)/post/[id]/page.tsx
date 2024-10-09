@@ -11,7 +11,7 @@ export default function PostPage() {
   const params = useParams();
   const postId = params.id;
 
-  console.log('Post ID:', postId); 
+  //console.log('Post ID:', postId); 
 
   const {
     data: postData,

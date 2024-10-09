@@ -5,25 +5,25 @@ import Link from 'next/link'
 import { useSessionContext } from '@/app/context/SessionContext';
 
 
-export default function ProfileNav() {
-
-  const {data:session} = useSessionContext();
-  const username = session?.profile.username
-  console.log(username)
+export default function ProfileNav({username} ) {
+ 
+  // const {data:session} = useSessionContext();
+  // const username = session?.profile.username
+  // console.log(username)
   return (
     <nav className=' flex w-full justify-evenly mt-4 border-b '>
       <Link 
-      href={`${username}/posts`}
+      href={`/${username}`}
       >
         Posts
       </Link>
       <Link 
-      href={`${username}/reactions`}
+      href={`/${username}/reactions`}
       >
         Reactions
       </Link>
       <Link 
-      href={`${username}/comments`}
+      href={`/${username}/comments`}
       >
         Comments
       </Link>
