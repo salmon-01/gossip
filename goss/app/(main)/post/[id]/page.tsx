@@ -1,17 +1,16 @@
 'use client';
 
-import PostComponent from '@/app/ui/Post';
 import { createClient } from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import { useSessionContext } from '@/app/context/SessionContext';
 import { useParams } from 'next/navigation';
+import PostComponent from '@/app/ui/Post';
 
 const supabase = createClient();
 
 export default function PostPage() {
   const params = useParams();
   const postId = params.id;
-
-  console.log('Post ID:', postId); 
 
   const {
     data: postData,
@@ -33,11 +32,14 @@ export default function PostPage() {
   });
 
   if (isLoading) return <p>Loading post...</p>;
-  if (isError) return <p>Error loading post: {error.message}</p>;
+  if (error) return <p>Error loading post: {error.message}</p>;
 
   return (
-    <div>
-      <PostComponent post={postData} user={postData.profiles} />
+    <div className="flex min-h-screen w-full items-center justify-center">
+      <span>
+        <button onClick={() => window.history.back()}>Back</button>
+      </span>
+      <PostComponent post={postData} user={postData.profiles}/>
     </div>
   );
 }
