@@ -1,6 +1,7 @@
 import { HiOutlineChatBubbleLeftEllipsis } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
+import Reactions from './Reactions';
 
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
@@ -11,10 +12,9 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post }: PostProps) {
-
   return (
     <>
-      <div className="mt-2 flex w-full flex-col rounded-tr-md rounded-tl-md bg-gray-200 p-2">
+      <div className="mt-2 flex w-full flex-col rounded-tl-md rounded-tr-md bg-gray-200 p-2">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
             <img
@@ -27,7 +27,7 @@ export default function PostComponent({ user, post }: PostProps) {
               @{user.username}
             </div>
             <div className="ml-auto flex items-center space-x-2 text-xs text-gray-700">
-            {moment(post.created_at).fromNow()}
+              {moment(post.created_at).fromNow()}
             </div>
           </div>
         </Link>
@@ -36,13 +36,16 @@ export default function PostComponent({ user, post }: PostProps) {
             {post.caption}
           </div>
         </Link>
-          <VoiceNote audioUrl={post.audio}/>
+        <VoiceNote audioUrl={post.audio} />
       </div>
-      <div className='border-slate-300 border-t rounded-bl-md rounded-br-md bg-gray-200 w-full'>
+      <div className='w-full p-2 bg-gray-200'>
+        <Reactions postId={post.id} />
+      </div>
+      <div className="w-full rounded-bl-md rounded-br-md border-t border-slate-300 bg-gray-200">
         <Link href={`/post/${post.id}`}>
-          <div className='flex items-center p-1 ml-4'>
-            <HiOutlineChatBubbleLeftEllipsis color='#9333ea' size={16}/>
-            <div className='text-sm text-purple-600 flex items-center ml-1 font-bold'>
+          <div className="ml-4 flex items-center p-1">
+            <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
+            <div className="ml-1 flex items-center text-sm font-bold text-purple-600">
               Comment
             </div>
           </div>
