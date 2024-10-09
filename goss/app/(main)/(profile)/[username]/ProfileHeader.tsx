@@ -6,6 +6,7 @@ export default function ProfileHeader({ user, loggedInUser }) {
   console.log('Logged-in user:', loggedInUser);
   console.log('Viewing user:', user);
   const loggedInUsername = loggedInUser ? loggedInUser.username : null;
+  const loggedInUserId = loggedInUser ? loggedInUser.user_id : null;
   return (
     <>
       <div className="mx-auto flex w-11/12 items-center justify-between pt-4">
@@ -44,7 +45,7 @@ export default function ProfileHeader({ user, loggedInUser }) {
           </div>
         ) : (
           <div>
-            <FollowButton user={user} targetUserId={loggedInUser.user_id} />
+            <FollowButton user={user} targetUserId={loggedInUserId} />
           </div>
         )}
       </div>
