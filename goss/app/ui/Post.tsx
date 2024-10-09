@@ -3,9 +3,9 @@ import { HiOutlineHandThumbUp, HiOutlineHandThumbDown } from 'react-icons/hi2';
 import WaveSurfer from 'wavesurfer.js';
 import moment from 'moment';
 
+import Link from 'next/link';
 import { User, Post } from '@/app/types';
 import Link from 'next/link';
-
 
 interface PostProps {
   user: User;

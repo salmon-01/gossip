@@ -12,6 +12,15 @@ const config: Config = {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      keyframes: {
+        pulse: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.1)', opacity: '0.8' },
+        },
+      },
+      animation: {
+        pulse: 'pulse 1s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
