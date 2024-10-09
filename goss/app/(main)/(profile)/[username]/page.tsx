@@ -1,14 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 export default function ProfilePost() {
-  return (
-    <div>Profile Post</div>
-  )
+  return <div>Profile Post</div>;
 }
-
-
-
-
 
 // const fetchUserPosts = async (user_id) => {
 //   const supabase = createClient();
@@ -21,12 +15,6 @@ export default function ProfilePost() {
 //   if (error) throw error;
 //   return data;
 // };
-
-
-
-
-
-
 
 //     // Query for posts by the logged-in user
 //     const {
@@ -44,9 +32,6 @@ export default function ProfilePost() {
 //     return <div>Loading...</div>;
 //   }
 
-
-
-
-  // if (postsError) {
-  //   return <div>Error loading posts: {postsError.message}</div>;
-  // }
+// if (postsError) {
+//   return <div>Error loading posts: {postsError.message}</div>;
+// }
