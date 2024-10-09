@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { FaComment } from 'react-icons/fa'; // You can use any icon from react-icons or any other icon library
 
-const AddComment = ({ onAddComment }) => {
+interface AddCommentProps {
+  onAddComment: (content: string) => void; // Define the type for the prop
+}
+
+const AddComment: React.FC<AddCommentProps> = ({ onAddComment }) => {
   const [comment, setComment] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -107,7 +107,7 @@ export default function PostPage() {
             addCommentMutation.mutate({ post_id: postId as string, content })
           }
         />
-        <CommentSection comments={comments} />
+        <CommentSection comments={comments || []} />
       </div>
     </div>
   );

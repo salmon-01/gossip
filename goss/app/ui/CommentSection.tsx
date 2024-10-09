@@ -1,7 +1,20 @@
 import { useSessionContext } from '@/app/context/SessionContext';
 import moment from 'moment';
 
-export default function CommentSection({ comments }) {
+interface Comment {
+  id: string;
+  content: string;
+  created_at: string;
+  post_id: string;
+  profiles: any | null;
+  user_id: string | null;
+}
+
+interface CommentSectionProps {
+  comments: Comment[];
+}
+
+export default function CommentSection({ comments }: CommentSectionProps) {
   // if (isLoading) return <p>Loading comments...</p>;
 
   const { data: session, isLoading, error } = useSessionContext();
@@ -11,7 +24,7 @@ export default function CommentSection({ comments }) {
   if (error) return <div>Error: {error.message}</div>;
   if (!session) return <div>Not logged in</div>;
 
-  console.log(user);
+  console.log(comments);
 
   return (
     <div className="mt-4">
@@ -35,7 +48,7 @@ export default function CommentSection({ comments }) {
                   {user.display_name
                     ? user.display_name
                         .split(' ')
-                        .map((n) => n[0])
+                        .map((n: string) => n[0])
                         .join('')
                         .substring(0, 2)
                     : '??'}
