@@ -40,7 +40,7 @@ export default function PostComponent({ user, post }: PostProps) {
       </div>
       <div className='border-slate-300 border-t rounded-bl-md rounded-br-md bg-gray-200 w-full'>
         <Link href={`/post/${post.id}`}>
-          <div className='flex items-center p-1 ml-4'>
+          <div className='flex items-center pt-1 pb-2 ml-5'>
             <HiOutlineChatBubbleLeftEllipsis color='#9333ea' size={16}/>
             <div className='text-sm text-purple-600 flex items-center ml-1 font-bold'>
               Comment

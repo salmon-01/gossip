@@ -19,7 +19,7 @@ const VoiceNote = ({audioUrl}: Audio) => {
         container: waveformRef.current,
         waveColor: '#9333ea',
         progressColor: '#9333ea',
-        height: 80,
+        height: 40,
         barWidth: 2,
         cursorWidth: 1,
       });
@@ -53,9 +53,9 @@ const VoiceNote = ({audioUrl}: Audio) => {
             <>
                 <button
                   onClick={handlePlayPause}
-                  className={`rounded-full ${isPlaying? 'bg-purple-400' : 'bg-purple-600'} w-16 h-14 m-2 text-white flex justify-center items-center`}
+                  className={`rounded-full ${isPlaying? 'bg-purple-400' : 'bg-purple-600'} w-12 h-10 m-2 text-white flex justify-center items-center`}
                 >
-                  {isPlaying ? <HiOutlinePause size={30}/>: <HiOutlinePlay size={30}/>}
+                  {isPlaying ? <HiOutlinePause size={25}/>: <HiOutlinePlay size={25}/>}
                 </button>
               <div className="w-full" ref={waveformRef}></div>
             </>
