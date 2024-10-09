@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import CreatePost from './CreatePost';
 import { useSessionContext } from '../context/SessionContext';
+import { Session } from '../types';
 
 
 // Mock useRouter and usePathname from next/navigation
@@ -17,11 +18,23 @@ vi.mock('../context/SessionContext', () => ({
 describe('CreatePost component', () => {
   const mockSession: Session = {
     profile: {
-      username: 'testuser',
-      profile_img: 'profile_image_url',
+      user_id: 'ae12',
+      username: 'MockyBoy',
       badge: 'badge',
-      bio: 'Just vibes',
+      profile_img: '/dogface.jpg',
+      bio: '',
+      created_at: new Date(),
+      updated_at: new Date(),
+      display_name: 'MockyMan',
     },
+    user: {
+      id: 'ae12',
+      aud: 'string',
+      role: 'string',
+      email: 'string@string.com',
+      email_confirmed_at: new Date(),
+      phone: 793647483
+    }
   };
 
   beforeEach(() => {
