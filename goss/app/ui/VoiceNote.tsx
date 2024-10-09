@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { HiOutlinePlay, HiOutlinePause } from 'react-icons/hi2';
 import WaveSurfer from 'wavesurfer.js';
 
-const VoiceNote = ({audioUrl}) => {
+interface Audio {
+  audioUrl: string;
+}
+
+const VoiceNote = ({audioUrl}: Audio) => {
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const waveSurferRef = useRef<WaveSurfer | null>(null); // Store WaveSurfer instance
   const [isWaveSurferReady, setWaveSurferReady] = useState(false);
@@ -44,16 +48,16 @@ const VoiceNote = ({audioUrl}) => {
   };
 
   return (
-    <div className="mt-1 flex w-full items-center justify-center">
+    <div className="flex w-full items-center justify-center z-0">
           {audioUrl ? (
             <>
                 <button
                   onClick={handlePlayPause}
-                  className="mt-2 rounded-full bg-purple-600 w-16 h-14 m-2 text-white flex justify-center items-center"
+                  className={`rounded-full ${isPlaying? 'bg-purple-400' : 'bg-purple-600'} w-16 h-14 m-2 text-white flex justify-center items-center`}
                 >
                   {isPlaying ? <HiOutlinePause size={30}/>: <HiOutlinePlay size={30}/>}
                 </button>
-              <div className="mt-2 w-full" ref={waveformRef}></div>
+              <div className="w-full" ref={waveformRef}></div>
             </>
           ) : (
             <p>No audio found!</p>
