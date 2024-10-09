@@ -5,6 +5,7 @@ import { useSessionContext } from '@/app/context/SessionContext';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import toast from 'react-hot-toast';
 
 export default function CreatePost() {
   const { data: session, isLoading, error } = useSessionContext();
@@ -19,6 +20,15 @@ export default function CreatePost() {
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
+  };
+
+  const handleDeleteAudioNote = () => {
+    setAudioBlob(null);
+    toast('Audio deleted', {
+      style: {
+        border: '1px solid red',
+      },
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,6 +91,13 @@ export default function CreatePost() {
             />
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} />
+          <div className="">
+            {audioBlob && (
+              <button type="button" onClick={handleDeleteAudioNote}>
+                Delete
+              </button>
+            )}
+          </div>
           <div className="mt-3 flex w-full items-center justify-center">
             {audioBlob && (
               <audio

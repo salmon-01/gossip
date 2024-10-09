@@ -35,25 +35,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
   const intervalRef = useRef<number | null>(null); // Interval ref
   const elapsedTimeRef = useRef<string>('00:00'); // Ref to store elapsed time string
 
-  const handleClickStopRecord = () => {
-    setIsRecording(false);
-    if (mediaRecorder.current) {
-      mediaRecorder.current.stop();
-      mediaRecorder.current.addEventListener('stop', () => {
-        const audioBlob = new Blob(recordedChunks.current, {
-          type: 'audio/webm',
-        });
-        onAudioSave(audioBlob);
-      });
-    }
-
-    // ? Timer experiment
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current); // Clear interval when recording stops
-      intervalRef.current = null;
-    }
-  };
-
   // ? Timer experiment
   const formatTime = (elapsedSeconds: number) => {
     const mins = Math.floor(elapsedSeconds / 60);
@@ -102,6 +83,25 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
 
           mediaRecorder.current.start();
         });
+    }
+  };
+
+  const handleClickStopRecord = () => {
+    setIsRecording(false);
+    if (mediaRecorder.current) {
+      mediaRecorder.current.stop();
+      mediaRecorder.current.addEventListener('stop', () => {
+        const audioBlob = new Blob(recordedChunks.current, {
+          type: 'audio/webm',
+        });
+        onAudioSave(audioBlob);
+      });
+    }
+
+    // ? Timer experiment
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear interval when recording stops
+      intervalRef.current = null;
     }
   };
 
