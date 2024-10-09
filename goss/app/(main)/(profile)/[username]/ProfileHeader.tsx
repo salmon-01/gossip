@@ -2,8 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function ProfileHeader({ user, loggedInUser }) {
-  // console.log("Logged-in user:", loggedInUser.user_id);
-  // console.log("Viewing user:", user.user_id);
+  // console.log("Logged-in user:", loggedInUser.username);
+  // console.log("Viewing user:", user.username);
+  const loggedInUsername = loggedInUser ? loggedInUser.username : null;
   return (
     <>
       <div className="mx-auto flex w-11/12 items-center justify-between pt-4">
@@ -29,7 +30,7 @@ export default function ProfileHeader({ user, loggedInUser }) {
       <div className='mx-auto my-3 w-11/12'>
         <p className="mx-auto my-3 text-sm text-gray-500">{user.bio}</p>
 
-        {user.user_id === loggedInUser.user_id ? (
+        {user.username === loggedInUsername ? (
           <div>
             <Link href={`/settings/profile`}
               className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
