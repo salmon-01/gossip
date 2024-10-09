@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
 import ProfileHeader from './ProfileHeader';
 import ProfileStats from './ProfileStats';
-import ProfileContent from './ProfileContent';
+
 
 
 
@@ -112,7 +112,7 @@ export default function ProfilePage({ params }) {
     <>
       <ProfileHeader user={profileData} loggedInUser={loggedInUsername} />
       <ProfileStats />
-      <ProfileContent />
+      
     </>
   );
 }

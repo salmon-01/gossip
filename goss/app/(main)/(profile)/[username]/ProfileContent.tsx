@@ -1,8 +1,8 @@
- 'use client';
-import React, { useState } from 'react'
-import VoiceNoteList from './VoiceNoteList'
-import VoiceReplyList from './VoiceReplyList'
-import ProfileNav from './profileNav'
+//  'use client';
+// import React, { useState } from 'react'
+// import VoiceNoteList from './VoiceNoteList'
+// import VoiceReplyList from './VoiceReplyList'
+// import ProfileNav from './profileNav'
 
 
 
@@ -11,9 +11,9 @@ export default function ProfileContent() {
 
   return (
     <>
-     <ProfileNav activeTab={activeTab} setActiveTab={setActiveTab} />
+     {/* <ProfileNav activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab ==="posts" && <VoiceNoteList  />}
-      {activeTab ==="replies" && <VoiceReplyList />}
+      {activeTab ==="replies" && <VoiceReplyList />} */}
       
     </>
   )
