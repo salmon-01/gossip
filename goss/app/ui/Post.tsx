@@ -69,6 +69,7 @@ export default function PostComponent({ user, post }: PostProps) {
               <div className="ml-auto flex items-center space-x-2 text-xs text-gray-700">
               {moment(post.created_at).startOf('hour').fromNow()}
               </div>
+
           </div>
         </Link>
         <Link href={`/${user.username}`}>

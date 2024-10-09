@@ -1,12 +1,17 @@
 'use client';
 
 import { useSessionContext } from '@/app/context/SessionContext';
-
+import { FaTrash } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import AudioRecorder from '@/app/ui/AudioRecorder';
-import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { useState } from 'react';
 
-export default function CreatePost() {
+interface CreatePostProps {
+  onPostCreated: () => void;
+}
+
+export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
 
@@ -19,6 +24,15 @@ export default function CreatePost() {
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
+  };
+
+  const handleDeleteAudioNote = () => {
+    setAudioBlob(null);
+    toast('Audio deleted', {
+      style: {
+        border: '1px solid red',
+      },
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,13 +55,11 @@ export default function CreatePost() {
         console.error('Error uploading file:', uploadError);
         return;
       }
-
       const { data: publicUrlData } = supabase.storage
         .from('voice-notes')
         .getPublicUrl(fileName);
 
       const fileUrl = publicUrlData.publicUrl;
-
       const { data: postData, error: postError } = await supabase
         .from('posts')
         .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
@@ -59,6 +71,8 @@ export default function CreatePost() {
     } catch (error) {
       console.error('Error:', error);
     }
+
+    onPostCreated();
   };
 
   return (
@@ -80,7 +94,7 @@ export default function CreatePost() {
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} />
+          <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
           <div className="mt-3 flex w-full items-center justify-center">
             {audioBlob && (
               <audio
@@ -90,15 +104,29 @@ export default function CreatePost() {
               ></audio>
             )}
           </div>
+          <div className="mb-3 mt-6 flex w-full items-center justify-center">
+            {audioBlob && (
+              <button
+                type="button"
+                className="text-md flex items-center rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-500"
+                onClick={handleDeleteAudioNote}
+              >
+                <FaTrash className="mr-2 h-4 w-4" />
+                Delete
+              </button>
+            )}
+          </div>
         </div>
-        <div className="mt-2 flex justify-center">
-          <button
-            type="submit"
-            className="rounded-xl bg-purple-400 px-4 py-1 text-white"
-          >
-            Post
-          </button>
-        </div>
+        {audioBlob && (
+          <div className="mt-6 flex justify-center">
+            <button
+              type="submit"
+              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
+            >
+              Post
+            </button>
+          </div>
+        )}
       </form>
     </>
   );
