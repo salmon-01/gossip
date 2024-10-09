@@ -18,27 +18,37 @@ export default function ProfileHeader({ user, loggedInUser }) {
             <div className="font-bold text-xl">{user.display_name}</div>
             <p className="text-sm text-gray-500">@{user.username}</p>
           </div>
+
+
         </div>
 
         {/* Follow button */}
+        <p className="my-3 text-white  text-center w-24 border rounded  py-1 border-pink-700 text-sm bg-pink-400">{user.badge}</p>
+      </div>
+
+      <div className='mx-auto my-3 w-11/12'>
+        <p className="mx-auto my-3 text-sm text-gray-500">{user.bio}</p>
+
         {user.user_id === loggedInUser ? (
           <div>
-            <Link href={`/${user.username}/edit`}
-            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            <Link href={`/settings/profile`}
+              className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
             >
               Edit profile
             </Link>
           </div>
         ) : (
           <div>
-            <button className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white">
+            <button
+              className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            >
               Follow
             </button>
           </div>
         )}
+
       </div>
 
-      <p className="mx-auto my-3 text-sm w-11/12">{user.bio}</p>
     </>
   );
 }

@@ -13,9 +13,14 @@ export default function ProfileNav({ activeTab, setActiveTab }) {
         Posts
       </button>
       <button
-        onClick={() => setActiveTab('replies')}
-        className={activeTab === 'replies' ? 'border-b-4 border-purple-700' : ''}>
-        Replies
+        onClick={() => setActiveTab('reactions')}
+        className={activeTab === 'reactions' ? 'border-b-4 border-purple-700' : ''}>
+        Reactions
+      </button>
+      <button
+        onClick={() => setActiveTab('comments')}
+        className={activeTab === 'comments' ? 'border-b-4 border-purple-700' : ''}>
+        Comments
       </button>
     </nav>
   )
