@@ -1,5 +1,6 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
@@ -12,6 +13,7 @@ interface CreatePostProps {
 }
 
 export default function CreatePost({ onPostCreated }: CreatePostProps) {
+  const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
 
@@ -35,44 +37,64 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!audioBlob) return;
-    const supabase = createClient();
-    const fileName = `audio-${Date.now()}.webm`;
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-    const userId = user!.id;
+  const createPostMutation = useMutation({
+    mutationFn: async () => {
+      const supabase = createClient();
+      const fileName = `audio-${Date.now()}.webm`;
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError) throw userError;
 
-    try {
+      const userId = user!.id;
+
+      if (!audioBlob) {
+        throw new Error('Audio file is missing.');
+      }
+
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('voice-notes')
         .upload(fileName, audioBlob);
 
       if (uploadError) {
-        console.error('Error uploading file:', uploadError);
-        return;
+        throw new Error('Error uploading file');
       }
+
       const { data: publicUrlData } = supabase.storage
         .from('voice-notes')
         .getPublicUrl(fileName);
-
       const fileUrl = publicUrlData.publicUrl;
+
       const { data: postData, error: postError } = await supabase
         .from('posts')
         .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
 
       if (postError) {
-        console.error('Error creating post:', postError);
-        return;
+        throw new Error('Error creating post');
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
 
-    onPostCreated();
+      return postData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['posts'],
+      });
+      onPostCreated();
+      toast.success('Post created successfully!');
+      setCaption('');
+      setAudioBlob(null);
+    },
+    onError: (error: any) => {
+      console.error('Error creating post:', error);
+      toast.error('Failed to create post. Please try again.');
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!audioBlob) return;
+    createPostMutation.mutate();
   };
 
   return (
