@@ -217,7 +217,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
           !audioBlob && (
             <button
               type="button"
-              className="mt-14 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+              className="text-md mt-12 rounded-md bg-red-600 px-5 py-2 text-center text-white shadow-sm hover:bg-red-500"
               onClick={handleClickStartRecord}
             >
               Record

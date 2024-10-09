@@ -104,20 +104,20 @@ export default function CreatePost() {
             {audioBlob && (
               <button
                 type="button"
-                className="flex items-center rounded-full bg-red-600 px-4 py-2 text-lg text-white"
+                className="text-md flex items-center rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-500"
                 onClick={handleDeleteAudioNote}
               >
-                <FaTrash className="mr-2" />
+                <FaTrash className="mr-2 h-4 w-4" />
                 Delete
               </button>
             )}
           </div>
         </div>
         {audioBlob && (
-          <div className="mt-2 flex justify-center">
+          <div className="mt-6 flex justify-center">
             <button
               type="submit"
-              className="rounded-full bg-purple-800 px-6 py-2 text-white"
+              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
             >
               Post
             </button>
