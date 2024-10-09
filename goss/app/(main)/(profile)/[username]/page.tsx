@@ -7,6 +7,8 @@ import ProfileHeader from './ProfileHeader';
 import ProfileStats from './ProfileStats';
 import ProfileContent from './ProfileContent';
 
+
+
 // Client-side data fetching functions
 const fetchUserSession = async () => {
   const supabase = createClient();
