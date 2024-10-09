@@ -1,9 +1,5 @@
-
-
 const AddComment = () => {
-  return (
-    <div>AddComment</div>
-  )
-}
+  return <div>AddComment</div>;
+};
 
-export default AddComment
+export default AddComment;

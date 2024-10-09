@@ -44,7 +44,6 @@ export default function PostPage() {
             Back
           </button>
         </div>
-
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center">
             <img
@@ -61,17 +60,12 @@ export default function PostPage() {
             {moment(postData.created_at).fromNow()}
           </div>
         </div>
-
         <div className="mb-4">
           <audio src={postData.audio} controls className="w-full"></audio>
         </div>
-
         <Reactions />
-
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
-
         <AddComment />
-
         <CommentSection />
       </div>
     </div>
