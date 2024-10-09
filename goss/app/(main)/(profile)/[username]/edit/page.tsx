@@ -10,7 +10,10 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState({
     name: "",
     bio: "",
+    badge:"",
   });
+
+  const [file, setFile] = useState(null);
 
   const supabase = createClient();
   const router = useRouter(); // Use Next.js router
@@ -23,6 +26,7 @@ export default function ProfilePage() {
       setProfile({
         name: session.profile.display_name || '',
         bio: session.profile.bio || '',
+        badge: session.profile.badge || '',
       });
     }
   }, [session]);
@@ -36,15 +40,49 @@ export default function ProfilePage() {
     }));
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]); // Store the selected file in state
+  };
+
   // Handle form submission and profile update
   const updateProfile = async (e) => {
     e.preventDefault();
+
+    let profileImageUrl = null;
+
+    if (file) {
+      // Upload file to Supabase Storage
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('avatars') // Your Supabase storage bucket
+        .upload(`${file.name}`, file);
+
+      if (storageError) {
+        console.error('Error uploading file:', storageError);
+        return;
+      }
+
+      // Get the public URL of the uploaded file
+      const { data: publicURL, error: urlError } = supabase.storage
+        .from('avatars') // Same bucket
+        .getPublicUrl(`${file.name}`);
+
+      if (urlError) {
+        console.error('Error getting file URL:', urlError);
+        return;
+      }
+  
+
+      profileImageUrl = publicURL; // Save the file URL
+    }
+
 
     const { data, error } = await supabase
       .from('profiles')
       .update({
         display_name: profile.name,
         bio: profile.bio,
+        badge: profile.badge,
+        profile_img: profileImageUrl?.publicUrl,
       })
       .eq('username', username); // Use the user's ID from authentication
 
@@ -79,6 +117,15 @@ export default function ProfilePage() {
 
       <h2 className="text-xl font-bold mb-3 inline-block">Edit Profile</h2>
 
+      <label htmlFor="profile_img" className="block mb-1">Profile image</label>
+      <input
+        id="profile_img"
+        name="profile_img"
+        type="file"
+        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm"
+        onChange={handleFileChange} 
+      />
+
       <label htmlFor="name" className="block mb-1">Name</label>
       <input
         id="name"
@@ -87,6 +134,16 @@ export default function ProfilePage() {
         placeholder="Name"
         className="w-full p-2 border border-gray-300 rounded shadow-sm"
         value={profile.name}
+        onChange={handleChange}
+      />
+      <label htmlFor="badge" className="block mb-1">Badge</label>
+      <input
+        id="badge"
+        name="badge"
+        type="text"
+        placeholder="badge"
+        className="w-full p-2 border border-gray-300 rounded shadow-sm"
+        value={profile.badge}
         onChange={handleChange}
       />
 
