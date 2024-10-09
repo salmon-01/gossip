@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { HiOutlineMicrophone, HiOutlineTrash } from 'react-icons/hi2';
+import { HiOutlineMicrophone } from 'react-icons/hi2';
 import { FaStop } from 'react-icons/fa';
 
 interface AudioDevice {
@@ -146,11 +146,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
     }
   };
 
-  // Handle delete audio
-  const handleDeleteAudio = () => {
-    setSavedAudios((prev) => prev.filter((_, itemIndex) => itemIndex !== 0));
-  };
-
   // Check permissions on mount
   useEffect(() => {
     navigator.permissions
@@ -208,9 +203,8 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             <p className="text-sm font-medium">User declined permission</p>
           </div>
         )}
-        {/* Display elapsed time */}
         {isRecording && (
-          <div className="font-sans text-2xl font-semibold text-gray-700">
+          <div className="font-sans text-2xl text-gray-700">
             {elapsedTimeRef.current}
           </div>
         )}
@@ -229,7 +223,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             className="mt-4 rounded-full bg-red-600 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
             onClick={handleClickStopRecord}
           >
-            {/* Stop */}
             <FaStop className="h-6 w-6" />
           </button>
         )}
@@ -241,29 +234,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
           >
             Request permission
           </button>
-        )}
-        {microphonePermissionState === 'granted' && (
-          <div className="mt-8 flex space-x-8">
-            {/* Audio Section */}
-            {savedAudios.length > 0 && (
-              <div className="w-1/2 space-y-4">
-                <div className="flex items-center gap-8 gap-x-4">
-                  <svg
-                    className="h-10 w-10 cursor-pointer text-red-500"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 448 512"
-                    onClick={() => handleDeleteAudio()}
-                  >
-                    <path d="M135.2 17.7 128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339c1.6 25.3 22.6 45 47.9 45h245.8c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
-                  </svg>
-                  <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">{`Delete`}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
         )}
       </div>
     </div>

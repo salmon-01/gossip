@@ -108,14 +108,16 @@ export default function CreatePost() {
             )}
           </div>
         </div>
-        <div className="mt-2 flex justify-center">
-          <button
-            type="submit"
-            className="rounded-xl bg-purple-400 px-4 py-1 text-white"
-          >
-            Post
-          </button>
-        </div>
+        {audioBlob && (
+          <div className="mt-2 flex justify-center">
+            <button
+              type="submit"
+              className="rounded-full bg-purple-800 px-6 py-2 text-white"
+            >
+              Post
+            </button>
+          </div>
+        )}
       </form>
     </>
   );
