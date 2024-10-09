@@ -92,16 +92,13 @@ const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
     <button
       onClick={handleClick}
       disabled={isLoading}
-      style={{
-        padding: '8px 16px',
-        minWidth: '100px',
-        backgroundColor: isFollowing ? '#ffffff' : '#0070f3',
-        color: isFollowing ? '#000000' : '#ffffff',
-        border: isFollowing ? '1px solid #000000' : 'none',
-        borderRadius: '4px',
-      }}
+      className={`min-w-[100px] rounded px-4 py-2 ${
+        isFollowing
+          ? 'border border-black bg-white text-black'
+          : 'bg-blue-500 text-white'
+      } ${isLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
     >
-      {isFollowing ? 'Unfollow' : 'Follow'}
+      {isLoading ? 'Loading...' : isFollowing ? 'Unfollow' : 'Follow'}
     </button>
   );
 };
