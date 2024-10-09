@@ -112,7 +112,7 @@ export default function ProfilePage({ params }) {
   return (
     <>
       <ProfileHeader user={profileData} loggedInUser={loggedInUsername} />
-      <FollowButton userId={user} targetUserId={profileData.user_id} />
+      {/* <FollowButton userId={user} targetUserId={profileData.user_id} /> */}
       <ProfileStats />
       <ProfileContent />
     </>

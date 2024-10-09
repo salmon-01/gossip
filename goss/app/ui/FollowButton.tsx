@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchFollowStatus, updateFollowStatus } from '../api/updateFollow';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import toast from 'react-hot-toast';
+import { debounce } from 'lodash'; // Import Lodash debounce
 
 interface FollowButtonProps {
   userId: string;
@@ -17,7 +18,7 @@ const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
   const queryClient = useQueryClient();
 
   // Fetch initial follow status
-  const { data: followStatus } = useQuery({
+  const { data: followStatus, isLoading: isFetchingStatus } = useQuery({
     queryKey: ['followStatus', userId, targetUserId],
     queryFn: () => fetchFollowStatus(userId, targetUserId),
   });
@@ -77,9 +78,20 @@ const FollowButton = ({ userId, targetUserId }: FollowButtonProps) => {
 
   const isFollowing = followStatus?.status === 'active';
 
+  const isLoading = followMutation.isPending || isFetchingStatus;
+
+  // Prevent button clicks more than once a second
+  const handleClick = useCallback(
+    debounce(() => {
+      followMutation.mutate();
+    }, 1000),
+    [followMutation]
+  );
+
   return (
     <button
-      onClick={() => followMutation.mutate()}
+      onClick={handleClick}
+      disabled={isLoading}
       style={{
         padding: '8px 16px',
         minWidth: '100px',
