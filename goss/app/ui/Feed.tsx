@@ -34,7 +34,7 @@ export default function Feed () {
 
   return (
     <>
-    <div className='flex text-xs text-purple-500 fixed bg-gray-100 w-full top-0 pt-4 pb-2 z-40 items-center'>
+    <div className='flex text-xs text-purple-500 fixed bg-gray-100 w-full left-0 top-0 pl-4 pt-4 pb-2 z-40 items-center'>
       <div>
         Sort:
       </div>
