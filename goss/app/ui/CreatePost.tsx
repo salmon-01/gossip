@@ -1,7 +1,7 @@
 'use client';
 
 import { useSessionContext } from '@/app/context/SessionContext';
-
+import { FaTrash } from 'react-icons/fa';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
@@ -91,13 +91,6 @@ export default function CreatePost() {
             />
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
-          <div className="">
-            {audioBlob && (
-              <button type="button" onClick={handleDeleteAudioNote}>
-                Delete
-              </button>
-            )}
-          </div>
           <div className="mt-3 flex w-full items-center justify-center">
             {audioBlob && (
               <audio
@@ -105,6 +98,18 @@ export default function CreatePost() {
                 controls
                 src={URL.createObjectURL(audioBlob)}
               ></audio>
+            )}
+          </div>
+          <div className="mb-3 mt-6 flex w-full items-center justify-center">
+            {audioBlob && (
+              <button
+                type="button"
+                className="flex items-center rounded-full bg-red-600 px-4 py-2 text-lg text-white"
+                onClick={handleDeleteAudioNote}
+              >
+                <FaTrash className="mr-2" />
+                Delete
+              </button>
             )}
           </div>
         </div>
