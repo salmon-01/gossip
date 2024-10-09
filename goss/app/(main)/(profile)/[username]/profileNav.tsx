@@ -2,26 +2,31 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { useSessionContext } from '@/app/context/SessionContext';
 
 
-export default function ProfileNav({ activeTab, setActiveTab }) {
+export default function ProfileNav({username} ) {
+ 
+  // const {data:session} = useSessionContext();
+  // const username = session?.profile.username
+  // console.log(username)
   return (
     <nav className=' flex w-full justify-evenly mt-4 border-b '>
-      <button
-        onClick={() => setActiveTab('posts')}
-        className={activeTab === 'posts' ? 'border-b-4 border-purple-700 ' : ''}>
+      <Link 
+      href={`/${username}`}
+      >
         Posts
-      </button>
-      <button
-        onClick={() => setActiveTab('reactions')}
-        className={activeTab === 'reactions' ? 'border-b-4 border-purple-700' : ''}>
+      </Link>
+      <Link 
+      href={`/${username}/reactions`}
+      >
         Reactions
-      </button>
-      <button
-        onClick={() => setActiveTab('comments')}
-        className={activeTab === 'comments' ? 'border-b-4 border-purple-700' : ''}>
+      </Link>
+      <Link 
+      href={`/${username}/comments`}
+      >
         Comments
-      </button>
+      </Link>
     </nav>
   )
 }
