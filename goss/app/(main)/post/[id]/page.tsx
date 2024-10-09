@@ -1,7 +1,7 @@
 'use client';
 
 import { createClient } from '@/utils/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import moment from 'moment';
 import Reactions from '@/app/ui/Reactions';
@@ -11,9 +11,15 @@ import VoiceNote from '@/app/ui/VoiceNote';
 
 const supabase = createClient();
 
+interface NewComment {
+  post_id: string;
+  content: string;
+}
+
 export default function PostPage() {
   const params = useParams();
   const postId = params.id;
+  const queryClient = useQueryClient();
 
   const {
     data: postData,
@@ -31,6 +37,37 @@ export default function PostPage() {
 
       if (error) throw error;
       return data;
+    },
+  });
+
+  const { data: comments, isLoading: isLoadingComments } = useQuery({
+    queryKey: ['comments', postId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('comments')
+        .select('*, profiles!user_id(*)')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const addCommentMutation = useMutation({
+    mutationFn: async (newComment: NewComment) => {
+      const { data, error } = await supabase
+        .from('comments')
+        .insert([newComment])
+        .select('*, profiles!user_id(*)');
+
+      if (error) throw error;
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+      });
     },
   });
 
@@ -66,8 +103,12 @@ export default function PostPage() {
           <Reactions postId={postId} />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
-        <AddComment />
-        <CommentSection />
+        <AddComment
+          onAddComment={(content: string) =>
+            addCommentMutation.mutate({ post_id: postId as string, content })
+          }
+        />
+        <CommentSection comments={comments || []} />
       </div>
     </div>
   );
