@@ -2,7 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function ProfileHeader({ user, loggedInUser }) {
-
+   // console.log("Logged-in user:", loggedInUser.username);
+  // console.log("Viewing user:", user.username);
   const loggedInUsername = loggedInUser ? loggedInUser.username : null;
   return (
     <>
