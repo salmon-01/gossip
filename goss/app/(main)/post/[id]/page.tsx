@@ -48,7 +48,7 @@ export default function PostPage() {
         .from('comments')
         .select('*, profiles!user_id(*)')
         .eq('post_id', postId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
       return data;
