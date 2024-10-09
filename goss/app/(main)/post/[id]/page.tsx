@@ -10,6 +10,11 @@ import CommentSection from '@/app/ui/CommentSection';
 
 const supabase = createClient();
 
+interface NewComment {
+  post_id: string;
+  content: string;
+}
+
 export default function PostPage() {
   const params = useParams();
   const postId = params.id;
@@ -49,7 +54,7 @@ export default function PostPage() {
   });
 
   const addCommentMutation = useMutation({
-    mutationFn: async (newComment) => {
+    mutationFn: async (newComment: NewComment) => {
       const { data, error } = await supabase
         .from('comments')
         .insert([newComment])
@@ -59,7 +64,9 @@ export default function PostPage() {
       return data[0];
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', postId]);
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+      });
     },
   });
 
@@ -96,11 +103,11 @@ export default function PostPage() {
         <Reactions />
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
         <AddComment
-          onAddComment={(content) =>
-            addCommentMutation.mutate({ post_id: postId, content })
+          onAddComment={(content: string) =>
+            addCommentMutation.mutate({ post_id: postId as string, content })
           }
         />
-        <CommentSection comments={comments} isLoading={isLoadingComments} />
+        <CommentSection comments={comments} />
       </div>
     </div>
   );

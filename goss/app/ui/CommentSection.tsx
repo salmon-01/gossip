@@ -1,13 +1,15 @@
 import { useSessionContext } from '@/app/context/SessionContext';
 import moment from 'moment';
 
-export default function CommentSection({ comments, isLoading }) {
-  if (isLoading) return <p>Loading comments...</p>;
+export default function CommentSection({ comments }) {
+  // if (isLoading) return <p>Loading comments...</p>;
 
-  const { data: session, error } = useSessionContext();
+  const { data: session, isLoading, error } = useSessionContext();
   const user = session?.profile;
 
-  console.log(comments);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!session) return <div>Not logged in</div>;
 
   console.log(user);
 
@@ -18,11 +20,27 @@ export default function CommentSection({ comments, isLoading }) {
         comments.map((comment) => (
           <div key={comment.id} className="mb-4 rounded bg-gray-100 p-3">
             <div className="mb-2 flex items-center">
-              <img
-                src={user.profile_img}
-                alt={`${user.display_name}'s profile`}
-                className="mr-2 h-8 w-8 rounded-full"
-              />
+              {user.profile_img ? (
+                <img
+                  src={user.profile_img}
+                  alt={`${user.display_name}'s profile`}
+                  className="mr-2 h-8 w-8 rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.src = ''; // If image fails, clear it to show initials
+                    e.currentTarget.style.display = 'none'; // Hide the broken image
+                  }}
+                />
+              ) : (
+                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white">
+                  {user.display_name
+                    ? user.display_name
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .substring(0, 2)
+                    : '??'}
+                </div>
+              )}
               <div>
                 <p className="font-semibold">{user.display_name}</p>
                 <p className="text-xs text-gray-500">
