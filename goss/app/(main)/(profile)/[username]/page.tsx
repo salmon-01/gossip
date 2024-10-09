@@ -6,6 +6,8 @@ import { createClient } from '@/utils/supabase/client';
 import ProfileHeader from './ProfileHeader';
 import ProfileStats from './ProfileStats';
 import ProfileContent from './ProfileContent';
+import FollowButton from '@/app/ui/FollowButton';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 // Client-side data fetching functions
 const fetchUserSession = async () => {
@@ -43,6 +45,8 @@ const fetchProfileData = async (username) => {
 // };
 
 export default function ProfilePage({ params }) {
+  const { data: session, isLoading, error } = useSessionContext();
+  const user = session?.user.id;
   const { username } = params;
 
   // Query for logged-in user
@@ -68,22 +72,21 @@ export default function ProfilePage({ params }) {
     enabled: !!username, // Only run query if username is available
   });
 
-
-//     // Query for posts by the logged-in user
-//     const {
-//       data: postsData,
-//       isLoading: isLoadingPosts,
-//       error: postsError,
-//     } = useQuery({
-//       queryKey: ['posts', profileData?.user_id],
-//       queryFn: () => fetchUserPosts(profileData?.user_id),
-//       enabled: !!profileData?.user_id, // Only run query if user_id is available
-//     });
-// console.log(postsData)
-//   // Loading states
-//   if (isLoadingUser || isLoadingProfile) {
-//     return <div>Loading...</div>;
-//   }
+  //     // Query for posts by the logged-in user
+  //     const {
+  //       data: postsData,
+  //       isLoading: isLoadingPosts,
+  //       error: postsError,
+  //     } = useQuery({
+  //       queryKey: ['posts', profileData?.user_id],
+  //       queryFn: () => fetchUserPosts(profileData?.user_id),
+  //       enabled: !!profileData?.user_id, // Only run query if user_id is available
+  //     });
+  // console.log(postsData)
+  //   // Loading states
+  //   if (isLoadingUser || isLoadingProfile) {
+  //     return <div>Loading...</div>;
+  //   }
 
   // Error states
   if (userError) {
@@ -109,6 +112,7 @@ export default function ProfilePage({ params }) {
   return (
     <>
       <ProfileHeader user={profileData} loggedInUser={loggedInUsername} />
+      <FollowButton userId={user} targetUserId={profileData.user_id} />
       <ProfileStats />
       <ProfileContent />
     </>
