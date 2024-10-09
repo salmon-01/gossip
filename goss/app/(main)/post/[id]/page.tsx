@@ -8,6 +8,7 @@ import Reactions from '@/app/ui/Reactions';
 import AddComment from '@/app/ui/AddComment';
 import CommentSection from '@/app/ui/CommentSection';
 import VoiceNote from '@/app/ui/VoiceNote';
+import toast from 'react-hot-toast';
 
 const supabase = createClient();
 
@@ -47,7 +48,7 @@ export default function PostPage() {
         .from('comments')
         .select('*, profiles!user_id(*)')
         .eq('post_id', postId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
       return data;
@@ -68,6 +69,24 @@ export default function PostPage() {
       queryClient.invalidateQueries({
         queryKey: ['comments', postId],
       });
+    },
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async (commentId: string) => {
+      const { error } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      // Invalidate the 'comments' query to refetch the latest data
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+      });
+      toast.error('Comment deleted');
     },
   });
 
@@ -99,7 +118,7 @@ export default function PostPage() {
           </div>
         </div>
         <VoiceNote audioUrl={postData.audio} />
-        <div className='mt-4'>
+        <div className="mt-4">
           <Reactions postId={postId} />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
@@ -108,7 +127,13 @@ export default function PostPage() {
             addCommentMutation.mutate({ post_id: postId as string, content })
           }
         />
-        <CommentSection comments={comments || []} />
+        {/* <CommentSection comments={comments || []} /> */}
+        <CommentSection
+          comments={comments || []}
+          onDeleteComment={(commentId: string) =>
+            deleteCommentMutation.mutate(commentId)
+          }
+        />
       </div>
     </div>
   );
