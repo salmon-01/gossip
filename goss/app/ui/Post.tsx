@@ -6,7 +6,6 @@ import moment from 'moment';
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
 
-
 interface PostProps {
   user: User;
   post: Post;
@@ -50,19 +49,19 @@ export default function PostComponent({ user, post }: PostProps) {
       <div className="mt-2 flex w-full flex-col rounded-md bg-gray-200 px-2 pb-4 pt-2">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
-              <img
-                src={user.profile_img}
-                alt="Profile picture"
-                className="mr-3 h-6 w-6 rounded-full bg-black shadow-md"
-              />
-              <div className="items-center font-bold">{user.display_name}</div>
-              <div className="mx-2 items-center text-xs text-gray-600">
-                @{user.username}
-              </div>
-              <div className="ml-auto flex items-center space-x-2">
-                <HiOutlineHandThumbUp size={20} />
-                <HiOutlineHandThumbDown size={20} />
-              </div>
+            <img
+              src={user.profile_img}
+              alt="Profile picture"
+              className="mr-3 h-6 w-6 rounded-full bg-black shadow-md"
+            />
+            <div className="items-center font-bold">{user.display_name}</div>
+            <div className="mx-2 items-center text-xs text-gray-600">
+              @{user.username}
+            </div>
+            <div className="ml-auto flex items-center space-x-2">
+              <HiOutlineHandThumbUp size={20} />
+              <HiOutlineHandThumbDown size={20} />
+            </div>
           </div>
         </Link>
         <Link href={`/${user.username}`}>
