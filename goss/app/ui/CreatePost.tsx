@@ -90,7 +90,7 @@ export default function CreatePost() {
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} />
+          <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
           <div className="">
             {audioBlob && (
               <button type="button" onClick={handleDeleteAudioNote}>

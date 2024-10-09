@@ -11,9 +11,13 @@ interface AudioDevice {
 
 interface AudioRecorderProps {
   onAudioSave: (audioBlob: Blob) => void;
+  audioBlob: Blob | null;
 }
 
-const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
+const AudioRecorder: React.FC<AudioRecorderProps> = ({
+  onAudioSave,
+  audioBlob,
+}) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [microphonePermissionState, setMicrophonePermissionState] = useState<
     'granted' | 'prompt' | 'denied'
@@ -208,15 +212,17 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onAudioSave }) => {
             {elapsedTimeRef.current}
           </div>
         )}
-        {microphonePermissionState === 'granted' && !isRecording && (
-          <button
-            type="button"
-            className="mt-14 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
-            onClick={handleClickStartRecord}
-          >
-            Record
-          </button>
-        )}
+        {microphonePermissionState === 'granted' &&
+          !isRecording &&
+          !audioBlob && (
+            <button
+              type="button"
+              className="mt-14 w-full rounded-md bg-red-600 px-2.5 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+              onClick={handleClickStartRecord}
+            >
+              Record
+            </button>
+          )}
         {microphonePermissionState === 'granted' && isRecording && (
           <button
             type="button"
