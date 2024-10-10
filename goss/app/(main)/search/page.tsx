@@ -1,6 +1,7 @@
 'use client';
 
 import { useSessionContext } from '@/app/context/SessionContext';
+import ProfileCard from '@/app/ui/ProfileCard';
 
 export default function TestQuery() {
   const { data: session, isLoading, error } = useSessionContext();
@@ -21,8 +22,9 @@ export default function TestQuery() {
         alt={session.profile.username}
         className="h-10 w-10 rounded-full"
       /> */}
-      <span className="font-semibold">{user.username}</span>
-      <img src={user.profile_img} />
+      {/* <span className="font-semibold">{user.username}</span> */}
+      <ProfileCard user={user} />
+      {/* <img src={user.profile_img} /> */}
     </div>
   );
 }
