@@ -16,9 +16,10 @@ interface Reaction {
 
 interface ReactionsProps {
   postId: string;
+  postAuthorId: string;
 }
 
-const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
+const Reactions: React.FC<ReactionsProps> = ({ postId, postAuthorId }) => {
   const { data: session } = useSessionContext();
   const queryClient = useQueryClient();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -52,7 +53,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
 
   const addReactionMutation = useMutation({
     mutationFn: (reaction: string) =>
-      addReaction(postId, session!.user.id, reaction),
+      addReaction(postId, session!.user.id, reaction, postAuthorId),
     onSuccess: () => {
       queryClient.invalidateQueries(['reactions', postId]);
     },
@@ -82,7 +83,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
         <button
           key={reaction.reaction}
           onClick={() => handleToggleReaction(reaction.reaction)}
-          className={`flex items-center rounded-xl px-2 py-1 ${
+          className={`flex items-center rounded-xl bg-gray-300 px-2 py-1 ${
             reaction.userHasReacted ? 'bg-purple-600 text-white' : 'bg-gray-200'
           }`}
         >
