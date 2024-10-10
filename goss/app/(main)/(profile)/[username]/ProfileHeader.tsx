@@ -3,8 +3,6 @@ import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 
 export default function ProfileHeader({ user, loggedInUser }) {
-  console.log('Logged-in user:', loggedInUser);
-  console.log('Viewing user:', user);
   const loggedInUsername = loggedInUser ? loggedInUser.username : null;
   const loggedInUserId = loggedInUser ? loggedInUser.user_id : null;
   return (

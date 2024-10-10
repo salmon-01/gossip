@@ -1,10 +1,11 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
+import { MdOutlineCancel } from "react-icons/md";
+import { ImUserPlus } from "react-icons/im";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
@@ -14,13 +15,13 @@ export default function ProfilePage() {
   });
 
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(""); // For image preview
 
   const supabase = createClient();
   const router = useRouter(); // Use Next.js router
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
-  //console.log(session)
 
   useEffect(() => {
     if (session) {
@@ -32,7 +33,6 @@ export default function ProfilePage() {
     }
   }, [session]);
 
-  // Handle input change for name and bio
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -42,19 +42,23 @@ export default function ProfilePage() {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]); // Store the selected file in state
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+
+    if (selectedFile) {
+      const objectUrl = URL.createObjectURL(selectedFile);
+      setPreview(objectUrl); // Set preview to the selected image's URL
+    }
   };
 
-  // Handle form submission and profile update
   const updateProfile = async (e) => {
     e.preventDefault();
 
     let profileImageUrl = null;
 
     if (file) {
-      // Upload file to Supabase Storage
       const { data: storageData, error: storageError } = await supabase.storage
-        .from('avatars') // Your Supabase storage bucket
+        .from('avatars')
         .upload(`${file.name}`, file);
 
       if (storageError) {
@@ -62,9 +66,8 @@ export default function ProfilePage() {
         return;
       }
 
-      // Get the public URL of the uploaded file
       const { data: publicURL, error: urlError } = supabase.storage
-        .from('avatars') // Same bucket
+        .from('avatars')
         .getPublicUrl(`${file.name}`);
 
       if (urlError) {
@@ -72,10 +75,8 @@ export default function ProfilePage() {
         return;
       }
 
-
-      profileImageUrl = publicURL; // Save the file URL
+      profileImageUrl = publicURL;
     }
-
 
     const { data, error } = await supabase
       .from('profiles')
@@ -85,7 +86,7 @@ export default function ProfilePage() {
         badge: profile.badge,
         profile_img: profileImageUrl?.publicUrl,
       })
-      .eq('username', username); // Use the user's ID from authentication
+      .eq('username', username);
 
     if (error) {
       console.error('Error updating profile:', error);
@@ -95,11 +96,9 @@ export default function ProfilePage() {
     }
   };
 
-  // Handle the cancel button
   const handleCancel = () => {
     if (username) {
       router.push(`/${username}`);
-
     } else {
       console.error('No username found');
     }
@@ -110,22 +109,35 @@ export default function ProfilePage() {
       <button
         type="button"
         onClick={handleCancel}
-        className="font-bold p-2 text-xl"
+        className="font-bold p-1 text-3xl"
       >
-        X
+        <MdOutlineCancel />
       </button>
 
+      <h2 className="text-2xl font-bold mb-3 px-4 text-center">Edit Profile</h2>
 
-      <h2 className="text-xl font-bold mb-3 inline-block">Edit Profile</h2>
-
-      <label htmlFor="profile_img" className="block mb-1">Profile image</label>
-      <input
-        id="profile_img"
-        name="profile_img"
-        type="file"
-        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm"
-        onChange={handleFileChange}
-      />
+      <div className="relative w-28 h-28 mb-4">
+        <label htmlFor="file_input">
+          <div className="cursor-pointer relative w-full h-full rounded-full border border-gray-300 overflow-hidden bg-gray-200 flex items-center justify-center">
+            {preview ? (
+              <img
+                src={preview}
+                alt="Profile Preview"
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              <span className="text-gray-500 text-6xl"><ImUserPlus /></span>
+            )}
+          </div>
+        </label>
+        <input
+          id="file_input"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+      </div>
 
       <label htmlFor="name" className="block mb-1">Name</label>
       <input
@@ -137,12 +149,13 @@ export default function ProfilePage() {
         value={profile.name}
         onChange={handleChange}
       />
+
       <label htmlFor="badge" className="block mb-1">Badge</label>
       <input
         id="badge"
         name="badge"
         type="text"
-        placeholder="badge"
+        placeholder="Badge"
         className="w-full p-2 border border-gray-300 rounded shadow-sm"
         value={profile.badge}
         onChange={handleChange}
@@ -157,19 +170,14 @@ export default function ProfilePage() {
         rows={4}
         value={profile.bio}
         onChange={handleChange}
-      ></textarea>
+      />
 
       <button
         type="submit"
-        className="mt-2 bg-blue-500 text-white p-2 rounded"
+        className="mt-2 bg-purple-500 text-white p-2 rounded"
       >
         Update Profile
       </button>
-
-
     </form>
   );
 }
-
-
-

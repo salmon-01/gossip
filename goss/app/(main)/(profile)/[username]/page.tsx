@@ -49,7 +49,7 @@ export default function ProfilePost({ params }) {
     isLoading: isLoadingPost,
     error: postError,
   } = useQuery({
-    queryKey: ['postData'],
+    queryKey: ['postData', user_id],
     queryFn: () => fetchpostData(user_id),
     enabled: !!user_id, // Only run query if user_id is available
   });
