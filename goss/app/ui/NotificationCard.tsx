@@ -20,7 +20,7 @@ const NotificationCard: React.FC<NotificationProps> = ({
     if (notification.type === 'new_comment') {
       return `commented: "${notification.context}"`;
     }
-    if (notification.type === 'follow_request') {
+    if (notification.type === 'follow') {
       return `requested to follow you.`;
     }
     if (notification.type === 'like') {

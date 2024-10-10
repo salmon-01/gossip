@@ -40,6 +40,18 @@ export const updateFollowStatus = async (
 
     if (error) throw error;
 
+    const newStatus = data.new_status;
+    const isFollowing = newStatus === 'active';
+
+    // If the new status is following, send a notification
+    if (isFollowing) {
+      const { error: notificationError } = await supabase
+        .from('notifications')
+        .insert([{ user_id: targetUserID, sender_id: userID, type: 'follow' }])
+        .select();
+
+      if (notificationError) throw notificationError;
+    }
     return {
       status: data.new_status,
       success: true,
@@ -49,7 +61,10 @@ export const updateFollowStatus = async (
           : 'You have unfollowed this user.',
     };
   } catch (error) {
-    console.error('Error toggling follow status:', error);
+    console.error(
+      'Error toggling follow status or adding notification:',
+      error
+    );
     return {
       status: 'inactive',
       success: false,
