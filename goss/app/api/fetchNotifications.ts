@@ -24,6 +24,7 @@ export const fetchNotifications = async (userId: number) => {
     )
   `
     )
+    .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
   if (error) {
