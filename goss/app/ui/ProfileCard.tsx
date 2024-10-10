@@ -10,7 +10,7 @@ const ProfileCard = ({ user }) => {
   };
 
   return (
-    <div className="mb-4 flex items-center">
+    <div className="m-4 flex items-center justify-between">
       <div className="flex items-center">
         <img
           src={user.profile_img}
@@ -21,12 +21,12 @@ const ProfileCard = ({ user }) => {
           <p className="font-semibold">{user.display_name}</p>
           <p className="text-gray-500">@{user.username}</p>
         </div>
-        <div className="ml-16 rounded-full bg-blue-500 px-3 py-1 text-white">
+      </div>
+        <div className="rounded-full bg-blue-500 px-3 py-1 text-white">
           <button onClick={handleFollowToggle}>
             {isFollowing ? 'Followed' : 'Follow'}
           </button>
         </div>
-      </div>
     </div>
   );
 };
