@@ -9,6 +9,14 @@ import AddComment from '@/app/ui/AddComment';
 import CommentSection from '@/app/ui/CommentSection';
 import VoiceNote from '@/app/ui/VoiceNote';
 import toast from 'react-hot-toast';
+import {
+  fetchPostById,
+  fetchCommentsByPostId,
+  addComment,
+  fetchPostOwner,
+  createNotification,
+  deleteCommentById,
+} from '@/app/api/posts';
 
 const supabase = createClient();
 
@@ -29,52 +37,16 @@ export default function PostPage() {
     error,
   } = useQuery({
     queryKey: ['post', postId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*, profiles!user_id(*)')
-        .eq('id', postId)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => fetchPostById(postId as string),
   });
 
   const { data: comments, isLoading: isLoadingComments } = useQuery({
     queryKey: ['comments', postId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('comments')
-        .select('*, profiles!user_id(*)')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => fetchCommentsByPostId(postId as string),
   });
 
-  // const addCommentMutation = useMutation({
-  //   mutationFn: async (newComment: NewComment) => {
-  //     const { data, error } = await supabase
-  //       .from('comments')
-  //       .insert([newComment])
-  //       .select('*, profiles!user_id(*)');
-
-  //     if (error) throw error;
-  //     return data[0];
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: ['comments', postId],
-  //     });
-  //   },
-  // });
-
-  // ? Notifs experiment
   const addCommentMutation = useMutation({
-    mutationFn: async (newComment: NewComment) => {
+    mutationFn: async (newComment: { post_id: string; content: string }) => {
       const { data: userData, error: userError } =
         await supabase.auth.getUser();
       if (userError) throw userError;
@@ -82,48 +54,19 @@ export default function PostPage() {
       const userId = userData.user?.id;
       if (!userId) throw new Error('User not authenticated');
 
-      // Insert the new comment
-      const { data: commentData, error: commentError } = await supabase
-        .from('comments')
-        .insert([{ ...newComment, user_id: userId }])
-        .select('*, profiles!user_id(*)')
-        .single();
+      const commentData = await addComment(newComment, userId);
 
-      if (commentError) throw commentError;
+      const postData = await fetchPostOwner(newComment.post_id);
 
-      // Get the post owner's user ID
-      const { data: postData, error: postError } = await supabase
-        .from('posts')
-        .select('user_id')
-        .eq('id', newComment.post_id)
-        .single();
-
-      if (postError) throw postError;
-
-      // Create a notification if the commenter is not the post owner
       if (postData.user_id !== userId) {
-        const { error: notificationError } = await supabase
-          .from('notifications')
-          .insert([
-            {
-              user_id: postData.user_id,
-              sender_id: userId,
-              type: 'new_comment',
-              context: newComment.content,
-            },
-          ]);
-
-        if (notificationError) throw notificationError;
+        await createNotification(postData.user_id, userId, newComment.content);
       }
 
-      console.log(commentData);
       return commentData;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-      });
+      queryClient.invalidateQueries({ queryKey: ['comments', postId] });
       toast.success('Comment added');
     },
 
@@ -135,18 +78,10 @@ export default function PostPage() {
 
   const deleteCommentMutation = useMutation({
     mutationFn: async (commentId: string) => {
-      const { error } = await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId);
-
-      if (error) throw error;
+      await deleteCommentById(commentId);
     },
     onSuccess: () => {
-      // Invalidate the 'comments' query to refetch the latest data
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-      });
+      queryClient.invalidateQueries({ queryKey: ['comments', postId] });
       toast.error('Comment deleted');
     },
   });
@@ -188,7 +123,6 @@ export default function PostPage() {
             addCommentMutation.mutate({ post_id: postId as string, content })
           }
         />
-        {/* <CommentSection comments={comments || []} /> */}
         <CommentSection
           comments={comments || []}
           onDeleteComment={(commentId: string) =>
