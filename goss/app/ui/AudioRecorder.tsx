@@ -33,28 +33,23 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const recordedChunks = useRef<any[]>([]);
   const mediaRecorder = useRef<any>(null);
 
-  // ? Timer experiment
   const [, setDummy] = useState<number>(0); // State to force re-render
-  const startTimeRef = useRef<number | null>(null); // Start time ref
-  const intervalRef = useRef<number | null>(null); // Interval ref
-  const elapsedTimeRef = useRef<string>('00:00'); // Ref to store elapsed time string
+  const startTimeRef = useRef<number | null>(null);
+  const intervalRef = useRef<number | null>(null);
+  const elapsedTimeRef = useRef<string>('00:00');
 
-  // ? Timer experiment
   const formatTime = (elapsedSeconds: number) => {
     const mins = Math.floor(elapsedSeconds / 60);
     const secs = elapsedSeconds % 60;
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  // Handle on click start recording
   const handleClickStartRecord = () => {
     if (selectedAudioDevice) {
       setIsRecording(true);
-      recordedChunks.current = []; // Reset recorded chunks
-
-      // ? Timer experiment
-      startTimeRef.current = Date.now(); // Set start time
-      elapsedTimeRef.current = '00:00'; // Reset elapsed time
+      recordedChunks.current = [];
+      startTimeRef.current = Date.now();
+      elapsedTimeRef.current = '00:00';
 
       intervalRef.current = window.setInterval(() => {
         const now = Date.now();
@@ -62,7 +57,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
           (now - (startTimeRef.current || 0)) / 1000
         );
         elapsedTimeRef.current = formatTime(elapsedSeconds);
-        setDummy((prev) => prev + 1); // Force re-render by updating dummy state
+        setDummy((prev) => prev + 1);
       }, 1000);
 
       const audio =
@@ -102,14 +97,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       });
     }
 
-    // ? Timer experiment
     if (intervalRef.current) {
-      clearInterval(intervalRef.current); // Clear interval when recording stops
+      clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
   };
 
-  // Get available audio devices
   const getAvailableAudioDevices = (): Promise<AudioDevice[]> => {
     return new Promise<AudioDevice[]>((resolve) => {
       navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -123,7 +116,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
     });
   };
 
-  // Handle request permission
   const handleRequestPermission = () => {
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: false })
@@ -134,7 +126,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       });
   };
 
-  // Handle permission state
   const handlePermissionState = (state: 'granted' | 'prompt' | 'denied') => {
     setMicrophonePermissionState(state);
     if (state === 'granted') {
@@ -150,7 +141,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
     }
   };
 
-  // Check permissions on mount
   useEffect(() => {
     navigator.permissions
       .query({ name: 'microphone' as PermissionName })
@@ -168,11 +158,9 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
     <div className="flex items-center justify-center">
       <div className="mt-16 flex flex-col items-center gap-8">
         <div className="relative mb-10 flex items-center justify-center">
-          {/* Outer pulsating circle that's dimmed in colour */}
           <div
             className={`absolute rounded-full ${isRecording ? 'animate-pulse bg-red-300' : ''} h-48 w-48`}
           ></div>
-          {/* Inner circle containing the microphone */}
           <div
             className={`relative ${isRecording ? 'animate-pulse' : ''} rounded-full bg-red-500 p-6`}
           >
