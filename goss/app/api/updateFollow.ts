@@ -47,7 +47,7 @@ export const updateFollowStatus = async (
     if (isFollowing) {
       const { error: notificationError } = await supabase
         .from('notifications')
-        .insert([{ user_id: targetUserID, sender_id: userID, type: 'follow' }])
+        .insert([{ user_id: userID, sender_id: targetUserID, type: 'follow' }])
         .select();
 
       if (notificationError) throw notificationError;
