@@ -9,7 +9,7 @@ export default function ProfileNav({username} ) {
  
 
   return (
-    <nav className=' flex w-full justify-evenly mt-4 border-b '>
+    <nav className=' flex w-full justify-evenly mt-4 border-b sticky bg-gray-100 top-0 py-2 z-10'>
       <Link 
       href={`/${username}`}
       className={pathname === `/${username}` ? 'text-purple-600 font-bold' : 'text-gray-500'}

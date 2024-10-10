@@ -1,14 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
+import { useSessionContext } from '@/app/context/SessionContext';
 
-export default function ProfileHeader({ user, loggedInUser }) {
-  const loggedInUsername = loggedInUser ? loggedInUser.username : null;
-  const loggedInUserId = loggedInUser ? loggedInUser.user_id : null;
+export default function ProfileHeader({ user}) {
+  const { data: session } = useSessionContext();
+  const loggedInUsername = session?.profile.username;
+  const loggedInUserId = session?.profile.user_id 
   return (
     <>
       <div className="mx-auto flex w-11/12 items-center justify-between pt-4">
         <div className="flex items-center">
+          
           <img
             src={user.profile_img}
             className="h-16 w-16 rounded-full bg-black"
@@ -29,7 +32,7 @@ export default function ProfileHeader({ user, loggedInUser }) {
 
       <div className="mx-auto my-3 w-11/12">
         <p className="mx-auto my-3 text-sm text-gray-500">
-          {user.bio} {user.follower_count}
+          {user.bio} 
         </p>
 
         {user.username === loggedInUsername ? (
