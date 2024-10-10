@@ -24,12 +24,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
 
   const availableEmojis = ['😀', '😢', '❤️', '🔥', '👍', '👎', '🎉', '😮'];
 
-  const {
-    data: reactionsData = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: reactionsData = [] } = useQuery({
     queryKey: ['reactions', postId],
     queryFn: async () => {
       const { data, error } = await supabase
