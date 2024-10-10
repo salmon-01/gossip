@@ -119,7 +119,7 @@ export default function PostPage() {
         </div>
         <VoiceNote audioUrl={postData.audio} />
         <div className="mt-4">
-          <Reactions postId={postId} />
+          <Reactions postId={postId} postAuthorId={postData.profiles.user_id} />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
         <AddComment
