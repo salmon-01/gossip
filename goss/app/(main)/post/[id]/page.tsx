@@ -16,14 +16,9 @@ import {
   fetchPostOwner,
   createNotification,
   deleteCommentById,
-} from '@/app/api/posts';
+} from '@/app/api/post';
 
 const supabase = createClient();
-
-interface NewComment {
-  post_id: string;
-  content: string;
-}
 
 export default function PostPage() {
   const params = useParams();
@@ -115,7 +110,10 @@ export default function PostPage() {
         </div>
         <VoiceNote audioUrl={postData.audio} />
         <div className="mt-4">
-          <Reactions postId={postId} postAuthorId={postData.profiles.user_id} />
+          <Reactions
+            postId={postId as string}
+            postAuthorId={postData.profiles.user_id}
+          />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
         <AddComment
