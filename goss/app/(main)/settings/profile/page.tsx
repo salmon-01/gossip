@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
-import { MdOutlineCancel } from "react-icons/md";
-import { ImUserPlus } from "react-icons/im";
+import dynamic from 'next/dynamic';
+
+const MdOutlineCancel = dynamic(() => import('react-icons/md').then((mod) => mod.MdOutlineCancel));
+const ImUserPlus = dynamic(() => import('react-icons/im').then((mod) => mod.ImUserPlus));
+
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({

@@ -8,7 +8,7 @@ import { createClient } from '@/utils/supabase/client';
 
 
 // Function to fetch profile data based on the username
-const fetchProfileData = async (username) => {
+const fetchProfileData = async (username:string) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('profiles')
