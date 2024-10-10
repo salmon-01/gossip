@@ -55,20 +55,81 @@ export default function PostPage() {
     },
   });
 
+  // const addCommentMutation = useMutation({
+  //   mutationFn: async (newComment: NewComment) => {
+  //     const { data, error } = await supabase
+  //       .from('comments')
+  //       .insert([newComment])
+  //       .select('*, profiles!user_id(*)');
+
+  //     if (error) throw error;
+  //     return data[0];
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({
+  //       queryKey: ['comments', postId],
+  //     });
+  //   },
+  // });
+
+  // ? Notifs experiment
   const addCommentMutation = useMutation({
     mutationFn: async (newComment: NewComment) => {
-      const { data, error } = await supabase
-        .from('comments')
-        .insert([newComment])
-        .select('*, profiles!user_id(*)');
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) throw userError;
 
-      if (error) throw error;
-      return data[0];
+      const userId = userData.user?.id;
+      if (!userId) throw new Error('User not authenticated');
+
+      // Insert the new comment
+      const { data: commentData, error: commentError } = await supabase
+        .from('comments')
+        .insert([{ ...newComment, user_id: userId }])
+        .select('*, profiles!user_id(*)')
+        .single();
+
+      if (commentError) throw commentError;
+
+      // Get the post owner's user ID
+      const { data: postData, error: postError } = await supabase
+        .from('posts')
+        .select('user_id')
+        .eq('id', newComment.post_id)
+        .single();
+
+      if (postError) throw postError;
+
+      // Create a notification if the commenter is not the post owner
+      if (postData.user_id !== userId) {
+        const { error: notificationError } = await supabase
+          .from('notifications')
+          .insert([
+            {
+              user_id: postData.user_id,
+              sender_id: userId,
+              type: 'new_comment',
+              context: newComment.content,
+            },
+          ]);
+
+        if (notificationError) throw notificationError;
+      }
+
+      console.log(commentData);
+      return commentData;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['comments', postId],
       });
+      toast.success('Comment added');
+    },
+
+    onError: (error) => {
+      console.error('Error adding comment:', error);
+      toast.error('Failed to add comment');
     },
   });
 
