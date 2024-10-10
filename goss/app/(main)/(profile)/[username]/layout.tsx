@@ -5,21 +5,9 @@ import ProfileNav from './profileNav';
 import ProfileStats from './ProfileStats';
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
+import { fetchProfileData } from '@/app/api/profileData';
 
 
-
-// Function to fetch profile data based on the username
-const fetchProfileData = async (username:string) => {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('username', username)
-    .single();
-
-  if (error) throw error;
-  return data;
-};
 
 // Main ProfileLayout component
 export default function ProfileLayout({ children, params }) {

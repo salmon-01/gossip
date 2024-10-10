@@ -13,7 +13,7 @@ export async function fetchpostData(user_id) {
   return posts;
 }
 
-export async function fetchProfileData(username) {
+export async function fetchProfileData(username:string) {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
