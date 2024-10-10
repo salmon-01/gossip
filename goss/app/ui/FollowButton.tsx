@@ -25,6 +25,7 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
   const { data: followStatus, isLoading: isFetchingStatus } = useQuery({
     queryKey: ['followStatus', userId, targetUserId],
     queryFn: () => fetchFollowStatus(userId, targetUserId),
+    enabled: !!targetUserId,
   });
 
   const followMutation = useMutation({
