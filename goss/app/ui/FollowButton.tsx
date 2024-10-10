@@ -134,7 +134,7 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
         isFollowing ? 'bg-gray-300 text-black' : 'bg-purple-600 text-white'
       } ${isLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
     >
-      {isLoading ? 'Loading...' : isFollowing ? 'Unfollow' : 'Follow'}
+      {isFollowing ? 'Unfollow' : 'Follow'}
     </button>
   );
 };
