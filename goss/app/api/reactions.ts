@@ -5,7 +5,8 @@ const supabase = createClient();
 export const addReaction = async (
   postId: string,
   userId: string,
-  reaction: string
+  reaction: string,
+  postAuthorId: string
 ) => {
   const { error } = await supabase.from('reactions').insert({
     post_id: postId,
@@ -15,6 +16,23 @@ export const addReaction = async (
 
   if (error) {
     throw error;
+  }
+
+  const targetUser = postAuthorId;
+
+  if (userId !== targetUser) {
+    const { error: notificationError } = await supabase
+      .from('notifications')
+      .insert({
+        user_id: targetUser,
+        sender_id: userId,
+        type: 'reaction',
+        context: reaction,
+      });
+
+    if (notificationError) {
+      throw notificationError;
+    }
   }
 };
 
