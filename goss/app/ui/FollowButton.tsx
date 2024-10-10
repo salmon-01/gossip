@@ -3,6 +3,7 @@ import { fetchFollowStatus, updateFollowStatus } from '../api/updateFollow';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { debounce } from 'lodash';
+import { updateProfileCount } from '@/utils/followUtils';
 
 interface User {
   user_id: string;
@@ -52,32 +53,18 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
       );
 
       // Optimistically update follower counts
-      const targetProfile = queryClient.getQueryData<any>([
-        'profile',
-        targetUserId,
-      ]);
-      const currentProfile = queryClient.getQueryData<any>(['profile', userId]);
+      updateProfileCount(
+        queryClient,
+        ['profile', targetUserId],
+        newStatus.status === 'active' ? 1 : -1
+      );
+      updateProfileCount(
+        queryClient,
+        ['profile', userId],
+        newStatus.status === 'active' ? 1 : -1
+      );
 
-      if (targetProfile) {
-        const increment = newStatus.status === 'active' ? 1 : -1;
-        queryClient.setQueryData(['profile', targetUserId], {
-          ...targetProfile,
-          follower_count: Math.max(0, targetProfile.follower_count + increment),
-        });
-      }
-
-      if (currentProfile) {
-        const increment = newStatus.status === 'active' ? 1 : -1;
-        queryClient.setQueryData(['profile', userId], {
-          ...currentProfile,
-          following_total: Math.max(
-            0,
-            currentProfile.following_total + increment
-          ),
-        });
-      }
-
-      return { previousStatus, targetProfile, currentProfile };
+      return { previousStatus };
     },
     onSuccess: (response) => {
       if (response.success) {
@@ -119,7 +106,8 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
   const isFollowing = followStatus?.status === 'active';
   const isLoading = followMutation.isPending || isFetchingStatus;
 
-  const handleClick = useCallback(
+  // Debounced outside of the render to avoid recreating it
+  const debouncedHandleClick = useCallback(
     debounce(() => {
       followMutation.mutate();
     }, 1000),
@@ -128,7 +116,7 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
 
   return (
     <button
-      onClick={handleClick}
+      onClick={debouncedHandleClick}
       disabled={isLoading}
       className={`flex items-center justify-center rounded-lg border border-white px-5 py-3 drop-shadow-2xl ${
         isFollowing ? 'bg-gray-300 text-black' : 'bg-purple-600 text-white'
