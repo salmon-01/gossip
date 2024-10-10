@@ -6,15 +6,17 @@ interface Audio {
   audioUrl: string;
 }
 
-const VoiceNote = ({audioUrl}: Audio) => {
+const VoiceNote = ({ audioUrl }: Audio) => {
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const waveSurferRef = useRef<WaveSurfer | null>(null); // Store WaveSurfer instance
   const [isWaveSurferReady, setWaveSurferReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // Track if the audio is playing
+  const [showWaveSurfer, setShowWaveSurfer] = useState(false); // Track if waveform should be shown
 
-  const initializeWaveSurfer = () => {
-    if (!waveSurferRef.current && waveformRef.current) {
-      // Create and initialize WaveSurfer only if it doesn't already exist
+  // Initialize WaveSurfer after the waveform container is rendered (triggered by showWaveSurfer)
+  useEffect(() => {
+    if (showWaveSurfer && waveformRef.current && !waveSurferRef.current) {
+      // Create and initialize WaveSurfer
       waveSurferRef.current = WaveSurfer.create({
         container: waveformRef.current,
         waveColor: '#9333ea',
@@ -28,41 +30,59 @@ const VoiceNote = ({audioUrl}: Audio) => {
       waveSurferRef.current.load(audioUrl);
 
       // Mark the waveform as ready for playback
-      setWaveSurferReady(true);
+      waveSurferRef.current.on('ready', () => {
+        setWaveSurferReady(true);
+        waveSurferRef.current?.play(); // Automatically start playing after loading
+        setIsPlaying(true);
+      });
 
       waveSurferRef.current.on('finish', () => {
         setIsPlaying(false);
       });
     }
-  };
+  }, [showWaveSurfer, audioUrl]); // Re-run if showWaveSurfer or audioUrl changes
 
-  useEffect(() => {
-    initializeWaveSurfer();
-  }, []);
-
-  const handlePlayPause = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (waveSurferRef.current) {
+  const handlePlayPause = () => {
+    if (!showWaveSurfer) {
+      // Show the waveform and initialize WaveSurfer when the play button is clicked for the first time
+      setShowWaveSurfer(true);
+    } else if (waveSurferRef.current) {
       waveSurferRef.current.playPause(); // Toggle play/pause
       setIsPlaying(!isPlaying); // Update play state
     }
   };
 
+  // Cleanup WaveSurfer instance on component unmount
+  useEffect(() => {
+    return () => {
+      if (waveSurferRef.current) {
+        waveSurferRef.current.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <div className="flex w-full items-center justify-center z-0">
-          {audioUrl ? (
-            <>
-                <button
-                  onClick={handlePlayPause}
-                  className={`rounded-full ${isPlaying? 'bg-purple-400' : 'bg-purple-600'} w-12 h-10 m-2 text-white flex justify-center items-center`}
-                >
-                  {isPlaying ? <HiOutlinePause size={25}/>: <HiOutlinePlay size={25}/>}
-                </button>
-              <div className="w-full" ref={waveformRef}></div>
-            </>
-          ) : (
-            <p>No audio found!</p>
-          )}
-        </div>
+    <div className="z-0 flex w-full items-center justify-center">
+      {audioUrl ? (
+        <>
+          <button
+            onClick={handlePlayPause}
+            className={`rounded-full ${isPlaying ? 'bg-purple-400' : 'bg-purple-600'} m-2 flex h-28 w-28 items-center justify-center text-white`}
+          >
+            {isPlaying ? (
+              <HiOutlinePause size={25} />
+            ) : (
+              <HiOutlinePlay size={25} />
+            )}
+          </button>
+
+          {/* Show waveform only when play button is clicked */}
+          {showWaveSurfer && <div className="w-full" ref={waveformRef}></div>}
+        </>
+      ) : (
+        <p>No audio found!</p>
+      )}
+    </div>
   );
 };
 
