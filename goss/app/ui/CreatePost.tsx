@@ -6,7 +6,7 @@ import { FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -118,12 +118,16 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
           <div className="mt-3 flex w-full items-center justify-center">
-            {audioBlob && (
-              <audio
-                className="mx-1"
-                controls
-                src={URL.createObjectURL(audioBlob)}
-              ></audio>
+            {useMemo(
+              () =>
+                audioBlob && (
+                  <audio
+                    className="mx-1"
+                    controls
+                    src={URL.createObjectURL(audioBlob)}
+                  ></audio>
+                ),
+              [audioBlob]
             )}
           </div>
           <div className="mb-3 mt-6 flex w-full items-center justify-center">
