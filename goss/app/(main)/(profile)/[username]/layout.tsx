@@ -1,10 +1,11 @@
-'use client';
+"use client"
 import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import ProfileNav from './profileNav';
 import ProfileStats from './ProfileStats';
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
+
 
 
 // Function to fetch profile data based on the username
@@ -23,8 +24,6 @@ const fetchProfileData = async (username:string) => {
 // Main ProfileLayout component
 export default function ProfileLayout({ children, params }) {
   const { username } = params;
-
-  // Fetch session data to get the logged-in user's info
  
 
   // Query for profile data based on the username in the URL
