@@ -66,6 +66,8 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
 
       return { previousStatus };
     },
+
+    // On success, send toast and update status
     onSuccess: (response) => {
       if (response.success) {
         const message =
@@ -81,24 +83,15 @@ const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
         toast.error('Failed to update follow status');
       }
     },
+
+    // On error revert to previous status
     onError: (err, variables, context) => {
       toast.error('An error occurred while updating follow status');
-      if (context) {
-        // Revert follow status
+      if (context?.previousStatus) {
         queryClient.setQueryData(
           ['followStatus', userId, targetUserId],
           context.previousStatus
         );
-        // Revert profile counts
-        if (context.targetProfile) {
-          queryClient.setQueryData(
-            ['profile', targetUserId],
-            context.targetProfile
-          );
-        }
-        if (context.currentProfile) {
-          queryClient.setQueryData(['profile', userId], context.currentProfile);
-        }
       }
     },
   });
