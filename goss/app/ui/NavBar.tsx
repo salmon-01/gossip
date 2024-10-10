@@ -10,6 +10,7 @@ import {
 } from 'react-icons/hi2';
 import RecordPost from './RecordPost';
 import { useSessionContext } from '../context/SessionContext';
+import NavItem from './NavItem';
 
 function NavBar() {
   const { data: session } = useSessionContext();
@@ -28,76 +29,48 @@ function NavBar() {
 
       <div className="flex">
         {/* Home */}
-        <Link href="/home" aria-label="Home" className="w-1/4">
-          <div
-            className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-              isActive('/home') ? 'bg-purple-100' : 'bg-gray-100'
-            }`}
-          >
-            <HiOutlineHome
-              color={isActive('/home') ? '#9333ea' : '#7b53bb'}
-              size={32}
-              style={{ strokeWidth: isActive('/home') ? 2.5 : 1 }}
-            />
-          </div>
-        </Link>
-
+        <NavItem
+          href="/home"
+          icon={HiOutlineHome}
+          isActive={isActive('/home')}
+          label="Home"
+        />
         {/* Search */}
-        <Link href="/search" aria-label="Search" className="w-1/4">
-          <div
-            className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-              isActive('/search') ? 'bg-purple-100' : 'bg-gray-100'
-            }`}
-          >
-            <HiOutlineMagnifyingGlass
-              color={isActive('/search') ? '#9333ea' : '#7b53bb'}
-              size={32}
-              style={{ strokeWidth: isActive('/search') ? 2.5 : 1 }}
-            />
-          </div>
-        </Link>
+        <NavItem
+          href="/search"
+          icon={HiOutlineMagnifyingGlass}
+          isActive={isActive('/search')}
+          label="Search"
+        />
 
         {/* Notifications */}
-        <Link
+        <NavItem
           href="/notifications"
-          aria-label="Notifications"
-          className="w-1/4"
-        >
-          <div
-            className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-              isActive('/notifications') ? 'bg-purple-100' : 'bg-gray-100'
-            }`}
-          >
-            <HiOutlineBell
-              color={isActive('/notifications') ? '#9333ea' : '#7b53bb'}
-              size={32}
-              style={{ strokeWidth: isActive('/notifications') ? 2.5 : 1 }}
-            />
-          </div>
-        </Link>
+          icon={HiOutlineBell}
+          isActive={isActive('/notifications')}
+          label="Notifications"
+        />
 
         {/* Profile */}
-        <Link href={`/${username}`} aria-label="Profile" className="w-1/4">
-          <div
-            className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-              isActive(`/${username}`) ? 'bg-purple-100' : 'bg-gray-100'
-            }`}
-          >
-            {session?.profile.profile_img ? (
-              <img
-                src={session?.profile.profile_img}
-                className="h-9 rounded-full"
-                alt={`${username}'s profile`}
-              />
-            ) : (
-              <HiOutlineUser
-                color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
-                size={32}
-                style={{ strokeWidth: isActive(`/${username}`) ? 2.5 : 1 }}
-              />
-            )}
-          </div>
-        </Link>
+        <NavItem
+          href={`/${username}`}
+          isActive={isActive(`/${username}`)}
+          label="Profile"
+        >
+          {session?.profile?.profile_img ? (
+            <img
+              src={session?.profile.profile_img}
+              className="h-9 rounded-full"
+              alt={`${username}'s profile`}
+            />
+          ) : (
+            <HiOutlineUser
+              color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
+              size={32}
+              style={{ strokeWidth: isActive(`/${username}`) ? 2.5 : 1 }}
+            />
+          )}
+        </NavItem>
       </div>
     </nav>
   );

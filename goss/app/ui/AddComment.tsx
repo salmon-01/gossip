@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FaComment } from 'react-icons/fa'; // You can use any icon from react-icons or any other icon library
+import { FaComment } from 'react-icons/fa';
 
 interface AddCommentProps {
-  onAddComment: (content: string) => void; // Define the type for the prop
+  onAddComment: (content: string) => void;
 }
 
 const AddComment: React.FC<AddCommentProps> = ({ onAddComment }) => {
@@ -25,7 +25,7 @@ const AddComment: React.FC<AddCommentProps> = ({ onAddComment }) => {
             onChange={(e) => setComment(e.target.value)}
             type="text"
             placeholder="Comment"
-            className="mb-5 w-full rounded-full p-3 pl-10 pr-20" // Padding left for the icon, right for the button
+            className="mb-5 w-full rounded-full p-3 pl-10 pr-20"
           />
           <FaComment className="absolute left-3 top-1/3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
           <button
