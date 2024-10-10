@@ -21,9 +21,7 @@ export default function CommentSection({
   comments,
   onDeleteComment,
 }: CommentSectionProps) {
-  // if (isLoading) return <p>Loading comments...</p>;
-
-  const [menuOpen, setMenuOpen] = useState<Record<string, boolean>>({}); // Track menu state for each comment
+  const [menuOpen, setMenuOpen] = useState<Record<string, boolean>>({});
 
   const toggleMenu = (id: string) => {
     setMenuOpen((prevState) => ({
@@ -38,8 +36,6 @@ export default function CommentSection({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!session) return <div>Not logged in</div>;
-
-  console.log(comments);
 
   return (
     <div className="mt-4">
@@ -76,8 +72,8 @@ export default function CommentSection({
                   alt={`${user.display_name}'s profile`}
                   className="mr-2 h-8 w-8 rounded-full"
                   onError={(e) => {
-                    e.currentTarget.src = ''; // If image fails, clear it to show initials
-                    e.currentTarget.style.display = 'none'; // Hide the broken image
+                    e.currentTarget.src = '';
+                    e.currentTarget.style.display = 'none';
                   }}
                 />
               ) : (
