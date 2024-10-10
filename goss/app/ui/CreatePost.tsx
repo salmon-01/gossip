@@ -15,11 +15,6 @@ interface CreatePostProps {
 export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
-  const user = session?.profile;
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!session) return <div>Not logged in</div>;
 
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -97,6 +92,25 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     createPostMutation.mutate();
   };
 
+  const audioElement = useMemo(() => {
+    if (audioBlob) {
+      return (
+        <audio
+          className="mx-1"
+          controls
+          src={URL.createObjectURL(audioBlob)}
+        ></audio>
+      );
+    }
+    return null;
+  }, [audioBlob]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!session) return <div>Not logged in</div>;
+
+  const user = session?.profile;
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -118,17 +132,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
           <div className="mt-3 flex w-full items-center justify-center">
-            {useMemo(
-              () =>
-                audioBlob && (
-                  <audio
-                    className="mx-1"
-                    controls
-                    src={URL.createObjectURL(audioBlob)}
-                  ></audio>
-                ),
-              [audioBlob]
-            )}
+            {audioElement}
           </div>
           <div className="mb-3 mt-6 flex w-full items-center justify-center">
             {audioBlob && (
