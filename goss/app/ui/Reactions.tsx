@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 import { useSessionContext } from '../context/SessionContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { addReaction, fetchReactions, removeReaction } from '../api/reactions';
 
 const supabase = createClient();
 
@@ -26,17 +27,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
 
   const { data: reactionsData = [] } = useQuery({
     queryKey: ['reactions', postId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('reactions')
-        .select('reaction, user_id')
-        .eq('post_id', postId);
-
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
+    queryFn: () => fetchReactions(postId),
   });
 
   const reactionsMap: { [key: string]: Reaction } = {};
@@ -60,30 +51,16 @@ const Reactions: React.FC<ReactionsProps> = ({ postId }) => {
   const reactions = Object.values(reactionsMap);
 
   const addReactionMutation = useMutation({
-    mutationFn: async (reaction: string) => {
-      const { error } = await supabase.from('reactions').insert({
-        post_id: postId,
-        user_id: session!.user.id,
-        reaction,
-      });
-      if (error) {
-        throw error;
-      }
-    },
+    mutationFn: (reaction: string) =>
+      addReaction(postId, session!.user.id, reaction),
     onSuccess: () => {
       queryClient.invalidateQueries(['reactions', postId]);
     },
   });
 
   const removeReactionMutation = useMutation({
-    mutationFn: async (reaction: string) => {
-      const { error } = await supabase.from('reactions').delete().match({
-        post_id: postId,
-        user_id: session!.user.id,
-        reaction,
-      });
-      if (error) throw error;
-    },
+    mutationFn: (reaction: string) =>
+      removeReaction(postId, session!.user.id, reaction),
     onSuccess: () => {
       queryClient.invalidateQueries(['reactions', postId]);
     },
