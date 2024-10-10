@@ -4,18 +4,28 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
-import { MdOutlineCancel } from "react-icons/md";
-import { ImUserPlus } from "react-icons/im";
+import dynamic from 'next/dynamic';
+import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
+
+const MdOutlineCancel = dynamic(() =>
+  import('react-icons/md').then((mod) => mod.MdOutlineCancel)
+);
+const ImUserPlus = dynamic(() =>
+  import('react-icons/im').then((mod) => mod.ImUserPlus)
+);
 
 export default function ProfilePage() {
+  const queryClient = useQueryClient(); // Get the query client
+
   const [profile, setProfile] = useState({
-    name: "",
-    bio: "",
-    badge: "",
+    name: '',
+    bio: '',
+    badge: '',
   });
 
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(""); // For image preview
+  const [preview, setPreview] = useState(''); // For image preview
 
   const supabase = createClient();
   const router = useRouter(); // Use Next.js router
@@ -89,10 +99,16 @@ export default function ProfilePage() {
       .eq('username', username);
 
     if (error) {
-      console.error('Error updating profile:', error);
+      toast.error('Error updating profile.');
     } else {
+      queryClient.invalidateQueries({ queryKey: ['profile', username] });
+      queryClient.invalidateQueries({ queryKey: ['profileId', username] });
+
       router.push(`/${username}`);
-      console.log('Profile updated successfully:', data);
+
+      toast.success('Profile updated successfully', {
+        position: 'bottom-center',
+      });
     }
   };
 
@@ -105,28 +121,30 @@ export default function ProfilePage() {
   };
 
   return (
-    <form className="w-full h-lvh mx-auto p-3" onSubmit={updateProfile}>
+    <form className="mx-auto h-lvh w-full p-3" onSubmit={updateProfile}>
       <button
         type="button"
         onClick={handleCancel}
-        className="font-bold p-1 text-3xl"
+        className="p-1 text-3xl font-bold"
       >
         <MdOutlineCancel />
       </button>
 
-      <h2 className="text-2xl font-bold mb-3 px-4 text-center">Edit Profile</h2>
+      <h2 className="mb-3 px-4 text-center text-2xl font-bold">Edit Profile</h2>
 
-      <div className="relative w-28 h-28 mb-4">
+      <div className="relative mb-4 h-28 w-28">
         <label htmlFor="file_input">
-          <div className="cursor-pointer relative w-full h-full rounded-full border border-gray-300 overflow-hidden bg-gray-200 flex items-center justify-center">
+          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
             {preview ? (
               <img
                 src={preview}
                 alt="Profile Preview"
-                className="object-cover w-full h-full"
+                className="h-full w-full object-cover"
               />
             ) : (
-              <span className="text-gray-500 text-6xl"><ImUserPlus /></span>
+              <span className="text-6xl text-gray-500">
+                <ImUserPlus />
+              </span>
             )}
           </div>
         </label>
@@ -139,34 +157,40 @@ export default function ProfilePage() {
         />
       </div>
 
-      <label htmlFor="name" className="block mb-1">Name</label>
+      <label htmlFor="name" className="mb-1 block">
+        Name
+      </label>
       <input
         id="name"
         name="name"
         type="text"
         placeholder="Name"
-        className="w-full p-2 border border-gray-300 rounded shadow-sm"
+        className="w-full rounded border border-gray-300 p-2 shadow-sm"
         value={profile.name}
         onChange={handleChange}
       />
 
-      <label htmlFor="badge" className="block mb-1">Badge</label>
+      <label htmlFor="badge" className="mb-1 block">
+        Badge
+      </label>
       <input
         id="badge"
         name="badge"
         type="text"
         placeholder="Badge"
-        className="w-full p-2 border border-gray-300 rounded shadow-sm"
+        className="w-full rounded border border-gray-300 p-2 shadow-sm"
         value={profile.badge}
         onChange={handleChange}
       />
 
-      <label htmlFor="bio" className="block mb-1">Bio</label>
+      <label htmlFor="bio" className="mb-1 block">
+        Bio
+      </label>
       <textarea
         id="bio"
         name="bio"
         placeholder="Bio"
-        className="w-full p-2 border border-gray-300 rounded shadow-sm"
+        className="w-full rounded border border-gray-300 p-2 shadow-sm"
         rows={4}
         value={profile.bio}
         onChange={handleChange}
@@ -174,7 +198,7 @@ export default function ProfilePage() {
 
       <button
         type="submit"
-        className="mt-2 bg-purple-500 text-white p-2 rounded"
+        className="mt-2 rounded bg-purple-500 p-2 text-white"
       >
         Update Profile
       </button>
