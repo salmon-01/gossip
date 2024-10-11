@@ -6,15 +6,20 @@ import { createClient } from '@/utils/supabase/client';
 import { useState, useEffect } from 'react';
 const supabase = createClient();
 
+type Profile = {
+  user_id: string;
+  display_name: string;
+};
+
 export default function TestQuery() {
   const { data: session, isLoading, error } = useSessionContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
     const handleSearch = async () => {
       if (!searchQuery.trim()) {
-        setProfiles([]); // Clear results if search query is empty
+        setProfiles([]);
         return;
       }
 
@@ -30,10 +35,10 @@ export default function TestQuery() {
       }
     };
 
-    // Add a small debounce (e.g., 300ms) to prevent too many API calls
+    // Add a small debounce (e.g. 500ms) to prevent too many API calls
     const debounceTimeout = setTimeout(() => {
       handleSearch();
-    }, 500);
+    }, 300);
 
     // Clear the timeout if the search query changes before the debounce time is up
     return () => clearTimeout(debounceTimeout);
