@@ -16,7 +16,11 @@ type Profile = {
 type Post = {
   id: string;
   caption: string;
-  user_id: string;
+  profiles: {
+    display_name: string;
+    profile_img: string;
+    username: string;
+  };
 };
 
 type SearchType = 'profiles' | 'captions';
@@ -58,13 +62,6 @@ const searchData = async (
     return data || [];
   }
 };
-
-// const PostCard: React.FC<{ post: Post }> = ({ post }) => (
-//   <div className="rounded-lg bg-white p-4 shadow">
-//     <p className="font-bold">{post.profiles.display_name}</p>
-//     <p className="text-gray-700">{post.caption}</p>
-//   </div>
-// );
 
 export default function TestQuery() {
   const [searchQuery, setSearchQuery] = useState('');
