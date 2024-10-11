@@ -132,7 +132,7 @@ export default function TestQuery() {
       </div>
       <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isSearching ? (
-          <LoadingSpinner size={50} color="#3B82F6" />
+          <LoadingSpinner size={30} color="#3B82F6" />
         ) : searchResults.length > 0 ? (
           searchResults.map((result) =>
             searchType === 'profiles' ? (
