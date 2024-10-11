@@ -3,6 +3,7 @@ import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
 
+
 export default function ProfileHeader({ user}) {
   const { data: session } = useSessionContext();
   const loggedInUsername = session?.profile.username;
