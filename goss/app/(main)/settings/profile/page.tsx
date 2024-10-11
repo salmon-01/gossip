@@ -8,12 +8,7 @@ import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
-// const MdOutlineCancel = dynamic(() =>
-//   import('react-icons/md').then((mod) => mod.MdOutlineCancel)
-// );
-// const ImUserPlus = dynamic(() =>
-//   import('react-icons/im').then((mod) => mod.ImUserPlus)
-// );
+
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
@@ -30,6 +25,7 @@ export default function ProfilePage() {
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
+  const profileImg = session?.profile.profile_img || ""
 
   useEffect(() => {
     if (session) {
@@ -38,6 +34,8 @@ export default function ProfilePage() {
         bio: session.profile.bio || '',
         badge: session.profile.badge || '',
       });
+
+      setPreview(profileImg)
     }
   }, [session]);
 
@@ -126,24 +124,31 @@ export default function ProfilePage() {
         onClick={handleCancel}
         className="p-1 text-3xl font-bold"
       >X
-        {/* <MdOutlineCancel /> */}
+
       </button>
 
       <h2 className="mb-3 px-4 text-center text-2xl font-bold">Edit Profile</h2>
 
       <div className="relative mb-4 h-28 w-28">
         <label htmlFor="file_input">
-          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
-            {preview ? (
+          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200 ">
+            {preview === profileImg ? (
+              <div className='relative h-full w-full flex items-center justify-center'>
+                <img
+                  src={preview}
+                  alt="Profile Preview"
+                  className="h-full w-full object-cover absolute top-0 left-0 opacity-70 z-10"
+                />
+                <span className="text-6xl text-center rounded-full text-white z-20  ">
+                  +
+                </span>
+              </div>
+            ) : (
               <img
                 src={preview}
                 alt="Profile Preview"
                 className="h-full w-full object-cover"
               />
-            ) : (
-              <span className="text-6xl text-center rounded-full text-white">
-                +
-              </span>
             )}
           </div>
         </label>

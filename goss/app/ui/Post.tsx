@@ -14,42 +14,43 @@ interface PostProps {
 export default function PostComponent({ user, post }: PostProps) {
   return (
     <>
-      <div className="mt-2 flex w-full flex-col rounded-tl-md rounded-tr-md bg-gray-200 p-2">
+      <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
             <img
               src={user.profile_img}
               alt="Profile picture"
-              className="mr-3 h-6 w-6 rounded-full bg-black shadow-md"
+              className="mr-3 h-12 w-12 rounded-full"
             />
-            <div className="items-center font-bold">{user.display_name}</div>
-            <div className="mx-2 items-center text-xs text-gray-600">
-              @{user.username}
+            <div className="items-center text-sm font-medium">
+              {user.display_name}
             </div>
-            <div className="ml-auto flex items-center space-x-2 text-xs text-gray-700">
+            <div className="mx-2 text-sm text-gray-500">@{user.username}</div>
+            <div className="ml-auto flex items-center space-x-2 text-sm text-gray-500">
               {moment(post.created_at).fromNow()}
             </div>
           </div>
         </Link>
-        <Link href={`/${user.username}`}>
-          <div className="mt-1 flex w-full text-sm text-gray-700">
-            {post.caption}
-          </div>
+        <Link href={`/post/${post.id}`}>
+          <div className="mt-6 flex w-full text-base">{post.caption}</div>
         </Link>
         <VoiceNote audioUrl={post.audio} />
-      </div>
-      <div className="w-full bg-gray-200 p-2">
-        <Reactions postId={post.id} postAuthorId={post.user_id} />
-      </div>
-      <div className="w-full rounded-bl-md rounded-br-md border-t border-slate-300 bg-gray-200">
-        <Link href={`/post/${post.id}`}>
-          <div className="ml-5 flex items-center pb-2 pt-1">
-            <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
-            <div className="ml-1 flex items-center text-sm font-bold text-purple-600">
-              Comment
+        <div className="mb-2 w-full">
+          <Reactions postId={post.id} postAuthorId={post.user_id} />
+        </div>
+        <div className="w-full">
+          <Link href={`/post/${post.id}`}>
+            <div className="relative flex items-center">
+              <div className="w-full -mx-6 flex-grow border-t border-gray-200"></div>
             </div>
-          </div>
-        </Link>
+            <div className="flex items-center pt-2">
+              <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
+              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
+                Comment
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
     </>
   );

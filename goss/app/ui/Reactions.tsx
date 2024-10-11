@@ -83,7 +83,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId, postAuthorId }) => {
         <button
           key={reaction.reaction}
           onClick={() => handleToggleReaction(reaction.reaction)}
-          className={`flex items-center rounded-xl bg-gray-300 px-2 py-1 ${
+          className={`flex items-center rounded-xl bg-gray-200 px-1 py-px ${
             reaction.userHasReacted ? 'bg-purple-600 text-white' : 'bg-gray-200'
           }`}
         >
@@ -96,7 +96,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postId, postAuthorId }) => {
         <div className="relative">
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="rounded-xl bg-gray-300 px-2 py-1"
+            className="rounded-xl bg-gray-200 px-2 py-1"
           >
             ...
           </button>
