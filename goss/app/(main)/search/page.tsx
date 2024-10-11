@@ -15,13 +15,20 @@ export default function TestQuery() {
   const { data: session, isLoading, error } = useSessionContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     const handleSearch = async () => {
       if (!searchQuery.trim()) {
         setProfiles([]);
+        setHasSearched(false);
         return;
       }
+
+      setIsSearching(true);
+      setHasSearched(true);
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -32,14 +39,14 @@ export default function TestQuery() {
       } else {
         setProfiles(data);
       }
+
+      setIsSearching(false);
     };
 
-    // Add a small debounce (e.g. 300ms) to prevent too many API calls
     const debounceTimeout = setTimeout(() => {
       handleSearch();
     }, 300);
 
-    // Clear the timeout if the search query changes before the debounce time is up
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
@@ -60,15 +67,21 @@ export default function TestQuery() {
       </div>
 
       <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {profiles.length > 0 ? (
+        {isSearching ? (
+          <div className="col-span-full mt-8 text-center text-gray-500">
+            Searching...
+          </div>
+        ) : profiles.length > 0 ? (
           profiles.map((profile) => (
             <ProfileCard key={profile.user_id} user={profile} />
           ))
         ) : (
           <div className="col-span-full mt-8 text-center text-gray-500">
-            {searchQuery.length === 0
-              ? 'Search a profile'
-              : 'No profiles found'}
+            {!hasSearched
+              ? 'Enter a name to search for profiles'
+              : searchQuery.trim() !== ''
+                ? 'No profiles found'
+                : 'Enter a name to search for profiles'}
           </div>
         )}
       </div>
