@@ -10,7 +10,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   color = '#3B82F6',
 }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
       <svg
         width={size}
         height={size}

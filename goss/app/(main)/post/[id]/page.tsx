@@ -17,6 +17,7 @@ import {
   createNotification,
   deleteCommentById,
 } from '@/app/api/post';
+import LoadingSpinner from '@/app/ui/LoadingSpinner';
 
 const supabase = createClient();
 
@@ -81,7 +82,7 @@ export default function PostPage() {
     },
   });
 
-  if (isLoading) return <p>Loading post...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (error) return <p>Error loading post: {error.message}</p>;
 
   return (
@@ -108,9 +109,7 @@ export default function PostPage() {
             {moment(postData.created_at).fromNow()}
           </div>
         </div>
-        <div>
-          {postData.caption}
-        </div>
+        <div>{postData.caption}</div>
         <VoiceNote audioUrl={postData.audio} />
         <div className="mt-4">
           <Reactions
