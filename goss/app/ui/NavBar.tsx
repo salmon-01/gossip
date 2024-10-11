@@ -60,7 +60,7 @@ function NavBar() {
           {session?.profile?.profile_img ? (
             <img
               src={session?.profile.profile_img}
-              className="h-9 rounded-full"
+              className="h-10 w-10 rounded-full"
               alt={`${username}'s profile`}
             />
           ) : (
