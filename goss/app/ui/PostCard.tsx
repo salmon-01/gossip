@@ -1,5 +1,4 @@
-import Link from 'next/link'; // Assuming you're using Next.js
-// import { Post } from '../types';
+import Link from 'next/link';
 
 interface Post {
   id: string;

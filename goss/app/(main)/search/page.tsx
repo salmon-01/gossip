@@ -3,17 +3,16 @@
 import ProfileCard from '@/app/ui/ProfileCard';
 import { createClient } from '@/utils/supabase/client';
 import PostCard from '@/app/ui/PostCard';
-import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 const supabase = createClient();
 
-type Profile = {
+interface Profile {
   user_id: string;
   display_name: string;
-};
+}
 
-type Post = {
+interface Post {
   id: string;
   caption: string;
   profiles: {
@@ -21,7 +20,7 @@ type Post = {
     profile_img: string;
     username: string;
   };
-};
+}
 
 type SearchType = 'profiles' | 'captions';
 
