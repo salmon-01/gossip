@@ -39,7 +39,7 @@ export default function PostComponent({ user, post }: PostProps) {
         <VoiceNote audioUrl={post.audio} />
       </div>
       <div className='w-full p-2 bg-gray-200'>
-        <Reactions postId={post.id} />
+        <Reactions postId={post.id} postAuthorId={post.user_id} />
       </div>
       <div className="w-full rounded-bl-md rounded-br-md border-t border-slate-300 bg-gray-200">
         <Link href={`/post/${post.id}`}>

@@ -9,13 +9,16 @@ import AddComment from '@/app/ui/AddComment';
 import CommentSection from '@/app/ui/CommentSection';
 import VoiceNote from '@/app/ui/VoiceNote';
 import toast from 'react-hot-toast';
+import {
+  fetchPostById,
+  fetchCommentsByPostId,
+  addComment,
+  fetchPostOwner,
+  createNotification,
+  deleteCommentById,
+} from '@/app/api/post';
 
 const supabase = createClient();
-
-interface NewComment {
-  post_id: string;
-  content: string;
-}
 
 export default function PostPage() {
   const params = useParams();
@@ -29,63 +32,51 @@ export default function PostPage() {
     error,
   } = useQuery({
     queryKey: ['post', postId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*, profiles!user_id(*)')
-        .eq('id', postId)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => fetchPostById(postId as string),
   });
 
   const { data: comments, isLoading: isLoadingComments } = useQuery({
     queryKey: ['comments', postId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('comments')
-        .select('*, profiles!user_id(*)')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => fetchCommentsByPostId(postId as string),
   });
 
   const addCommentMutation = useMutation({
-    mutationFn: async (newComment: NewComment) => {
-      const { data, error } = await supabase
-        .from('comments')
-        .insert([newComment])
-        .select('*, profiles!user_id(*)');
+    mutationFn: async (newComment: { post_id: string; content: string }) => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) throw userError;
 
-      if (error) throw error;
-      return data[0];
+      const userId = userData.user?.id;
+      if (!userId) throw new Error('User not authenticated');
+
+      const commentData = await addComment(newComment, userId);
+
+      const postData = await fetchPostOwner(newComment.post_id);
+
+      if (postData.user_id !== userId) {
+        await createNotification(postData.user_id, userId, newComment.content);
+      }
+
+      return commentData;
     },
+
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-      });
+      queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+      toast.success('Comment added');
+    },
+
+    onError: (error) => {
+      console.error('Error adding comment:', error);
+      toast.error('Failed to add comment');
     },
   });
 
   const deleteCommentMutation = useMutation({
     mutationFn: async (commentId: string) => {
-      const { error } = await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId);
-
-      if (error) throw error;
+      await deleteCommentById(commentId);
     },
     onSuccess: () => {
-      // Invalidate the 'comments' query to refetch the latest data
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-      });
+      queryClient.invalidateQueries({ queryKey: ['comments', postId] });
       toast.error('Comment deleted');
     },
   });
@@ -119,7 +110,10 @@ export default function PostPage() {
         </div>
         <VoiceNote audioUrl={postData.audio} />
         <div className="mt-4">
-          <Reactions postId={postId} />
+          <Reactions
+            postId={postId as string}
+            postAuthorId={postData.profiles.user_id}
+          />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
         <AddComment
@@ -127,7 +121,6 @@ export default function PostPage() {
             addCommentMutation.mutate({ post_id: postId as string, content })
           }
         />
-        {/* <CommentSection comments={comments || []} /> */}
         <CommentSection
           comments={comments || []}
           onDeleteComment={(commentId: string) =>

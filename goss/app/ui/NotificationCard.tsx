@@ -23,8 +23,8 @@ const NotificationCard: React.FC<NotificationProps> = ({
     if (notification.type === 'follow') {
       return `has followed you.`;
     }
-    if (notification.type === 'like') {
-      return `liked your post!`;
+    if (notification.type === 'reaction') {
+      return `reacted to your post: ${notification.context}`;
     }
     if (notification.type === 'tagged_post') {
       return `tagged you in a post.`;
