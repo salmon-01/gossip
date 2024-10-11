@@ -22,7 +22,6 @@ export default function TestQuery() {
         setProfiles([]);
         return;
       }
-
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -35,7 +34,7 @@ export default function TestQuery() {
       }
     };
 
-    // Add a small debounce (e.g. 500ms) to prevent too many API calls
+    // Add a small debounce (e.g. 300ms) to prevent too many API calls
     const debounceTimeout = setTimeout(() => {
       handleSearch();
     }, 300);
@@ -49,22 +48,28 @@ export default function TestQuery() {
   if (!session) return <div>Not logged in</div>;
 
   return (
-    <div className="min-h-screen w-full">
-      <input
-        type="text"
-        placeholder="Search for a profile"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="rounded border p-2"
-      />
+    <div className="flex min-h-screen w-full flex-col items-center bg-gray-50 p-8">
+      <div className="w-full max-w-md">
+        <input
+          type="text"
+          placeholder="Search for a profile..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded-lg border border-gray-300 p-4 shadow-sm transition duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-      <div className="mt-4">
+      <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {profiles.length > 0 ? (
           profiles.map((profile) => (
             <ProfileCard key={profile.user_id} user={profile} />
           ))
         ) : (
-          <div>No profiles found</div>
+          <div className="col-span-full mt-8 text-center text-gray-500">
+            {searchQuery.length === 0
+              ? 'Search a profile'
+              : 'No profiles found'}
+          </div>
         )}
       </div>
     </div>
