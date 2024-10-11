@@ -21,6 +21,8 @@ export default function CommentSection({
   comments,
   onDeleteComment,
 }: CommentSectionProps) {
+  console.log(comments);
+
   const [menuOpen, setMenuOpen] = useState<Record<string, boolean>>({});
 
   const toggleMenu = (id: string) => {
@@ -47,29 +49,31 @@ export default function CommentSection({
             className="relative mb-4 rounded bg-gray-100 p-3"
           >
             {/* Three dots menu in the top-right corner of each individual comment */}
-            <div className="absolute right-2 top-2">
-              <button
-                onClick={() => toggleMenu(comment.id)}
-                className="text-gray-500 focus:outline-none"
-              >
-                <BsThreeDots className="h-6 w-6" />
-              </button>
-              {menuOpen[comment.id] && (
-                <div className="absolute right-0 w-32 rounded border border-gray-300 bg-white shadow-lg">
-                  <button
-                    onClick={() => onDeleteComment(comment.id)}
-                    className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
+            {user?.user_id === comment.user_id && (
+              <div className="absolute right-2 top-2">
+                <button
+                  onClick={() => toggleMenu(comment.id)}
+                  className="text-gray-500 focus:outline-none"
+                >
+                  <BsThreeDots className="h-6 w-6" />
+                </button>
+                {menuOpen[comment.id] && (
+                  <div className="absolute right-0 w-32 rounded border border-gray-300 bg-white shadow-lg">
+                    <button
+                      onClick={() => onDeleteComment(comment.id)}
+                      className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <div className="mb-2 flex items-center">
-              {user.profile_img ? (
+              {comment.profiles?.profile_img ? (
                 <img
-                  src={user.profile_img}
-                  alt={`${user.display_name}'s profile`}
+                  src={comment.profiles.profile_img}
+                  alt={`${comment.profiles.display_name}'s profile`}
                   className="mr-2 h-8 w-8 rounded-full"
                   onError={(e) => {
                     e.currentTarget.src = '';
@@ -78,8 +82,8 @@ export default function CommentSection({
                 />
               ) : (
                 <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white">
-                  {user.display_name
-                    ? user.display_name
+                  {comment.profiles?.display_name
+                    ? comment.profiles.display_name
                         .split(' ')
                         .map((n: string) => n[0])
                         .join('')
@@ -88,7 +92,9 @@ export default function CommentSection({
                 </div>
               )}
               <div>
-                <p className="font-semibold">{user.display_name}</p>
+                <p className="font-semibold">
+                  {comment.profiles?.display_name}
+                </p>
                 <p className="text-xs text-gray-500">
                   {moment.utc(comment.created_at).local().fromNow()}
                 </p>
