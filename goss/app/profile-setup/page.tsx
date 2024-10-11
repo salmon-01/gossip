@@ -66,7 +66,7 @@ const ProfileSetup = async () => {
                   type="text"
                   required
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                  placeholder="@squirrel69"
+                  placeholder="johndoe"
                 />
               </div>
               <div>
@@ -82,7 +82,7 @@ const ProfileSetup = async () => {
                   type="text"
                   required
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                  placeholder="fuck squirrels"
+                  placeholder="John Doe"
                 />
               </div>
               <div>
@@ -97,7 +97,7 @@ const ProfileSetup = async () => {
                   name="badge"
                   type="text"
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                  placeholder="fuck squirrels"
+                  placeholder="Writer"
                 />
               </div>
               <div>
@@ -112,7 +112,7 @@ const ProfileSetup = async () => {
                   name="bio"
                   type="text"
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                  placeholder="fuck squirrels"
+                  placeholder="Writer for the NY Times"
                 />
               </div>
             </div>
