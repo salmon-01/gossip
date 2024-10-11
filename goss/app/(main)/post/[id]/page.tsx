@@ -108,6 +108,9 @@ export default function PostPage() {
             {moment(postData.created_at).fromNow()}
           </div>
         </div>
+        <div>
+          {postData.caption}
+        </div>
         <VoiceNote audioUrl={postData.audio} />
         <div className="mt-4">
           <Reactions
