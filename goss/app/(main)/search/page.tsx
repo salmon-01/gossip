@@ -2,10 +2,10 @@
 
 import ProfileCard from '@/app/ui/ProfileCard';
 import { createClient } from '@/utils/supabase/client';
+import { profile } from 'console';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
-// Initialize Supabase client
 const supabase = createClient();
 
 type Profile = {
@@ -39,7 +39,15 @@ const searchData = async (
   } else {
     const { data, error } = await supabase
       .from('posts')
-      .select('*')
+      .select(
+        `
+        *,
+        profiles:user_id (
+          display_name,
+          profile_img
+        )
+      `
+      )
       .ilike('caption', `%${query}%`);
 
     if (error) {
@@ -52,7 +60,7 @@ const searchData = async (
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => (
   <div className="rounded-lg bg-white p-4 shadow">
-    <p className="font-bold">User ID: {}</p>
+    <p className="font-bold">{post.profiles.display_name}</p>
     <p className="text-gray-700">{post.caption}</p>
   </div>
 );
