@@ -20,7 +20,7 @@ function NavItem({
     <Link href={href} aria-label={label} className="w-1/4">
       <div
         className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-          isActive ? 'bg-purple-100' : 'bg-gray-100'
+          isActive ? 'bg-purple-100' : 'bg-white'
         }`}
       >
         {children ||
