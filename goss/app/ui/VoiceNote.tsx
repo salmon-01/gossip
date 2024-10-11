@@ -67,7 +67,7 @@ const VoiceNote = ({ audioUrl }: Audio) => {
         <>
           <button
             onClick={handlePlayPause}
-            className={`rounded-full ${isPlaying ? 'bg-purple-400' : 'bg-purple-600'} m-2 flex h-28 w-28 items-center justify-center text-white`}
+            className={`rounded-full ${isPlaying ? 'bg-purple-400' : 'bg-purple-600'} m-2 flex h-16 w-16 items-center justify-center text-white`}
           >
             {isPlaying ? (
               <HiOutlinePause size={25} />

@@ -34,18 +34,18 @@ export default function Feed () {
 
   return (
     <>
-    <div className='flex text-xs text-purple-500 fixed bg-gray-100 w-full left-0 top-0 pl-4 pt-4 pb-2 z-40 items-center'>
+    <div className='flex text-base text-purple-500 fixed bg-white w-full left-0 top-0 pl-4 pt-4 pb-2 z-40 items-center'>
       <div>
         Sort:
       </div>
-      <button onClick={() => setSortOrder('newest')} className={`${sortOrder === 'newest' ? 'bg-purple-700' : 'bg-purple-400' } text-white mx-1 px-2 rounded-sm`}>
+      <button onClick={() => setSortOrder('newest')} className={`${sortOrder === 'newest' ? 'bg-purple-700' : 'bg-purple-400' } text-white mx-1 px-2 rounded`}>
         New
       </button>
-      <button onClick={() => setSortOrder('oldest')} className={`${sortOrder === 'oldest' ? 'bg-purple-700' : 'bg-purple-400' } text-white mx-1 px-2 rounded-sm`}>
+      <button onClick={() => setSortOrder('oldest')} className={`${sortOrder === 'oldest' ? 'bg-purple-700' : 'bg-purple-400' } text-white mx-1 px-2 rounded`}>
         Old
       </button>
     </div>
-    <div className="flex flex-col items-center mt-6">
+    <div className="flex flex-col items-center mt-8">
       {sortedPosts.length > 0 &&
         sortedPosts.map((post) => (
           <Post
