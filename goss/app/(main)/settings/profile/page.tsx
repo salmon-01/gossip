@@ -8,22 +8,20 @@ import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
-const MdOutlineCancel = dynamic(() =>
-  import('react-icons/md').then((mod) => mod.MdOutlineCancel)
-);
-const ImUserPlus = dynamic(() =>
-  import('react-icons/im').then((mod) => mod.ImUserPlus)
-);
+// const MdOutlineCancel = dynamic(() =>
+//   import('react-icons/md').then((mod) => mod.MdOutlineCancel)
+// );
+// const ImUserPlus = dynamic(() =>
+//   import('react-icons/im').then((mod) => mod.ImUserPlus)
+// );
 
 export default function ProfilePage() {
-  const queryClient = useQueryClient(); // Get the query client
-
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
     badge: '',
   });
-
+  const queryClient = useQueryClient(); // Get the query client
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(''); // For image preview
 
@@ -42,6 +40,7 @@ export default function ProfilePage() {
       });
     }
   }, [session]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,8 +125,8 @@ export default function ProfilePage() {
         type="button"
         onClick={handleCancel}
         className="p-1 text-3xl font-bold"
-      >
-        <MdOutlineCancel />
+      >X
+        {/* <MdOutlineCancel /> */}
       </button>
 
       <h2 className="mb-3 px-4 text-center text-2xl font-bold">Edit Profile</h2>
@@ -142,8 +141,8 @@ export default function ProfilePage() {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="text-6xl text-gray-500">
-                <ImUserPlus />
+              <span className="text-6xl text-center rounded-full text-white">
+                +
               </span>
             )}
           </div>

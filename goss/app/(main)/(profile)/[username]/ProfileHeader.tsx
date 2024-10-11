@@ -36,18 +36,19 @@ export default function ProfileHeader({ user}) {
         </p>
 
         {user.username === loggedInUsername ? (
-          <div>
+         
             <Link
               href={`/settings/profile`}
               className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+              prefetch={true}
             >
               Edit profile
             </Link>
-          </div>
+         
         ) : (
-          <div>
+          
             <FollowButton user={user} targetUserId={loggedInUserId} />
-          </div>
+         
         )}
       </div>
     </>
