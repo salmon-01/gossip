@@ -17,6 +17,8 @@ export default function Notifications() {
   } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => fetchNotifications(user.user_id),
+    staleTime: 0, // Ensure cache is not used, and fresh data is fetched
+    refetchOnWindowFocus: true, // Fetch fresh data whenever the window is refocused
   });
 
   if (isLoading) {
