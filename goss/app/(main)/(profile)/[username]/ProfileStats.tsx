@@ -18,10 +18,7 @@ export default function ProfileStats({ user }: ProfileStatsProps) {
 
   return (
     <div className="mx-auto my-3 mt-4 w-11/12">
-      <Link
-        href={`/${user.username}/followers`}
-        className="text-blue-600 hover:underline"
-      >
+      <Link href={`/${user.username}/followers`} className="hover:underline">
         <span>{profileData.following_total}</span>
         <span className="mr-3 text-gray-600"> Followers</span>
       </Link>

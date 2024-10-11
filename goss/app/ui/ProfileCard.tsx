@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSessionContext } from '../context/SessionContext';
+import Link from 'next/link';
 
 const ProfileCard = ({ user }) => {
   // dummy for visual concept, can add following logic later
@@ -17,16 +18,19 @@ const ProfileCard = ({ user }) => {
           alt={`${user.display_name}'s profile`}
           className="h-16 w-16 rounded-full"
         />
-        <div className="ml-3 flex flex-col">
-          <p className="font-semibold">{user.display_name}</p>
-          <p className="text-gray-500">@{user.username}</p>
-        </div>
+        <Link href={`/${user.username}`}>
+          <div className="ml-3 flex flex-col">
+            <p className="font-semibold">{user.display_name}</p>
+
+            <p className="text-gray-500">@{user.username}</p>
+          </div>
+        </Link>
       </div>
-        <div className="rounded-full bg-blue-500 px-3 py-1 text-white">
-          <button onClick={handleFollowToggle}>
-            {isFollowing ? 'Followed' : 'Follow'}
-          </button>
-        </div>
+      <div className="rounded-full bg-blue-500 px-3 py-1 text-white">
+        <button onClick={handleFollowToggle}>
+          {isFollowing ? 'Followed' : 'Follow'}
+        </button>
+      </div>
     </div>
   );
 };
