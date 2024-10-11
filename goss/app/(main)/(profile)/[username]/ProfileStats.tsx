@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 
 interface ProfileStatsProps {
   user: {
@@ -17,8 +18,13 @@ export default function ProfileStats({ user }: ProfileStatsProps) {
 
   return (
     <div className="mx-auto my-3 mt-4 w-11/12">
-      <span>{profileData.following_total}</span>
-      <span className="mr-3 text-gray-600"> Followers</span>
+      <Link
+        href={`/${user.username}/followers`}
+        className="text-blue-600 hover:underline"
+      >
+        <span>{profileData.following_total}</span>
+        <span className="mr-3 text-gray-600"> Followers</span>
+      </Link>
       <span>{profileData.follower_count} </span>
       <span className="text-gray-600">Following</span>
     </div>
