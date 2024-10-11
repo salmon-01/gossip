@@ -4,6 +4,7 @@ import ProfileCard from '@/app/ui/ProfileCard';
 import { createClient } from '@/utils/supabase/client';
 import PostCard from '@/app/ui/PostCard';
 import React, { useState, useEffect } from 'react';
+import LoadingSpinner from '@/app/ui/LoadingSpinner';
 
 const supabase = createClient();
 
@@ -131,9 +132,7 @@ export default function TestQuery() {
       </div>
       <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isSearching ? (
-          <div className="col-span-full mt-8 text-center text-gray-500">
-            Searching...
-          </div>
+          <LoadingSpinner size={30} color="#3B82F6" bgColor="" />
         ) : searchResults.length > 0 ? (
           searchResults.map((result) =>
             searchType === 'profiles' ? (

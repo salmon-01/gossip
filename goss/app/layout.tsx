@@ -3,7 +3,7 @@ import React from 'react';
 import Providers from './providers';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
-import { Toaster } from 'react-hot-toast'; // Import Toaster
+import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from './context/SessionContext';
 
 const inter = Inter({ subsets: ['latin'] });
