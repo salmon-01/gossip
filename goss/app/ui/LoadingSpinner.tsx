@@ -3,14 +3,18 @@ import React from 'react';
 interface LoadingSpinnerProps {
   size?: number;
   color?: string;
+  bgColor?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 40,
   color = '#3B82F6',
+  bgColor = 'bg-gray-500 bg-opacity-50',
 }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+    <div
+      className={`fixed inset-0 flex items-center justify-center ${bgColor}`}
+    >
       <svg
         width={size}
         height={size}
