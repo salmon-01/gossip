@@ -16,7 +16,7 @@ export default function ProfileNav({username} ) {
       >
         Posts
       </Link>
-      <Link 
+      {/* <Link 
       href={`/${username}/reactions`}
       className={pathname === `/${username}/reactions` ? 'text-purple-600 font-bold' : 'text-gray-500'}
       >
@@ -27,7 +27,7 @@ export default function ProfileNav({username} ) {
       className={pathname ===`/${username}/comments`? 'text-purple-600 font-bold' : 'text-gray-500' }
       >
         Comments
-      </Link>
+      </Link> */}
     </nav>
   )
 }
