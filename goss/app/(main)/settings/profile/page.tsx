@@ -1,31 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/client'; // Adjust based on your project structure
+import { useState, useEffect,ChangeEvent, FormEvent  } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
-import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
-
-
+interface Profile {
+  name: string;
+  bio: string;
+  badge: string;
+}
 export default function ProfilePage() {
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<Profile>({
     name: '',
     bio: '',
     badge: '',
   });
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>(''); // For image preview
   const queryClient = useQueryClient(); // Get the query client
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(''); // For image preview
 
   const supabase = createClient();
   const router = useRouter(); // Use Next.js router
 
   const { data: session } = useSessionContext();
   const username = session?.profile.username;
-  const profileImg = session?.profile.profile_img || ""
+  const profileImg = session?.profile.profile_img || '';
 
   useEffect(() => {
     if (session) {
@@ -35,12 +37,11 @@ export default function ProfilePage() {
         badge: session.profile.badge || '',
       });
 
-      setPreview(profileImg)
+      setPreview(profileImg);
     }
   }, [session]);
 
-
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
@@ -48,8 +49,8 @@ export default function ProfilePage() {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
     setFile(selectedFile);
 
     if (selectedFile) {
@@ -58,7 +59,7 @@ export default function ProfilePage() {
     }
   };
 
-  const updateProfile = async (e) => {
+  const updateProfile = async (e: FormEvent) => {
     e.preventDefault();
 
     let profileImageUrl = null;
@@ -123,23 +124,23 @@ export default function ProfilePage() {
         type="button"
         onClick={handleCancel}
         className="p-1 text-3xl font-bold"
-      >X
-
+      >
+        X
       </button>
 
       <h2 className="mb-3 px-4 text-center text-2xl font-bold">Edit Profile</h2>
 
       <div className="relative mb-4 h-28 w-28">
         <label htmlFor="file_input">
-          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200 ">
+          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
             {preview === profileImg ? (
-              <div className='relative h-full w-full flex items-center justify-center'>
+              <div className="relative flex h-full w-full items-center justify-center">
                 <img
                   src={preview}
-                  alt="Profile Preview"
-                  className="h-full w-full object-cover absolute top-0 left-0 opacity-70 z-10"
+                  alt=""
+                  className="absolute left-0 top-0 z-10 h-full w-full object-cover opacity-70"
                 />
-                <span className="text-6xl text-center rounded-full text-white z-20  ">
+                <span className="z-20 rounded-full text-center text-6xl text-white">
                   +
                 </span>
               </div>
@@ -202,7 +203,7 @@ export default function ProfilePage() {
 
       <button
         type="submit"
-        className="mt-2 rounded bg-purple-500 p-2 text-white"
+        className="mt-2 rounded bg-purple-500 p-2 text-white hover:bg-purple-600"
       >
         Update Profile
       </button>
