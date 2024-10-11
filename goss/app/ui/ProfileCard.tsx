@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSessionContext } from '../context/SessionContext';
 import Link from 'next/link';
+import { User } from '../types';
 
 const ProfileCard = ({ user }) => {
   // dummy for visual concept, can add following logic later
