@@ -2,7 +2,7 @@
 
 import ProfileCard from '@/app/ui/ProfileCard';
 import { createClient } from '@/utils/supabase/client';
-import { profile } from 'console';
+import PostCard from '@/app/ui/PostCard';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
@@ -44,7 +44,8 @@ const searchData = async (
         *,
         profiles:user_id (
           display_name,
-          profile_img
+          profile_img,
+          username
         )
       `
       )
@@ -58,12 +59,12 @@ const searchData = async (
   }
 };
 
-const PostCard: React.FC<{ post: Post }> = ({ post }) => (
-  <div className="rounded-lg bg-white p-4 shadow">
-    <p className="font-bold">{post.profiles.display_name}</p>
-    <p className="text-gray-700">{post.caption}</p>
-  </div>
-);
+// const PostCard: React.FC<{ post: Post }> = ({ post }) => (
+//   <div className="rounded-lg bg-white p-4 shadow">
+//     <p className="font-bold">{post.profiles.display_name}</p>
+//     <p className="text-gray-700">{post.caption}</p>
+//   </div>
+// );
 
 export default function TestQuery() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -145,9 +146,7 @@ export default function TestQuery() {
                 user={result as Profile}
               />
             ) : (
-              <Link href={`/post/${result.id}`}>
-                <PostCard key={(result as Post).id} post={result as Post} />
-              </Link>
+              <PostCard key={(result as Post).id} post={result as Post} />
             )
           )
         ) : (

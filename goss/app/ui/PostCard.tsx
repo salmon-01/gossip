@@ -1,7 +1,11 @@
 import Link from 'next/link'; // Assuming you're using Next.js
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+  console.log(post);
+
   const user = post.profiles; // Assuming post contains user profile data
+  console.log(user);
+
   const isFollowing = false; // Placeholder for follow state logic
 
   const handleFollowToggle = () => {
@@ -15,19 +19,14 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         <img
           src={user.profile_img} // Assuming profile_img is part of post.profiles
           alt={`${user.display_name}'s profile`}
-          className="h-16 w-16 rounded-full"
+          className="h-10 w-10 rounded-full"
         />
-        <Link href={`/${user.username}`}>
+        <Link href={`post/${post.id}`}>
           <div className="ml-3 flex flex-col">
             <p className="font-semibold">{user.display_name}</p>
             <p className="text-gray-500">@{user.username}</p>
           </div>
         </Link>
-      </div>
-      <div className="rounded-full bg-blue-500 px-3 py-1 text-white">
-        <button onClick={handleFollowToggle}>
-          {isFollowing ? 'Followed' : 'Follow'}
-        </button>
       </div>
     </div>
   );
