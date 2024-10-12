@@ -109,16 +109,17 @@ export default function AudioRecorder({ onAudioSave }) {
     }
   };
 
-  const handleDelete = (index) => {
-    setRecordings((prevRecordings) => {
-      const newRecordings = [...prevRecordings];
-      if (newRecordings[index].wavesurfer) {
-        newRecordings[index].wavesurfer.destroy();
-      }
-      URL.revokeObjectURL(newRecordings[index].url);
-      newRecordings.splice(index, 1);
-      return newRecordings;
-    });
+  const handleDelete = () => {
+    // setRecordings((prevRecordings) => {
+    //   const newRecordings = [...prevRecordings];
+    //   if (newRecordings[index].wavesurfer) {
+    //     newRecordings[index].wavesurfer.destroy();
+    //   }
+    //   URL.revokeObjectURL(newRecordings[index].url);
+    //   newRecordings.splice(index, 1);
+    //   return newRecordings;
+    // });
+    onAudioSave(null);
   };
 
   const handlePlay = (index) => {
@@ -126,6 +127,7 @@ export default function AudioRecorder({ onAudioSave }) {
       recordings[index].wavesurfer.playPause();
     }
   };
+
   const handleDeleteAll = () => {
     // recordings.forEach((recording) => {
     //   if (recording.wavesurfer) {
@@ -135,6 +137,8 @@ export default function AudioRecorder({ onAudioSave }) {
     // });
     // ? Works better than before -- as before this function was submitting the recorded post for some reason
     setRecordings([]);
+    setTime(0);
+    setWavesurfer(null);
     onAudioSave(null);
   };
 
@@ -199,7 +203,7 @@ export default function AudioRecorder({ onAudioSave }) {
         </label>
       </div>
       <div id="recordings" className="mt-4">
-        {recordings.map((recording, index) => (
+        {/* {recordings.map((recording, index) => (
           <div key={index} className="mb-4 rounded bg-white p-4 shadow">
             <div ref={(el) => (recordingsRef.current[index] = el)} />
             <div className="mt-2">
@@ -224,7 +228,7 @@ export default function AudioRecorder({ onAudioSave }) {
               </a>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );
