@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMessages } from '../api/fetchMessages';
+import { fetchMessages } from '../api/MessagesData';
 import { useSessionContext } from '../context/SessionContext';
 
 
@@ -19,7 +19,7 @@ export default function ChatMessages({conversationId}) {
     enabled: !!conversationId, // 
   });
 
-  console.log(Messages)
+  
   if (messagesError) {
     return <div>Error loading messages: {messagesError.message}</div>;
   }
