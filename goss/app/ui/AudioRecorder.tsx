@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 
-export default function AudioRecorder() {
+export default function AudioRecorder({ onAudioSave }) {
   const [wavesurfer, setWavesurfer] = useState(null);
   const [record, setRecord] = useState(null);
   const [scrollingWaveform, setScrollingWaveform] = useState(false);
@@ -24,6 +24,7 @@ export default function AudioRecorder() {
       }
     };
   }, []);
+
   useEffect(() => {
     if (wavesurfer) {
       createWaveSurfer();
@@ -65,11 +66,12 @@ export default function AudioRecorder() {
       RecordPlugin.create({ scrollingWaveform, renderRecordedAudio: false })
     );
     newRecord.on('record-end', (blob) => {
-      const recordedUrl = URL.createObjectURL(blob);
-      setRecordings((prevRecordings) => [
-        ...prevRecordings,
-        { url: recordedUrl, wavesurfer: null },
-      ]);
+      // const recordedUrl = URL.createObjectURL(blob);
+      // setRecordings((prevRecordings) => [
+      //   ...prevRecordings,
+      //   { url: recordedUrl, wavesurfer: null },
+      // ]);
+      onAudioSave(blob);
     });
     newRecord.on('record-progress', (time) => {
       setTime(time);
@@ -125,14 +127,17 @@ export default function AudioRecorder() {
     }
   };
   const handleDeleteAll = () => {
-    recordings.forEach((recording) => {
-      if (recording.wavesurfer) {
-        recording.wavesurfer.destroy();
-      }
-      URL.revokeObjectURL(recording.url);
-    });
+    // recordings.forEach((recording) => {
+    //   if (recording.wavesurfer) {
+    //     recording.wavesurfer.destroy();
+    //   }
+    //   URL.revokeObjectURL(recording.url);
+    // });
+    // ? Works better than before -- as before this function was submitting the recorded post for some reason
     setRecordings([]);
+    onAudioSave(null);
   };
+
   const formatTime = (time) => {
     const minutes = Math.floor((time % 3600000) / 60000);
     const seconds = Math.floor((time % 60000) / 1000);

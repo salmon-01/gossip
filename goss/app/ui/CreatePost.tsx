@@ -23,6 +23,8 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     setAudioBlob(audioBlob);
   };
 
+  console.log(audioBlob);
+
   const handleDeleteAudioNote = () => {
     setAudioBlob(null);
     toast('Audio deleted', {
