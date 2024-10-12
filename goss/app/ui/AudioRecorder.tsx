@@ -188,7 +188,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           }`}
         >
           {isRecording ? (
-            <FaStop className="h-6 w-6" />
+            <FaStop className="h-8 w-8" />
           ) : (
             <HiOutlineMicrophone className="h-8 w-8" />
           )}
@@ -196,12 +196,12 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         {isRecording && (
           <button
             onClick={handlePause}
-            className="mr-2 rounded-full bg-yellow-500 px-4 py-4 font-bold text-white hover:bg-yellow-600"
+            className="mr-2 mt-4 rounded-full bg-yellow-500 px-4 py-4 font-bold text-white hover:bg-yellow-600"
           >
             {isPaused ? (
-              <FaPlay className="h-6 w-6" />
+              <FaPlay className="h-8 w-8" />
             ) : (
-              <FaPause className="h-6 w-6" />
+              <FaPause className="h-8 w-8" />
             )}
           </button>
         )}
