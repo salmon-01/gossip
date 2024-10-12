@@ -5,7 +5,8 @@ import { useSessionContext } from '@/app/context/SessionContext';
 import toast from 'react-hot-toast';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -17,6 +18,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
@@ -69,16 +71,19 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
       toast.success('Post created successfully!');
       setCaption('');
       setAudioBlob(null);
+      setLoading(false); // Stop loading
     },
     onError: (error: any) => {
       console.error('Error creating post:', error);
       toast.error('Failed to create post. Please try again.');
+      setLoading(false);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!audioBlob) return;
+    setLoading(true);
     createPostMutation.mutate();
   };
 
@@ -114,12 +119,18 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
             <button
               type="submit"
               className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
+              disabled={loading}
             >
               Post
             </button>
           </div>
         )}
       </form>
+      {loading && (
+        <div className="mt-4 flex justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
     </>
   );
 }
