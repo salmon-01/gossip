@@ -31,27 +31,6 @@ export default function AudioRecorder({ onAudioSave }) {
     }
   }, [scrollingWaveform]);
 
-  useEffect(() => {
-    recordings.forEach((recording, index) => {
-      if (recordingsRef.current[index]) {
-        const wavesurfer = WaveSurfer.create({
-          container: recordingsRef.current[index],
-          waveColor: 'rgb(200, 100, 0)',
-          progressColor: 'rgb(100, 50, 0)',
-          url: recording.url,
-        });
-        recording.wavesurfer = wavesurfer;
-      }
-    });
-    return () => {
-      recordings.forEach((recording) => {
-        if (recording.wavesurfer) {
-          recording.wavesurfer.destroy();
-        }
-      });
-    };
-  }, [recordings]);
-
   const createWaveSurfer = () => {
     if (wavesurfer) {
       wavesurfer.destroy();
@@ -66,11 +45,6 @@ export default function AudioRecorder({ onAudioSave }) {
       RecordPlugin.create({ scrollingWaveform, renderRecordedAudio: false })
     );
     newRecord.on('record-end', (blob) => {
-      // const recordedUrl = URL.createObjectURL(blob);
-      // setRecordings((prevRecordings) => [
-      //   ...prevRecordings,
-      //   { url: recordedUrl, wavesurfer: null },
-      // ]);
       onAudioSave(blob);
     });
     newRecord.on('record-progress', (time) => {
@@ -109,33 +83,7 @@ export default function AudioRecorder({ onAudioSave }) {
     }
   };
 
-  const handleDelete = () => {
-    // setRecordings((prevRecordings) => {
-    //   const newRecordings = [...prevRecordings];
-    //   if (newRecordings[index].wavesurfer) {
-    //     newRecordings[index].wavesurfer.destroy();
-    //   }
-    //   URL.revokeObjectURL(newRecordings[index].url);
-    //   newRecordings.splice(index, 1);
-    //   return newRecordings;
-    // });
-    onAudioSave(null);
-  };
-
-  const handlePlay = (index) => {
-    if (recordings[index].wavesurfer) {
-      recordings[index].wavesurfer.playPause();
-    }
-  };
-
   const handleDeleteAll = () => {
-    // recordings.forEach((recording) => {
-    //   if (recording.wavesurfer) {
-    //     recording.wavesurfer.destroy();
-    //   }
-    //   URL.revokeObjectURL(recording.url);
-    // });
-    // ? Works better than before -- as before this function was submitting the recorded post for some reason
     setRecordings([]);
     setTime(0);
     resetWavesurfer();
@@ -160,7 +108,7 @@ export default function AudioRecorder({ onAudioSave }) {
   };
 
   return (
-    <div className="rounded-lg bg-gray-100 p-4 shadow">
+    <div className="rounded-lg bg-gray-100 p-10 shadow">
       <div ref={waveformRef} id="mic" className="mb-4" />
       <div className="mb-4">
         <select
@@ -212,34 +160,6 @@ export default function AudioRecorder({ onAudioSave }) {
           />
           Scrolling Waveform
         </label>
-      </div>
-      <div id="recordings" className="mt-4">
-        {/* {recordings.map((recording, index) => (
-          <div key={index} className="mb-4 rounded bg-white p-4 shadow">
-            <div ref={(el) => (recordingsRef.current[index] = el)} />
-            <div className="mt-2">
-              <button
-                onClick={() => handlePlay(index)}
-                className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-600"
-              >
-                Play/Pause
-              </button>
-              <button
-                onClick={() => handleDelete(index)}
-                className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
-              >
-                Delete
-              </button>
-              <a
-                href={recording.url}
-                download={`recording-${index + 1}.webm`}
-                className="ml-2 rounded bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-600"
-              >
-                Download
-              </a>
-            </div>
-          </div>
-        ))} */}
       </div>
     </div>
   );
