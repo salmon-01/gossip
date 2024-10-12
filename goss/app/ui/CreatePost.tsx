@@ -23,6 +23,8 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     setAudioBlob(audioBlob);
   };
 
+  console.log(audioBlob);
+
   const handleDeleteAudioNote = () => {
     setAudioBlob(null);
     toast('Audio deleted', {
@@ -114,7 +116,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-4 pt-2">
+        <div className="flex flex-col rounded-md bg-gray-200 px-2 pt-3">
           <div className="flex h-8 w-full items-center">
             <img
               src={user.profile_img}
@@ -126,7 +128,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="mt-5 w-full rounded-md px-2 py-2"
+              className="z-50 mt-5 w-full rounded-md px-2 py-2"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
