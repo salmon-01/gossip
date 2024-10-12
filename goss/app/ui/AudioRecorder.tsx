@@ -2,18 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 
-export default function AudioRecorder({ onAudioSave }) {
+export default function AudioRecorder({ onAudioSave, audioBlob }) {
   const [wavesurfer, setWavesurfer] = useState(null);
   const [record, setRecord] = useState(null);
+  const [playbackWavesurfer, setPlaybackWavesurfer] = useState(null);
   const [scrollingWaveform, setScrollingWaveform] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState('');
   const [time, setTime] = useState(0);
-  const [recordings, setRecordings] = useState([]);
+  const [recordedBlob, setRecordedBlob] = useState(null);
   const waveformRef = useRef(null);
-  const recordingsRef = useRef([]);
+  const playbackRef = useRef(null);
 
   useEffect(() => {
     createWaveSurfer();
@@ -21,6 +23,9 @@ export default function AudioRecorder({ onAudioSave }) {
     return () => {
       if (wavesurfer) {
         wavesurfer.destroy();
+      }
+      if (playbackWavesurfer) {
+        playbackWavesurfer.destroy();
       }
     };
   }, []);
@@ -30,6 +35,12 @@ export default function AudioRecorder({ onAudioSave }) {
       createWaveSurfer();
     }
   }, [scrollingWaveform]);
+
+  useEffect(() => {
+    if (recordedBlob && playbackRef.current) {
+      createPlaybackWavesurfer(recordedBlob);
+    }
+  }, [recordedBlob]);
 
   const createWaveSurfer = () => {
     if (wavesurfer) {
@@ -46,12 +57,36 @@ export default function AudioRecorder({ onAudioSave }) {
     );
     newRecord.on('record-end', (blob) => {
       onAudioSave(blob);
+      setRecordedBlob(blob);
     });
     newRecord.on('record-progress', (time) => {
       setTime(time);
     });
     setWavesurfer(newWavesurfer);
     setRecord(newRecord);
+  };
+
+  const createPlaybackWavesurfer = (blob) => {
+    if (playbackWavesurfer) {
+      playbackWavesurfer.destroy();
+    }
+
+    const newPlaybackWavesurfer = WaveSurfer.create({
+      container: playbackRef.current,
+      waveColor: 'rgb(200, 100, 0)',
+      progressColor: 'rgb(100, 50, 0)',
+      height: 50,
+    });
+
+    newPlaybackWavesurfer.on('ready', () => {
+      setPlaybackWavesurfer(newPlaybackWavesurfer);
+    });
+
+    newPlaybackWavesurfer.on('finish', () => {
+      setIsPlaying(false);
+    });
+
+    newPlaybackWavesurfer.loadBlob(blob);
   };
 
   const loadAudioDevices = async () => {
@@ -83,11 +118,22 @@ export default function AudioRecorder({ onAudioSave }) {
     }
   };
 
-  const handleDeleteAll = () => {
-    setRecordings([]);
-    setTime(0);
-    resetWavesurfer();
+  const handlePlayPause = (e) => {
+    e.preventDefault();
+    if (playbackWavesurfer) {
+      playbackWavesurfer.playPause();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleDelete = () => {
+    if (playbackWavesurfer) {
+      playbackWavesurfer.destroy();
+      setPlaybackWavesurfer(null);
+    }
+    setRecordedBlob(null);
     onAudioSave(null);
+    resetWavesurfer();
   };
 
   const resetWavesurfer = () => {
@@ -108,7 +154,7 @@ export default function AudioRecorder({ onAudioSave }) {
   };
 
   return (
-    <div className="rounded-lg bg-gray-100 p-10 shadow">
+    <div className="rounded-lg bg-gray-100 p-4 shadow">
       <div ref={waveformRef} id="mic" className="mb-4" />
       <div className="mb-4">
         <select
@@ -140,12 +186,6 @@ export default function AudioRecorder({ onAudioSave }) {
             {isPaused ? 'Resume' : 'Pause'}
           </button>
         )}
-        <button
-          onClick={handleDeleteAll}
-          className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
-        >
-          Delete All
-        </button>
       </div>
       <div className="mb-4">
         <p className="text-lg font-semibold">Duration: {formatTime(time)}</p>
@@ -161,6 +201,25 @@ export default function AudioRecorder({ onAudioSave }) {
           Scrolling Waveform
         </label>
       </div>
+      {recordedBlob && (
+        <div className="mt-4">
+          <div ref={playbackRef} className="mb-2" />
+          <div className="flex justify-between">
+            <button
+              onClick={handlePlayPause}
+              className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-600"
+            >
+              {isPlaying ? 'Pause' : 'Play'}
+            </button>
+            <button
+              onClick={handleDelete}
+              className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
