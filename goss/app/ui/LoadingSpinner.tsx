@@ -1,4 +1,5 @@
 import React from 'react';
+import Kier from '../../public/kier.png';
 
 interface LoadingSpinnerProps {
   size?: number;
@@ -15,7 +16,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div
       className={`fixed inset-0 flex items-center justify-center ${bgColor}`}
     >
-      <svg
+      <img
+        src="/nesar.png"
+        alt="Profile"
+        className="mb-4 h-24 w-24 animate-spin rounded-full"
+      />
+      {/* <svg
         width={size}
         height={size}
         viewBox="0 0 24 24"
@@ -41,7 +47,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
             repeatCount="indefinite"
           />
         </circle>
-      </svg>
+      </svg> */}
     </div>
   );
 };
