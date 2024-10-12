@@ -154,9 +154,14 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
   };
 
   return (
-    <div className="rounded-lg bg-gray-100 p-4 shadow">
-      <div ref={waveformRef} id="mic" className="mb-4" />
-      <div className="mb-4">
+    <div className="mt-10 rounded-lg bg-gray-100 p-4 shadow">
+      <div
+        ref={waveformRef}
+        id="mic"
+        className="mb-8"
+        style={{ marginTop: '-120px' }} // Adjust this value as needed
+      />
+      <div className="mb-2">
         <select
           value={selectedDevice}
           onChange={(e) => setSelectedDevice(e.target.value)}
@@ -170,10 +175,18 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         </select>
         <button
           onClick={handleRecord}
-          className={`mr-2 rounded px-4 py-2 font-bold text-white ${
-            isRecording
-              ? 'bg-red-500 hover:bg-red-600'
-              : 'bg-blue-500 hover:bg-blue-600'
+          disabled={!!recordedBlob} // Disable if recordedBlob exists
+          title={
+            recordedBlob
+              ? 'Delete current recording before making a new one'
+              : 'Start recording'
+          }
+          className={`mr-2 mt-1 rounded px-4 py-2 font-bold text-white ${
+            recordedBlob
+              ? 'cursor-not-allowed bg-gray-300'
+              : isRecording
+                ? 'bg-red-500 hover:bg-red-600'
+                : 'bg-purple-500 hover:bg-purple-600'
           }`}
         >
           {isRecording ? 'Stop' : 'Record'}
@@ -207,7 +220,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           <div className="flex justify-between">
             <button
               onClick={handlePlayPause}
-              className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-600"
+              className="mr-2 rounded bg-purple-500 px-4 py-2 font-bold text-white hover:bg-purple-600"
             >
               {isPlaying ? 'Pause' : 'Play'}
             </button>
