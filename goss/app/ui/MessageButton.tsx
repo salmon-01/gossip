@@ -15,7 +15,7 @@ export default function MessageButton({ otherUserId, loggedInUserId }) {
   } = useMutation({
     mutationFn: () => createConversation(loggedInUserId, otherUserId),
     onSuccess: (conversationData) => {
-      console.log('Conversation created successfully:', conversationData);
+      
       if (conversationData && conversationData.id) {
         router.push(`/chats/${conversationData.id}`);
       } 
