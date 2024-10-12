@@ -3,6 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 import { HiOutlineMicrophone } from 'react-icons/hi2';
 import { FaStop, FaPause, FaPlay, FaTrash } from 'react-icons/fa';
+import { IoStop, IoPause, IoPlay } from 'react-icons/io5';
 
 export default function AudioRecorder({ onAudioSave, audioBlob }) {
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -188,9 +189,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           }`}
         >
           {isRecording ? (
-            <FaStop className="h-8 w-8" />
+            <IoStop className="h-7 w-7" />
           ) : (
-            <HiOutlineMicrophone className="h-8 w-8" />
+            <HiOutlineMicrophone className="h-7 w-7" />
           )}
         </button>
         {isRecording && (
@@ -199,9 +200,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
             className="mr-2 mt-4 rounded-full bg-yellow-500 px-4 py-4 font-bold text-white hover:bg-yellow-600"
           >
             {isPaused ? (
-              <FaPlay className="h-8 w-8" />
+              <IoPlay className="h-7 w-7" />
             ) : (
-              <FaPause className="h-8 w-8" />
+              <IoPause className="h-7 w-7" />
             )}
           </button>
         )}
