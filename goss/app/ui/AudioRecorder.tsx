@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
+import { HiOutlineMicrophone } from 'react-icons/hi2';
+import { FaStop, FaPause, FaPlay, FaTrash } from 'react-icons/fa';
 
 export default function AudioRecorder({ onAudioSave, audioBlob }) {
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -159,9 +161,10 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         ref={waveformRef}
         id="mic"
         className="mb-8 overflow-hidden"
-        style={{ marginTop: '-120px' }} // Adjust this value as needed
+        // Needed because the WaveSurfer plugin has default padding that is way too high.
+        style={{ marginTop: '-120px' }}
       />
-      <div className="mb-2">
+      <div className="mb-4 text-center">
         <select
           value={selectedDevice}
           onChange={(e) => setSelectedDevice(e.target.value)}
@@ -176,12 +179,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         <button
           onClick={handleRecord}
           disabled={!!recordedBlob} // Disable if recordedBlob exists
-          title={
-            recordedBlob
-              ? 'Delete current recording before making a new one'
-              : 'Start recording'
-          }
-          className={`mr-2 mt-1 rounded px-4 py-2 font-bold text-white ${
+          className={`mr-2 mt-4 rounded-full px-4 py-4 font-bold text-white ${
             recordedBlob
               ? 'cursor-not-allowed bg-gray-300'
               : isRecording
@@ -189,14 +187,22 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
                 : 'bg-purple-500 hover:bg-purple-600'
           }`}
         >
-          {isRecording ? 'Stop' : 'Record'}
+          {isRecording ? (
+            <FaStop className="h-6 w-6" />
+          ) : (
+            <HiOutlineMicrophone className="h-8 w-8" />
+          )}
         </button>
         {isRecording && (
           <button
             onClick={handlePause}
-            className="mr-2 rounded bg-yellow-500 px-4 py-2 font-bold text-white hover:bg-yellow-600"
+            className="mr-2 rounded-full bg-yellow-500 px-4 py-4 font-bold text-white hover:bg-yellow-600"
           >
-            {isPaused ? 'Resume' : 'Pause'}
+            {isPaused ? (
+              <FaPlay className="h-6 w-6" />
+            ) : (
+              <FaPause className="h-6 w-6" />
+            )}
           </button>
         )}
       </div>
@@ -228,7 +234,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
               onClick={handleDelete}
               className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
             >
-              Delete
+              <FaTrash className="h-5 w-5" />
             </button>
           </div>
         </div>
