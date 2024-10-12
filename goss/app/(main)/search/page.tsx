@@ -3,7 +3,7 @@
 import ProfileCard from '@/app/ui/ProfileCard';
 import { createClient } from '@/utils/supabase/client';
 import PostCard from '@/app/ui/PostCard';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LoadingSpinner from '@/app/ui/LoadingSpinner';
 
 const supabase = createClient();
@@ -69,6 +69,7 @@ export default function Search() {
   const [searchResults, setSearchResults] = useState<Profile[] | Post[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null); // Create a ref for the input field
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -104,7 +105,10 @@ export default function Search() {
     label,
   }) => (
     <button
-      onClick={() => setSearchType(type)}
+      onClick={() => {
+        setSearchType(type);
+        inputRef.current?.focus(); // Focus the input when tab is clicked
+      }}
       className={`rounded-t-md px-6 py-3 text-sm font-medium transition-all duration-300 ease-in-out ${
         searchType === type
           ? 'bg-purple-700 text-white shadow-md'
@@ -123,6 +127,7 @@ export default function Search() {
           <TabButton type="captions" label="Captions" />
         </div>
         <input
+          ref={inputRef}
           type="text"
           placeholder={`Search for ${searchType === 'profiles' ? 'a profile' : 'a caption'}...`}
           value={searchQuery}
