@@ -23,7 +23,11 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         />
         <Link href={`post/${post.id}`}>
           <div className="ml-3 flex flex-col">
-            <p className="font-semibold">{post.caption}</p>
+            {/* <p className="font-semibold">{post.caption}</p> */}
+            <p className="max-w-72 truncate pr-4 font-semibold">
+              {post.caption}
+            </p>{' '}
+            {/* Apply truncation */}
             <p className="text-gray-500">@{user.username}</p>
           </div>
         </Link>
