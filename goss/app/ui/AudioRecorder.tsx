@@ -54,6 +54,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       container: waveformRef.current,
       waveColor: 'rgb(200, 0, 200)',
       progressColor: 'rgb(100, 0, 100)',
+      barWidth: 2,
+      barGap: 2,
+      barRadius: 5,
     });
     const newRecord = newWavesurfer.registerPlugin(
       RecordPlugin.create({ scrollingWaveform, renderRecordedAudio: false })
@@ -78,7 +81,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       container: playbackRef.current,
       waveColor: 'rgb(200, 100, 0)',
       progressColor: 'rgb(100, 50, 0)',
-      height: 50,
+      barWidth: 2,
+      barGap: 2,
+      barRadius: 2,
     });
 
     newPlaybackWavesurfer.on('ready', () => {
@@ -145,6 +150,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       wavesurfer.setOptions({
         waveColor: 'rgb(200, 0, 200)',
         progressColor: 'rgb(100, 0, 100)',
+        barWidth: 2,
+        barGap: 2,
+        barRadius: 2,
       });
     }
     setTime(0);
