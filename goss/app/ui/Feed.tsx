@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../api/fetchPosts';
-import Post from './Post';
+import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -48,7 +48,7 @@ export default function Feed() {
       <div className="mt-8 flex flex-col items-center">
         {sortedPosts.length > 0 &&
           sortedPosts.map((post) => (
-            <Post key={post.id} post={post} user={post.profiles} />
+            <PostComponent key={post.id} post={post} user={post.profiles} />
           ))}
       </div>
     </>

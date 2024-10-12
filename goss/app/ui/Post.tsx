@@ -3,10 +3,11 @@ import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
 import { useQuery } from '@tanstack/react-query';
-
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
 import { fetchCommentsByPostId } from '../api/post';
+import { createFavourite } from '../api/favourites';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 interface PostProps {
   user: User;
@@ -14,6 +15,9 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post }: PostProps) {
+
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.user.id;
 
   const {
     data: comments = [],
@@ -44,6 +48,17 @@ export default function PostComponent({ user, post }: PostProps) {
     );
   }
 
+  const handleCreateFavourite = async () => {
+    if (!currentUserId) {
+      return;
+    }
+    try {
+      await createFavourite(currentUserId, post.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6">
@@ -71,17 +86,20 @@ export default function PostComponent({ user, post }: PostProps) {
           <Reactions postId={post.id} postAuthorId={post.user_id} />
         </div>
         <div className="w-full">
-          <Link href={`/post/${post.id}`}>
-            <div className="relative flex items-center">
-              <div className="w-full -mx-6 flex-grow border-t border-gray-200"></div>
-            </div>
+          <div className="relative flex items-center">
+            <div className="w-full -mx-6 flex-grow border-t border-gray-200"></div>
+          </div>
             <div className="flex items-center pt-2">
               <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
-              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                Comment {comments.length > 0 ? `(${comments.length})` : null}
+              <Link href={`/post/${post.id}`}>
+                <div className="ml-2 flex items-center text-base font-medium text-purple-600">
+                  Comment {comments.length > 0 ? `(${comments.length})` : null}
+                </div>
+              </Link>
+              <div className='ml-auto' onClick={() => handleCreateFavourite()}>
+                +
               </div>
             </div>
-          </Link>
         </div>
       </div>
     </>
