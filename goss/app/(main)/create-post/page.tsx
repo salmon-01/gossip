@@ -1,7 +1,7 @@
 'use client';
 
 import CreatePost from '@/app/ui/CreatePost';
-import { useRouter } from 'next/navigation'; // Change to next/navigation
+import { useRouter } from 'next/navigation';
 
 export default function Create() {
   const router = useRouter();
