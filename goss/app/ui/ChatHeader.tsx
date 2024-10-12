@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { fetchConversationProfile} from '../api/MessagesData'
 import { useQuery } from '@tanstack/react-query'
+import Loading from '../(main)/loading'
 
 
 
@@ -22,7 +23,7 @@ export default function ChatHeader({conversationId, loggedInUserId}) {
     return <div>Error loading profile: {profileError.message}</div>; // Display profile error
   }
   if (isLoadingProfile) {
-    return <div>Loading profile...</div>; // Display loading state for profile data
+    return <Loading/>; // Display loading state for profile data
   }
   
 console.log(profileData)

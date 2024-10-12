@@ -2,7 +2,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMessages } from '../api/MessagesData';
-
+import Loading from '../(main)/loading';
 
 
 export default function ChatMessages({conversationId, loggedInUserId}) {
@@ -22,7 +22,7 @@ export default function ChatMessages({conversationId, loggedInUserId}) {
     return <div>Error loading messages: {messagesError.message}</div>;
   }
   if (isLoadingMessages) {
-    return <div>Loading messages...</div>;
+    return <Loading/>;
   }
 
 
