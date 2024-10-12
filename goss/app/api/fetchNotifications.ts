@@ -26,7 +26,7 @@ export const fetchNotifications = async (userId: number) => {
     )
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-
+  console.log('notifications fetched!');
   if (error) {
     throw new Error(error.message);
   }

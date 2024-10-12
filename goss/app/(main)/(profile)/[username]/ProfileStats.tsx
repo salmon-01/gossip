@@ -22,8 +22,10 @@ export default function ProfileStats({ user }: ProfileStatsProps) {
         <span>{profileData.following_total}</span>
         <span className="mr-3 text-gray-600"> Followers</span>
       </Link>
-      <span>{profileData.follower_count} </span>
-      <span className="text-gray-600">Following</span>
+      <Link href={`/${user.username}/following`} className="hover:underline">
+        <span>{profileData.follower_count}</span>
+        <span className="mr-3 text-gray-600"> Followers</span>
+      </Link>
     </div>
   );
 }
