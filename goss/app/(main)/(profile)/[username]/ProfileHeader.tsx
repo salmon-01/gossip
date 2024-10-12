@@ -42,14 +42,22 @@ export default function ProfileHeader({ user }) {
         </p>
 
         {user.username === loggedInUsername ? (
-
+<>
           <Link
             href={`/settings/profile`}
-            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white mr-3"
             prefetch={true}
           >
             Edit profile
           </Link>
+          <Link
+            href={`/chats`}
+            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            prefetch={true}
+          >
+            Inbox
+          </Link>
+          </>
 
         ) : (
           <>
