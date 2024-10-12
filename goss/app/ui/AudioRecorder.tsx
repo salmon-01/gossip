@@ -4,6 +4,7 @@ import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 import { HiOutlineMicrophone } from 'react-icons/hi2';
 import { FaStop, FaPause, FaPlay, FaTrash } from 'react-icons/fa';
 import { IoStop, IoPause, IoPlay } from 'react-icons/io5';
+import toast from 'react-hot-toast';
 
 export default function AudioRecorder({ onAudioSave, audioBlob }) {
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -139,6 +140,11 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       playbackWavesurfer.destroy();
       setPlaybackWavesurfer(null);
     }
+    toast('Audio deleted', {
+      style: {
+        border: '1px solid red',
+      },
+    });
     setRecordedBlob(null);
     onAudioSave(null);
     resetWavesurfer();

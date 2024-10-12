@@ -2,7 +2,6 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSessionContext } from '@/app/context/SessionContext';
-import { FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
@@ -21,17 +20,6 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
-  };
-
-  console.log(audioBlob);
-
-  const handleDeleteAudioNote = () => {
-    setAudioBlob(null);
-    toast('Audio deleted', {
-      style: {
-        border: '1px solid red',
-      },
-    });
   };
 
   const createPostMutation = useMutation({
@@ -94,19 +82,6 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     createPostMutation.mutate();
   };
 
-  const audioElement = useMemo(() => {
-    if (audioBlob) {
-      return (
-        <audio
-          className="mx-1"
-          controls
-          src={URL.createObjectURL(audioBlob)}
-        ></audio>
-      );
-    }
-    return null;
-  }, [audioBlob]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!session) return <div>Not logged in</div>;
@@ -116,7 +91,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col rounded-md bg-gray-200 px-2 pt-3">
+        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3">
           <div className="flex h-8 w-full items-center">
             <img
               src={user.profile_img}
@@ -133,24 +108,9 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
             />
           </div>
           <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
-          <div className="mt-3 flex w-full items-center justify-center">
-            {audioElement}
-          </div>
-          <div className="mb-3 mt-6 flex w-full items-center justify-center">
-            {audioBlob && (
-              <button
-                type="button"
-                className="text-md flex items-center rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-500"
-                onClick={handleDeleteAudioNote}
-              >
-                <FaTrash className="mr-2 h-4 w-4" />
-                Delete
-              </button>
-            )}
-          </div>
         </div>
         {audioBlob && (
-          <div className="mt-6 flex justify-center">
+          <div className="mt-2 flex justify-center">
             <button
               type="submit"
               className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
