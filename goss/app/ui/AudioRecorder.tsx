@@ -158,7 +158,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       <div
         ref={waveformRef}
         id="mic"
-        className="mb-8"
+        className="mb-8 overflow-hidden"
         style={{ marginTop: '-120px' }} // Adjust this value as needed
       />
       <div className="mb-2">

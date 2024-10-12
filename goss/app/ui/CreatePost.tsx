@@ -128,7 +128,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="mt-5 w-full rounded-md px-2 py-2"
+              className="z-50 mt-5 w-full rounded-md px-2 py-2"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
