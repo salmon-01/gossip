@@ -2,17 +2,22 @@ import React from 'react';
 import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
+import MessageButton from '@/app/ui/MessageButton';
 
 
-export default function ProfileHeader({ user}) {
+export default function ProfileHeader({ user }) {
   const { data: session } = useSessionContext();
   const loggedInUsername = session?.profile.username;
-  const loggedInUserId = session?.profile.user_id 
+  const loggedInUserId = session?.profile.user_id
+  const otherUserId = user?.user_id
+  
+
+
   return (
     <>
       <div className="mx-auto flex w-11/12 items-center justify-between pt-4">
         <div className="flex items-center">
-          
+
           <img
             src={user.profile_img}
             className="h-16 w-16 rounded-full bg-black"
@@ -33,23 +38,28 @@ export default function ProfileHeader({ user}) {
 
       <div className="mx-auto my-3 w-11/12">
         <p className="mx-auto my-3 text-sm text-gray-500">
-          {user.bio} 
+          {user.bio}
         </p>
 
         {user.username === loggedInUsername ? (
-         
-            <Link
-              href={`/settings/profile`}
-              className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
-              prefetch={true}
-            >
-              Edit profile
-            </Link>
-         
+
+          <Link
+            href={`/settings/profile`}
+            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            prefetch={true}
+          >
+            Edit profile
+          </Link>
+
         ) : (
-          
-            <FollowButton user={user} targetUserId={loggedInUserId} />
-         
+          <>
+            <div className="flex items-center space-x-2"> {/* Use Flexbox to align items and add spacing */}
+              <FollowButton user={user} targetUserId={loggedInUserId} />
+             <MessageButton otherUserId={otherUserId} loggedInUserId={loggedInUserId}/>
+            </div>
+          </>
+
+
         )}
       </div>
     </>

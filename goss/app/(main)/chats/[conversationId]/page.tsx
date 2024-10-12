@@ -6,6 +6,8 @@ import ChatInput from '@/app/ui/ChatInput'
 
 export default function Chat({params}) {
   const {conversationId} = params
+
+
   
   return (
     <>
