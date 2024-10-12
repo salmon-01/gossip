@@ -39,9 +39,9 @@ export default function ChatsPage() {
           : conversation.participant_1_profile;
 
         return (
-          <div key={conversation.id} className="flex items-center p-4 border-b mb-3 border-gray-200 hover:bg-gray-100 transition duration-200">
+          <div key={conversation.id} className="flex items-center p-4 border-b mb-3  border-gray-200 hover:bg-gray-200 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
-              <div className="flex items-center w-full cursor-pointer">
+              <div className="flex items-center w-[90lvw] cursor-pointer ">
                 <img
                   src={otherParticipant.profile_img}
                   alt={otherParticipant.display_name}
@@ -49,9 +49,11 @@ export default function ChatsPage() {
                 />
 
                 <div className="flex-1">
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-gray-800">{otherParticipant.display_name}</span>
-                    <span className="text-gray-400 text-sm">{new Date(conversation.last_message_time).toDateString()}</span>
+                  <div className="flex justify-between items-center ">
+                  
+                    <span className="font-semibold text-gray-800  ">{otherParticipant.display_name}</span>
+                    
+                    <span className="text-gray-400 text-sm ">{new Date(conversation.last_message_time).toDateString()}</span>
                   </div>
                   <p className="text-gray-600 text-sm mt-1">{conversation.last_message}</p>
                 </div>

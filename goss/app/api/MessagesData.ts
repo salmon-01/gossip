@@ -7,6 +7,7 @@ export async function fetchMessages(conversationId) {
     .from('messages')
     .select('*')
     .eq('conversation_id', conversationId)
+  
 
 
   if (error) {
@@ -18,6 +19,9 @@ export async function fetchMessages(conversationId) {
 }
 
 export async function fetchUserConversations(loggedInUserId) {
+  if (!loggedInUserId) {
+    throw new Error("Logged in user ID is missing"); // Early return if loggedInUserId is undefined
+  }
   const { data, error } = await supabase
     .from('conversations')
     .select(`
@@ -34,3 +38,50 @@ export async function fetchUserConversations(loggedInUserId) {
   return data;
 }
 
+export async function createConversation(loggedInUserId, otherUserId) {
+
+  const { data: existingConversation, error: checkError } = await supabase
+    .from('conversations')
+    .select('*')
+    .or(`participant_1.eq.${loggedInUserId},participant_2.eq.${loggedInUserId}`)
+    .or(`participant_1.eq.${otherUserId},participant_2.eq.${otherUserId}`)
+    .limit(1);
+
+  if (checkError) {
+    throw new Error(checkError.message);
+  }
+
+  
+  if (existingConversation && existingConversation.length > 0) {
+    return existingConversation[0]; // Return the existing conversation
+  }
+
+  
+  const { data: newConversationData, error: conversationError } = await supabase
+    .from('conversations')
+    .insert([{ participant_1: loggedInUserId, participant_2: otherUserId }])
+    .select();
+
+  if (conversationError) {
+    throw new Error(conversationError.message);
+  }
+
+  if (!newConversationData || newConversationData.length === 0) {
+    throw new Error("Failed to create conversation: No data returned.");
+  }
+
+  const conversationId = newConversationData[0].id;
+
+  
+  const initialMessage = "Conversation started."; 
+  const { error: messageError } = await supabase
+    .from('messages')
+    .insert([{ conversation_id: conversationId, sender_id: loggedInUserId, content: initialMessage }]);
+
+  if (messageError) {
+    throw new Error(messageError.message);
+  }
+
+  // Return the newly created conversation
+  return newConversationData[0];
+}
