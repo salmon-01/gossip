@@ -63,7 +63,7 @@ const searchData = async (
   }
 };
 
-export default function TestQuery() {
+export default function Search() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState<SearchType>('profiles');
   const [searchResults, setSearchResults] = useState<Profile[] | Post[]>([]);
