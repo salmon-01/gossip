@@ -12,7 +12,7 @@ const ProfileCard = ({ user }) => {
   };
 
   return (
-    <div className="m-4 flex items-center justify-between">
+    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow">
       <div className="flex items-center">
         <img
           src={user.profile_img}
