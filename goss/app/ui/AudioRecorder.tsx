@@ -138,8 +138,19 @@ export default function AudioRecorder({ onAudioSave }) {
     // ? Works better than before -- as before this function was submitting the recorded post for some reason
     setRecordings([]);
     setTime(0);
-    setWavesurfer(null);
+    resetWavesurfer();
     onAudioSave(null);
+  };
+
+  const resetWavesurfer = () => {
+    if (wavesurfer) {
+      wavesurfer.empty();
+      wavesurfer.setOptions({
+        waveColor: 'rgb(200, 0, 200)',
+        progressColor: 'rgb(100, 0, 100)',
+      });
+    }
+    setTime(0);
   };
 
   const formatTime = (time) => {
