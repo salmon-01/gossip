@@ -228,7 +228,11 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
               onClick={handlePlayPause}
               className="mr-2 rounded bg-purple-500 px-4 py-2 font-bold text-white hover:bg-purple-600"
             >
-              {isPlaying ? 'Pause' : 'Play'}
+              {isPlaying ? (
+                <FaPause className="h-4 w-4" />
+              ) : (
+                <FaPlay className="h-4 w-4" />
+              )}
             </button>
             <button
               onClick={handleDelete}
