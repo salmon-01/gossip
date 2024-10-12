@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchUserConversations } from '@/app/api/MessagesData'
 import { useSessionContext } from '@/app/context/SessionContext'
 import Link from 'next/link'
-
+import Loading from '../loading'
 
 export default function ChatsPage() {
 
@@ -27,7 +27,7 @@ export default function ChatsPage() {
     return <div>Error loading messages: {error.message}</div>;
   }
   if (isLoading) {
-    return <div>Loading messages...</div>;
+    return <Loading/>;
   }
 
   return (

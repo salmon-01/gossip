@@ -4,13 +4,13 @@ import { createConversation } from '../api/MessagesData'
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+
 export default function MessageButton({ otherUserId, loggedInUserId }) {
 
 
   const router = useRouter(); 
   const {
     mutate: createConversationMutation,
-    isLoading,
     error,
   } = useMutation({
     mutationFn: () => createConversation(loggedInUserId, otherUserId),
@@ -29,9 +29,7 @@ export default function MessageButton({ otherUserId, loggedInUserId }) {
     return null; 
   }
 
-  if (isLoading) {
-    return <div>Creating conversation...</div>;
-  }
+
 
   return (
     <>
