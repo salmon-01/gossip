@@ -3,7 +3,6 @@ import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
 import { useQuery } from '@tanstack/react-query';
-
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
 import { fetchCommentsByPostId } from '../api/post';
@@ -14,7 +13,6 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post }: PostProps) {
-
   const {
     data: comments = [],
     isLoading,
@@ -27,11 +25,7 @@ export default function PostComponent({ user, post }: PostProps) {
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        Loading comments...
-      </div>
-    );
+    return <div className="space-y-4">Loading comments...</div>;
   }
 
   if (isError) {
@@ -73,7 +67,7 @@ export default function PostComponent({ user, post }: PostProps) {
         <div className="w-full">
           <Link href={`/post/${post.id}`}>
             <div className="relative flex items-center">
-              <div className="w-full -mx-6 flex-grow border-t border-gray-200"></div>
+              <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
             </div>
             <div className="flex items-center pt-2">
               <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
