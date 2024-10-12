@@ -2,13 +2,12 @@
 import React, { useState } from 'react'
 import { createClient } from '@/utils/supabase/client';
 const supabase = createClient();
-import { useSessionContext } from '../context/SessionContext';
 
-export default function ChatInput({ conversationId }) {
+
+export default function ChatInput({ conversationId, loggedInUserId}) {
   const [message, setMessage] = useState("")
 
-  const { data: session } = useSessionContext();
-  const loggedInUserId = session?.profile.user_id
+
 
   async function handleSubmit(e) {
     e.preventDefault();

@@ -85,3 +85,31 @@ export async function createConversation(loggedInUserId, otherUserId) {
   // Return the newly created conversation
   return newConversationData[0];
 }
+
+
+export async function fetchConversationProfile(loggedInUserId, conversationId) {
+  if (!loggedInUserId) {
+    throw new Error("Logged in user ID is missing"); // Early return if loggedInUserId is undefined
+  }
+
+  const { data, error } = await supabase
+    .from('conversations')
+    .select(`
+      *,
+      participant_1_profile: profiles!participant_1_fkey (*),
+      participant_2_profile: profiles!participant_2_fkey (*)
+    `)
+    .eq('id', conversationId) 
+    .single(); 
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // Determine which profile belongs to the other participant
+  const otherParticipantProfile = data.participant_1 === loggedInUserId 
+    ? data.participant_2_profile 
+    : data.participant_1_profile;
+
+  return otherParticipantProfile; 
+}

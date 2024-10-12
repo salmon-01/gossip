@@ -2,12 +2,10 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMessages } from '../api/MessagesData';
-import { useSessionContext } from '../context/SessionContext';
 
 
-export default function ChatMessages({conversationId}) {
-  const { data: session } = useSessionContext();
-  const loggedInUserId = session?.profile?.user_id 
+
+export default function ChatMessages({conversationId, loggedInUserId}) {
 
   const {
     data: messagesData,
