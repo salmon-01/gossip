@@ -142,7 +142,9 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
     }
     toast('Audio deleted', {
       style: {
-        border: '1px solid red',
+        border: '1px solid',
+        background: 'slategray',
+        color: 'white',
       },
     });
     setRecordedBlob(null);
