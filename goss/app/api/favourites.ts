@@ -2,21 +2,26 @@ import { createClient } from '@/utils/supabase/client';
 const supabase = createClient();
 
 export const createFavourite = async (userId: string, postId: string) => {
-  const { data: existingFavourite } = await supabase
+  const { data: existingFavourite, error } = await supabase
     .from('favourites')
-    .select('id')  // You can select any column, 'id' is enough to check existence
+    .select('id')
     .eq('user_id', userId)
     .eq('post_id', postId)
-    .single();
+    .limit(1)
 
-    if (existingFavourite) {
+    if (error) {
+      console.error('Error checking favourite:', error);
+      throw error;
+    }
+
+    if (existingFavourite.length > 0) {
       return; 
     }
 
-  const { error } = await supabase
+  const { error: insertError } = await supabase
   .from('favourites')
-  .insert([{user_id: userId, post_id: postId,},]);
-  if (error) throw error;
+  .insert([{user_id: userId, post_id: postId}]);
+  if (insertError) throw error;
 };
 
 export const fetchFavourites = async (userId: string) => {

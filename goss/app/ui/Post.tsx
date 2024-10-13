@@ -1,4 +1,4 @@
-import { HiOutlineChatBubbleLeftEllipsis } from 'react-icons/hi2';
+import { HiOutlineChatBubbleLeftEllipsis, HiOutlineBookmark } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
@@ -97,7 +97,7 @@ export default function PostComponent({ user, post }: PostProps) {
                 </div>
               </Link>
               <div className='ml-auto' onClick={() => handleCreateFavourite()}>
-                +
+                <HiOutlineBookmark color="#9333ea" size={18}/>
               </div>
             </div>
         </div>
