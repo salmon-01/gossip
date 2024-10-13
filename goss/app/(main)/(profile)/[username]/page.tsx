@@ -50,7 +50,7 @@ export default function ProfilePost({ params }) {
     <>
       {PostData && PostData.length > 0 ? (
         PostData.map((post) => (
-          <div key={post.id} className="mt-4 border-gray-300 p-1">
+          <div key={post.id} className="mt-4 border-gray-300  p-3">
             <PostComponent user={profile} post={post} />
           </div>
         ))

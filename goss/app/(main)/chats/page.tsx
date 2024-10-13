@@ -33,14 +33,14 @@ export default function ChatsPage() {
 
   return (
     <div>
-      <h2 className='text-center p-2 font-bold text-2xl sticky top-0'>Messages</h2>
+      <h2 className=' px-4 py-6 font-bold text-2xl sticky top-0'>Messages</h2>
       {Conversations?.map((conversation) => {
         const otherParticipant = conversation.participant_1 === loggedInUserId
           ? conversation.participant_2_profile
           : conversation.participant_1_profile;
 
         return (
-          <div key={conversation.id} className="flex items-center p-4 border-b mb-3  border-gray-200 hover:bg-gray-200 transition duration-200">
+          <div key={conversation.id} className="flex items-center p-2 mx-auto  rounded-md w-[95lvw] mb-3  border-gray-200 hover:bg-purple-100 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
               <div className="flex items-center w-[90lvw] cursor-pointer ">
                 <img
@@ -52,11 +52,11 @@ export default function ChatsPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-center ">
                   
-                    <span className="font-semibold text-gray-800  ">{otherParticipant.display_name}</span>
+                    <span className="font-semibold text-indigo-950  ">{otherParticipant.display_name}</span>
                     
                     <span className="text-gray-600 text-sm ">{formatDate(conversation.last_message_time)}</span>
                   </div>
-                  <p className="text-gray-600 text-sm mt-1">{conversation.last_message}</p>
+                  <p className=" text-indigo-900 text-sm mt-1">{conversation.last_message}</p>
                 </div>
               </div>
             </Link>

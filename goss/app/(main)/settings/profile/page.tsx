@@ -120,17 +120,20 @@ export default function ProfilePage() {
 
   return (
     <form className="mx-auto h-lvh w-full p-3" onSubmit={updateProfile}>
-      <button
-        type="button"
-        onClick={handleCancel}
-        className="p-1 text-3xl font-bold"
-      >
-        X
-      </button>
+<div className="flex  mb-3 items-center">
+  <button
+    type="button"
+    onClick={handleCancel}
+    className="mb-2 text-3xl font-bold text-gray-600"
+  >
+    {'\u2190'}
+  </button>
 
-      <h2 className="mb-3 px-4 text-center text-2xl font-bold">Edit Profile</h2>
+  <h2 className=" px-4 text-2xl font-bold">Edit Profile</h2>
+</div>
 
-      <div className="relative mb-4 h-28 w-28">
+
+      <div className="relative mb-4 h-36 w-36">
         <label htmlFor="file_input">
           <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
             {preview === profileImg ? (
@@ -203,7 +206,7 @@ export default function ProfilePage() {
 
       <button
         type="submit"
-        className="mt-2 rounded bg-purple-500 p-2 text-white hover:bg-purple-600"
+        className="mt-20 rounded bg-purple-600 p-2 w-full text-white hover:bg-purple-800"
       >
         Update Profile
       </button>

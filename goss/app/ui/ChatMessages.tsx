@@ -18,9 +18,9 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
   } = useQuery({
     queryKey: ['conversationMessages', conversationId],
     queryFn: () => fetchMessages(conversationId),
-    enabled: !!conversationId, 
+    enabled: !!conversationId,
   });
-  
+
   useEffect(() => {
     const messageSubscription = supabase
       .channel('realtime:messages')
@@ -28,16 +28,16 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
         event: 'INSERT',
         schema: 'public',
         table: 'messages',
-        filter: `conversation_id=eq.${conversationId}`, 
+        filter: `conversation_id=eq.${conversationId}`,
       }, (payload) => {
         console.log('New message received: ', payload.new);
 
-       
+
         queryClient.invalidateQueries({ queryKey: ['conversationMessages', conversationId] });
       })
       .subscribe();
 
-    
+
     return () => {
       supabase.removeChannel(messageSubscription);
     };
@@ -56,16 +56,24 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
 
 
   return (
-    <div className='flex flex-col space-y-2 p-4 overflow-auto h-full'>
+    <div className='flex flex-col space-y-3 p-4 overflow-auto h-full'>
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-500 text-white self-end shadow-xl" : "bg-white shadow-xl text-black self-start"}`}
+          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-700 text-white self-end shadow-md" : "bg-purple-100 shadow-md  text-black self-start"}`}
         >
           <div>{message.content}</div>
-          <div className='text-xs mt-1'>{new Date(message.created_at).toLocaleString()} </div>
+          <div className='text-xs mt-3 text-right'>{new Date(message.created_at).toLocaleString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })} </div>
         </div>
       ))}
     </div>
   );
 }
+
