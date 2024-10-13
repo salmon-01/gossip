@@ -175,7 +175,7 @@ export default function ProfilePage() {
         name="name"
         type="text"
         placeholder="Name"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         value={profile.name}
         onChange={handleChange}
       />
@@ -188,7 +188,7 @@ export default function ProfilePage() {
         name="badge"
         type="text"
         placeholder="Badge"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         value={profile.badge}
         onChange={handleChange}
       />
@@ -200,7 +200,7 @@ export default function ProfilePage() {
         id="bio"
         name="bio"
         placeholder="Bio"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         rows={4}
         value={profile.bio}
         onChange={handleChange}
