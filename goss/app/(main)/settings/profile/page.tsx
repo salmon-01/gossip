@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect,ChangeEvent, FormEvent  } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@/app/context/SessionContext';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import ThemeSwitch from '@/app/ui/ThemeSwitch';
 
 interface Profile {
   name: string;
@@ -41,7 +42,9 @@ export default function ProfilePage() {
     }
   }, [session]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
@@ -120,18 +123,17 @@ export default function ProfilePage() {
 
   return (
     <form className="mx-auto h-lvh w-full p-3" onSubmit={updateProfile}>
-<div className="flex  mb-3 items-center">
-  <button
-    type="button"
-    onClick={handleCancel}
-    className="mb-2 text-3xl font-bold text-gray-600"
-  >
-    {'\u2190'}
-  </button>
+      <div className="mb-3 flex items-center">
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="mb-2 text-3xl font-bold text-gray-600"
+        >
+          {'\u2190'}
+        </button>
 
-  <h2 className=" px-4 text-2xl font-bold">Edit Profile</h2>
-</div>
-
+        <h2 className="px-4 text-2xl font-bold">Edit Profile</h2>
+      </div>
 
       <div className="relative mb-4 h-36 w-36">
         <label htmlFor="file_input">
@@ -173,7 +175,7 @@ export default function ProfilePage() {
         name="name"
         type="text"
         placeholder="Name"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         value={profile.name}
         onChange={handleChange}
       />
@@ -186,7 +188,7 @@ export default function ProfilePage() {
         name="badge"
         type="text"
         placeholder="Badge"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         value={profile.badge}
         onChange={handleChange}
       />
@@ -198,15 +200,15 @@ export default function ProfilePage() {
         id="bio"
         name="bio"
         placeholder="Bio"
-        className="w-full rounded border border-gray-300 p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm"
         rows={4}
         value={profile.bio}
         onChange={handleChange}
       />
-
+      <ThemeSwitch />
       <button
         type="submit"
-        className="mt-20 rounded bg-purple-600 p-2 w-full text-white hover:bg-purple-800"
+        className="mt-10 w-full rounded bg-purple-600 p-2 text-white hover:bg-purple-800"
       >
         Update Profile
       </button>
