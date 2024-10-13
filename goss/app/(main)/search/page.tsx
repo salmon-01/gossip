@@ -112,7 +112,7 @@ export default function Search() {
       className={`rounded-t-md px-6 py-3 text-sm font-medium transition-all duration-300 ease-in-out ${
         searchType === type
           ? 'bg-purple-700 text-white shadow-md'
-          : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
+          : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-slate-700 dark:text-white'
       }`}
     >
       {label}
@@ -120,7 +120,7 @@ export default function Search() {
   );
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center bg-gray-50 p-8">
+    <div className="flex min-h-screen w-full flex-col items-center bg-gray-50 p-8 dark:bg-slate-800">
       <div className="w-full max-w-md">
         <div className="mb-4 flex">
           <TabButton type="profiles" label="Profiles" />
@@ -132,7 +132,7 @@ export default function Search() {
           placeholder={`Search for ${searchType === 'profiles' ? 'a profile' : 'a caption'}...`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 p-4 shadow-sm transition duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-lg border border-gray-300 bg-slate-100 p-4 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-slate-800 dark:text-white dark:focus:border-slate-300"
         />
       </div>
       <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -150,7 +150,7 @@ export default function Search() {
             )
           )
         ) : (
-          <div className="col-span-full mt-8 text-center text-gray-500">
+          <div className="col-span-full mt-8 text-center text-gray-500 dark:text-slate-200">
             {!hasSearched
               ? `Enter a ${searchType === 'profiles' ? 'name' : 'caption'} to search`
               : searchQuery.trim() !== ''
