@@ -132,7 +132,7 @@ export default function ProfilePage() {
           {'\u2190'}
         </button>
 
-        <h2 className="px-4 text-2xl font-bold">Edit Profile</h2>
+        <h2 className="px-4 text-2xl font-bold dark:text-white">Edit Profile</h2>
       </div>
 
       <div className="relative mb-4 h-36 w-36">
