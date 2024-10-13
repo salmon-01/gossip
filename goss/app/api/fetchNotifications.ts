@@ -34,3 +34,19 @@ export const fetchNotifications = async (userId: number) => {
 
   return notifications; // Return just the notifications array
 };
+
+export const markNotificationsRead = async (userId: number) => {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from('notifications')
+    .update({ is_read: true })
+    .eq('user_id', userId)
+    .eq('is_read', false);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return true;
+};
