@@ -3,7 +3,8 @@ import { createClient } from '@/utils/supabase/client';
 export const fetchNotifications = async (userId: number) => {
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  // Fetch all notifications
+  const { data: notifications, error } = await supabase
     .from('notifications')
     .select(
       `
@@ -26,10 +27,26 @@ export const fetchNotifications = async (userId: number) => {
     )
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-  console.log('notifications fetched!');
+
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return notifications; // Return just the notifications array
+};
+
+export const markNotificationsRead = async (userId: number) => {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from('notifications')
+    .update({ is_read: true })
+    .eq('user_id', userId)
+    .eq('is_read', false);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return true;
 };
