@@ -5,7 +5,6 @@ import { createClient } from '@/utils/supabase/client';
 import PostCard from '@/app/ui/PostCard';
 import React, { useState, useEffect, useRef } from 'react';
 import LoadingSpinner from '@/app/ui/LoadingSpinner';
-import ThemeSwitch from '@/app/ui/ThemeSwitch';
 
 const supabase = createClient();
 
@@ -122,7 +121,6 @@ export default function Search() {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-gray-50 p-8 dark:bg-slate-800">
-      <ThemeSwitch />
       <div className="w-full max-w-md">
         <div className="mb-4 flex">
           <TabButton type="profiles" label="Profiles" />
