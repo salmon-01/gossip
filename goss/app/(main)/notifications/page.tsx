@@ -68,7 +68,9 @@ export default function Notifications() {
 
   return (
     <div className="min-h-screen p-4">
-      <h1 className="mb-6 text-center text-2xl font-bold">Notifications</h1>
+      <h1 className="mb-6 text-center text-2xl font-bold dark:text-slate-200">
+        Notifications
+      </h1>
 
       {/* <button
         onClick={handleMarkAllAsRead}

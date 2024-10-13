@@ -7,6 +7,7 @@ import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import ThemeSwitch from './ThemeSwitch';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -96,7 +97,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3">
+        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-slate-600">
           <div className="flex h-8 w-full items-center">
             <img
               src={user.profile_img}
@@ -108,7 +109,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="z-50 mt-5 w-full rounded-md px-2 py-2"
+              className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-slate-800 dark:text-white dark:focus:border-slate-300"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
