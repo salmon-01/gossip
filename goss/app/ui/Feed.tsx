@@ -4,6 +4,7 @@ import { fetchPosts } from '../api/fetchPosts';
 import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import ThemeSwitch from './ThemeSwitch';
 
 export default function Feed() {
   const {
