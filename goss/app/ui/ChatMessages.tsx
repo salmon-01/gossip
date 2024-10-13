@@ -34,10 +34,10 @@ export default function ChatMessages({conversationId, loggedInUserId}) {
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-400 text-white self-end" : "bg-gray-200 text-black self-start"}`}
+          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-500 text-white self-end shadow-xl" : "bg-white shadow-xl text-black self-start"}`}
         >
           <div>{message.content}</div>
-          <div className='text-xs text-gray-500 mt-1'>{new Date(message.created_at).toLocaleString()} </div>
+          <div className='text-xs mt-1'>{new Date(message.created_at).toLocaleString()} </div>
         </div>
       ))}
     </div>
