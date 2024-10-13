@@ -7,6 +7,7 @@ import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import ThemeSwitch from './ThemeSwitch';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -95,6 +96,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
+      <ThemeSwitch />
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-slate-600">
           <div className="flex h-8 w-full items-center">
