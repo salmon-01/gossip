@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect} from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchUserConversations } from '@/app/api/MessagesData'
 import { useSessionContext } from '@/app/context/SessionContext'
@@ -7,11 +7,15 @@ import Link from 'next/link'
 import Loading from '../loading'
 import { formatDate } from './time'
 
+
+
+
 export default function ChatsPage() {
 
   const { data: session } = useSessionContext();
   const loggedInUserId = session?.profile.user_id
 
+  
 
   const {
     data: Conversations,
@@ -23,7 +27,9 @@ export default function ChatsPage() {
 
   });
 
-  console.log(Conversations)
+
+  
+
   if (error) {
     return <div>Error loading messages: {error.message}</div>;
   }
@@ -42,7 +48,9 @@ export default function ChatsPage() {
         return (
           <div key={conversation.id} className="flex items-center p-2 mx-auto  rounded-md w-[95lvw] mb-3  border-gray-200 hover:bg-purple-100 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
-              <div className="flex items-center w-[90lvw] cursor-pointer ">
+              <div className="flex items-center w-[90lvw] cursor-pointer "
+              
+              >
                 <img
                   src={otherParticipant.profile_img}
                   alt={otherParticipant.display_name}
