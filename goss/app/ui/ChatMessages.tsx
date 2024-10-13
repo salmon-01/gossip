@@ -56,24 +56,31 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
 
 
   return (
-    <div className='flex flex-col space-y-3 p-4 overflow-auto h-full'>
-      {messages.map((message) => (
-        <div
-          key={message.id}
-          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-700 text-white self-end shadow-md" : "bg-purple-100 shadow-md  text-black self-start"}`}
-        >
-          <div>{message.content}</div>
-          <div className='text-xs mt-3 text-right'>{new Date(message.created_at).toLocaleString('en-GB', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })} </div>
-        </div>
-      ))}
+<div className='flex flex-col space-y-3 p-4 overflow-auto h-full  '>
+  {messages.map((message) => (
+    <div
+      key={message.id}
+      className={`p-3 rounded-lg max-w-xs ${
+        message.sender_id === loggedInUserId
+          ? "bg-purple-700 text-white self-end shadow-md"
+          : "bg-purple-100 shadow-md text-black self-start"
+      }`}
+    >
+      <div>{message.content}</div>
+      <div className='text-xs mt-3 text-right'>
+        {new Date(message.created_at).toLocaleString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        })}
+      </div>
     </div>
+  ))}
+</div>
+
   );
 }
 
