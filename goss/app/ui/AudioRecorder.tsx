@@ -171,7 +171,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
   };
 
   return (
-    <div className="mt-10 rounded-lg bg-gray-100 p-4 shadow">
+    <div className="mt-10 rounded-lg bg-gray-100 p-4 shadow dark:bg-slate-800">
       <div
         ref={waveformRef}
         id="mic"
@@ -183,7 +183,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         <select
           value={selectedDevice}
           onChange={(e) => setSelectedDevice(e.target.value)}
-          className="mr-2 rounded border p-2"
+          className="mr-2 rounded border p-2 dark:bg-slate-700 dark:text-slate-200"
         >
           {devices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
@@ -222,10 +222,12 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         )}
       </div>
       <div className="mb-4">
-        <p className="text-lg font-semibold">Duration: {formatTime(time)}</p>
+        <p className="text-lg font-semibold dark:text-slate-200">
+          Duration: {formatTime(time)}
+        </p>
       </div>
       <div>
-        <label className="flex items-center">
+        <label className="flex items-center dark:text-slate-300">
           <input
             type="checkbox"
             checked={scrollingWaveform}
