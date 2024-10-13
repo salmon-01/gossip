@@ -31,7 +31,7 @@ export default function Feed() {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-40 mt-10 flex w-full items-center bg-white pb-2 pl-4 pt-4 text-base text-purple-500">
+      <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-white pb-2 pl-4 pt-4 text-base text-purple-500">
         <div>Sort:</div>
         <button
           onClick={() => setSortOrder('newest')}
@@ -46,7 +46,6 @@ export default function Feed() {
           Old
         </button>
       </div>
-      <ThemeSwitch />
       <div className="mt-8 flex flex-col items-center">
         {sortedPosts.length > 0 &&
           sortedPosts.map((post) => (
