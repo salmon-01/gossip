@@ -40,8 +40,10 @@ export default function ProfileLayout({ children, params }) {
   return (
     <div className='bg-white '>
       {/* Pass profile data to the header and stats components */}
+      <div className='border-b'>
       <ProfileHeader user={profileData}/>
       <ProfileStats user={profileData} />
+      </div>
       <ProfileNav username={username} />
       <main>{children}</main>
     </div>

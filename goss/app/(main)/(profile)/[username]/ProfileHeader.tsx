@@ -12,12 +12,12 @@ export default function ProfileHeader({ user }) {
   const loggedInUsername = session?.profile.username;
   const loggedInUserId = session?.profile.user_id
   const otherUserId = user?.user_id
-  
+
 
 
   return (
     <>
-      <div className="mx-auto flex w-11/12 items-center justify-between pt-4">
+      <div className="mx-auto flex w-11/12 items-center  justify-between pt-4">
         <div className="flex items-center">
 
           <img
@@ -33,9 +33,23 @@ export default function ProfileHeader({ user }) {
         </div>
 
         {/* Follow button */}
-        <p className="my-3 w-24 rounded border border-pink-700 bg-pink-400 py-1 text-center text-sm text-white">
-          {user.badge}
-        </p>
+        {user.username === loggedInUsername ? (
+          <div>
+          <Link
+            href={`/settings/profile`}
+            className="p-0 text-2xl hover:text-purple-700  mt-1 mr-3"
+            prefetch={true}
+          >
+            <FiEdit className='inline' />
+          </Link>
+          <Link
+            href={`/chats`}
+            className="p-0 text-2xl hover:text-purple-700 "
+            prefetch={true}
+          >
+            <GoMail className='inline' />
+          </Link>
+        </div>) : (<></>)}
       </div>
 
       <div className="mx-auto my-3 w-11/12">
@@ -44,28 +58,15 @@ export default function ProfileHeader({ user }) {
         </p>
 
         {user.username === loggedInUsername ? (
-<>
-          <Link
-            href={`/settings/profile`}
-            className="p-0 text-2xl hover:text-purple-700  mt-1 mr-3"
-            prefetch={true}
-          >
-            <FiEdit className='inline'/>
-          </Link>
-          <Link
-            href={`/chats`}
-            className="p-0 text-2xl hover:text-purple-700 "
-            prefetch={true}
-          >
-            <GoMail className='inline'/>
-          </Link>
-          </>
+          <p className="my-3 w-24 rounded border border-gray-200 bg-gray-200 py-1 text-center text-md ">
+            {user.badge}
+          </p>
 
         ) : (
           <>
             <div className="flex items-center space-x-2"> {/* Use Flexbox to align items and add spacing */}
               <FollowButton user={user} targetUserId={loggedInUserId} />
-             <MessageButton otherUserId={otherUserId} loggedInUserId={loggedInUserId}/>
+              <MessageButton otherUserId={otherUserId} loggedInUserId={loggedInUserId} />
             </div>
           </>
 
