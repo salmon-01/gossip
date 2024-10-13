@@ -3,6 +3,8 @@ import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
 import MessageButton from '@/app/ui/MessageButton';
+import { GoMail } from "react-icons/go";
+import { FiEdit } from "react-icons/fi";
 
 
 export default function ProfileHeader({ user }) {
@@ -45,17 +47,17 @@ export default function ProfileHeader({ user }) {
 <>
           <Link
             href={`/settings/profile`}
-            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white mr-3"
+            className="p-0 text-2xl hover:text-purple-700  mt-1 mr-3"
             prefetch={true}
           >
-            Edit profile
+            <FiEdit className='inline'/>
           </Link>
           <Link
             href={`/chats`}
-            className="rounded-xl border border-gray-400 px-3 py-1 hover:bg-violet-700 hover:text-white"
+            className="p-0 text-2xl hover:text-purple-700 "
             prefetch={true}
           >
-            Inbox
+            <GoMail className='inline'/>
           </Link>
           </>
 

@@ -32,18 +32,22 @@ console.log(profileData)
 <div className="p-3 rounded-md sticky top-0 flex items-center shadow bg-white z-20">
   <Link href="/chats" className="flex items-center text-lg font-bold text-gray-700 hover:text-gray-900 transition duration-200">
 
-    <span className="text-3xl mr-2">{'\u2190'}</span>Back
+    <span className="text-3xl mb-1 mr-2">{'\u2190'}</span>
   </Link>
 
   
   <div className="flex items-center ml-4"> 
-    <img
-      src={profileData?.profile_img}
-      className="w-10 h-10 rounded-full mr-2" 
-      alt="Profile"
-    />
-    <h2 className="text-lg font-bold text-gray-800">{profileData?.display_name}</h2>
+  <img
+    src={profileData?.profile_img}
+    className="w-10 h-10 rounded-full mr-2" 
+    alt="Profile"
+  />
+  <div>
+    <h2 className="text-lg font-bold text-black">{profileData?.display_name}</h2>
+    <p className="text-sm text-gray-500">@{profileData?.username}</p>
   </div>
+</div>
+
 </div>
 
 
