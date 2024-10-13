@@ -15,15 +15,18 @@ export default function Chat({params}) {
   
   return (
     <>
-    <div className="flex flex-col h-[97vh] bg-gray-100  ">
-      <ChatHeader conversationId={conversationId} loggedInUserId={loggedInUserId}/>
-      <div className="flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
-        <ChatMessages conversationId={conversationId} loggedInUserId={loggedInUserId}/>
-      </div>
-      <div className="mt-auto">
-        <ChatInput conversationId={conversationId} loggedInUserId={loggedInUserId} />
-      </div>
-    </div>
+<div className="flex flex-col h-[calc(100vh-64px)] bg-gray-100">
+  <ChatHeader conversationId={conversationId} loggedInUserId={loggedInUserId} />
+  
+  <div className="flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
+    <ChatMessages conversationId={conversationId} loggedInUserId={loggedInUserId} />
+  </div>
+  
+  <div className="mt-auto">
+    <ChatInput conversationId={conversationId} loggedInUserId={loggedInUserId} />
+  </div>
+</div>
+
 
   </>
   )

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { createClient } from '@/utils/supabase/client';
 const supabase = createClient();
 import { useQueryClient } from '@tanstack/react-query';
-
+import { FaRegPaperPlane } from "react-icons/fa";
 
 export default function ChatInput({ conversationId, loggedInUserId}) {
   const [message, setMessage] = useState("")
@@ -54,19 +54,20 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
 
 
   return (
-    <form onSubmit={handleSubmit} className="flex mb-10 items-center w-full ">
+    <form onSubmit={handleSubmit} className="flex bg-white p-2 items-center w-full ">
       <input
         type="text"
-        placeholder='Chat'
-        className='flex-grow p-3 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-500'
+        placeholder='Write a message...'
+        className='flex-grow p-3 rounded-xl  bg-purple-100 shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
       <button
         type="submit"
-        className='ml-2 p-3 rounded-xl bg-purple-600 text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-slate-500'
+        className='ml-2 p-3 rounded-full bg-purple-700 text-white hover:bg-purple-900 focus:outline-none focus:ring-1 focus:ring-purple-900'
       >
-        Send
+        <FaRegPaperPlane />
+
       </button>
     </form>
   );
