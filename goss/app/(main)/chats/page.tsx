@@ -5,6 +5,7 @@ import { fetchUserConversations } from '@/app/api/MessagesData'
 import { useSessionContext } from '@/app/context/SessionContext'
 import Link from 'next/link'
 import Loading from '../loading'
+import { formatDate } from './time'
 
 export default function ChatsPage() {
 
@@ -53,7 +54,7 @@ export default function ChatsPage() {
                   
                     <span className="font-semibold text-gray-800  ">{otherParticipant.display_name}</span>
                     
-                    <span className="text-gray-400 text-sm ">{new Date(conversation.last_message_time).toDateString()}</span>
+                    <span className="text-gray-600 text-sm ">{formatDate(conversation.last_message_time)}</span>
                   </div>
                   <p className="text-gray-600 text-sm mt-1">{conversation.last_message}</p>
                 </div>

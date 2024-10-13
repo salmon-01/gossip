@@ -29,7 +29,11 @@ export async function fetchUserConversations(loggedInUserId) {
       participant_1_profile: profiles!participant_1_fkey (*),
       participant_2_profile: profiles!participant_2_fkey (*)
     `)
-    .or(`participant_1.eq.${loggedInUserId},participant_2.eq.${loggedInUserId}`);
+    .or(`participant_1.eq.${loggedInUserId},participant_2.eq.${loggedInUserId}`)
+    .order('last_message_time', { ascending: false });
+ 
+
+   
 
   if (error) {
     throw new Error(error.message);

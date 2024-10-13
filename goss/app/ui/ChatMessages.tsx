@@ -1,11 +1,15 @@
 "use client"
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchMessages } from '../api/MessagesData';
 import Loading from '../(main)/loading';
+import { useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
 
+const supabase = createClient();
 
-export default function ChatMessages({conversationId, loggedInUserId}) {
+export default function ChatMessages({ conversationId, loggedInUserId }) {
+  const queryClient = useQueryClient();
 
   const {
     data: messagesData,
@@ -14,15 +18,37 @@ export default function ChatMessages({conversationId, loggedInUserId}) {
   } = useQuery({
     queryKey: ['conversationMessages', conversationId],
     queryFn: () => fetchMessages(conversationId),
-    enabled: !!conversationId, // 
+    enabled: !!conversationId, 
   });
-
   
+  useEffect(() => {
+    const messageSubscription = supabase
+      .channel('realtime:messages')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: `conversation_id=eq.${conversationId}`, 
+      }, (payload) => {
+        console.log('New message received: ', payload.new);
+
+       
+        queryClient.invalidateQueries({ queryKey: ['conversationMessages', conversationId] });
+      })
+      .subscribe();
+
+    
+    return () => {
+      supabase.removeChannel(messageSubscription);
+    };
+  }, [conversationId, queryClient]);
+
+
   if (messagesError) {
     return <div>Error loading messages: {messagesError.message}</div>;
   }
   if (isLoadingMessages) {
-    return <Loading/>;
+    return <Loading />;
   }
 
 
@@ -34,10 +60,10 @@ export default function ChatMessages({conversationId, loggedInUserId}) {
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-400 text-white self-end" : "bg-gray-200 text-black self-start"}`}
+          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId ? "bg-purple-500 text-white self-end shadow-xl" : "bg-white shadow-xl text-black self-start"}`}
         >
           <div>{message.content}</div>
-          <div className='text-xs text-gray-500 mt-1'>{new Date(message.created_at).toLocaleString()} </div>
+          <div className='text-xs mt-1'>{new Date(message.created_at).toLocaleString()} </div>
         </div>
       ))}
     </div>
