@@ -16,6 +16,7 @@ interface PostProps {
 
 export default function PostComponent({ user, post }: PostProps) {
 
+
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
 
@@ -31,11 +32,7 @@ export default function PostComponent({ user, post }: PostProps) {
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        Loading comments...
-      </div>
-    );
+    return <div className="space-y-4">Loading comments...</div>;
   }
 
   if (isError) {
