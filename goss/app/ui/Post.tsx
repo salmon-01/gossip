@@ -1,4 +1,4 @@
-import { HiOutlineChatBubbleLeftEllipsis } from 'react-icons/hi2';
+import { HiOutlineChatBubbleLeftEllipsis, HiOutlineBookmark } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { User, Post } from '@/app/types';
 import { fetchCommentsByPostId } from '../api/post';
+import { createFavourite } from '../api/favourites';
+import { useSessionContext } from '@/app/context/SessionContext';
 
 interface PostProps {
   user: User;
@@ -13,6 +15,11 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post }: PostProps) {
+
+
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.user.id;
+
   const {
     data: comments = [],
     isLoading,
@@ -37,6 +44,17 @@ export default function PostComponent({ user, post }: PostProps) {
       </div>
     );
   }
+
+  const handleCreateFavourite = async () => {
+    if (!currentUserId) {
+      return;
+    }
+    try {
+      await createFavourite(currentUserId, post.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -65,17 +83,20 @@ export default function PostComponent({ user, post }: PostProps) {
           <Reactions postId={post.id} postAuthorId={post.user_id} />
         </div>
         <div className="w-full">
-          <Link href={`/post/${post.id}`}>
-            <div className="relative flex items-center">
-              <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
-            </div>
+          <div className="relative flex items-center">
+            <div className="w-full -mx-6 flex-grow border-t border-gray-200"></div>
+          </div>
             <div className="flex items-center pt-2">
               <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
-              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                Comment {comments.length > 0 ? `(${comments.length})` : null}
+              <Link href={`/post/${post.id}`}>
+                <div className="ml-2 flex items-center text-base font-medium text-purple-600">
+                  Comment {comments.length > 0 ? `(${comments.length})` : null}
+                </div>
+              </Link>
+              <div className='ml-auto' onClick={() => handleCreateFavourite()}>
+                <HiOutlineBookmark color="#9333ea" size={18}/>
               </div>
             </div>
-          </Link>
         </div>
       </div>
     </>
