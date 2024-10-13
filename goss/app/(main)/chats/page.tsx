@@ -52,11 +52,11 @@ export default function ChatsPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-center ">
                   
-                    <span className="font-semibold text-indigo-950  ">{otherParticipant.display_name}</span>
+                    <span className="font-semibold text-customPurple ">{otherParticipant.display_name}</span>
                     
                     <span className="text-gray-600 text-sm ">{formatDate(conversation.last_message_time)}</span>
                   </div>
-                  <p className=" text-indigo-900 text-sm mt-1">{conversation.last_message}</p>
+                  <p className=" text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate">{conversation.last_message}</p>
                 </div>
               </div>
             </Link>

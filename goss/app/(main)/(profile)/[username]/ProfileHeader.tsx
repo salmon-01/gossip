@@ -53,7 +53,7 @@ export default function ProfileHeader({ user }) {
       </div>
 
       <div className="mx-auto my-3 w-11/12">
-        <p className="mx-auto my-3 text-sm text-gray-500">
+        <p className="mx-auto my-3 text-sm text-gray-900">
           {user.bio}
         </p>
 
