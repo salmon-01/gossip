@@ -1,4 +1,4 @@
-import { useSessionContext } from '@/app/context/SessionContext';
+import { useSessionContext } from '../../app/context/SessionContext';
 import moment from 'moment';
 import { useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
