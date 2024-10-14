@@ -38,9 +38,9 @@ export default function ProfileLayout({ children, params }) {
   }
 
   return (
-    <div className='bg-white '>
+    <div className='bg-white dark:bg-darkModePrimaryBackground '>
       {/* Pass profile data to the header and stats components */}
-      <div className='border-b'>
+      <div className='border-b dark:border-darkModeSecondaryBackground'>
       <ProfileHeader user={profileData}/>
       <ProfileStats user={profileData} />
       </div>

@@ -16,7 +16,7 @@ export default function ProfileHeader({ user }) {
 
   return (
     <>
-      <div className="mx-auto flex w-11/12 items-center  justify-between pt-4">
+      <div className="mx-auto flex w-11/12 items-center  justify-between pt-4 ">
         <div className="flex items-center">
 
           <img
@@ -26,7 +26,7 @@ export default function ProfileHeader({ user }) {
           />
 
           <div className="ml-4">
-            <div className="text-xl font-bold">{user.display_name}</div>
+            <div className="text-xl font-bold dark:text-darkModeHeader">{user.display_name}</div>
             <p className="text-sm text-gray-500">@{user.username}</p>
           </div>
         </div>
@@ -36,21 +36,21 @@ export default function ProfileHeader({ user }) {
           <div>
           <Link
             href={`/settings/profile`}
-            className="p-0 text-2xl hover:text-purple-700  mx-1"
+            className="p-0 text-2xl hover:text-purple-700  mx-1 dark:text-darkModeParaText"
             prefetch={true}
           >
             <HiOutlinePencilSquare className='inline' />
           </Link>
           <Link
             href={`/favourites`}
-            className="p-0 text-2xl hover:text-purple-700 mx-1"
+            className="p-0 text-2xl hover:text-purple-700 mx-1 dark:text-darkModeParaText"
             prefetch={true}
           >
             <HiOutlineBookmark className='inline' />
           </Link>
           <Link
             href={`/chats`}
-            className="p-0 text-2xl hover:text-purple-700 mx-1"
+            className="p-0 text-2xl hover:text-purple-700 mx-1 dark:text-darkModeParaText"
             prefetch={true}
           >
             <HiOutlineEnvelope className='inline' />
@@ -59,12 +59,12 @@ export default function ProfileHeader({ user }) {
       </div>
 
       <div className="mx-auto my-3 w-11/12">
-        <p className="mx-auto my-3 text-sm text-gray-900">
+        <p className="mx-auto my-3 text-sm text-gray-900 dark:text-darkModeParaText">
           {user.bio}
         </p>
 
         {user.username === loggedInUsername ? (
-          <p className="my-3 w-24 rounded border border-gray-200 bg-gray-200 py-1 text-center text-md ">
+          <p className="my-3 w-24 rounded border border-gray-200 bg-gray-200 py-1 text-center text-md dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground">
             {user.badge}
           </p>
 

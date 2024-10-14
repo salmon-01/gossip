@@ -59,8 +59,8 @@ export default function ChatsPage() {
   return (
     <div>
       <div className='flex justify-between items-center px-4 py-6 sticky top-0'>
-        <h2 className='font-bold text-2xl'>Messages</h2>
-        <Link href="chats/compose" className='text-xl'><BsEnvelopePlus /></Link>
+        <h2 className='font-bold text-2xl dark:text-darkModeHeader'>Messages</h2>
+        <Link href="chats/compose" className='text-xl dark:text-darkModeHeader'><BsEnvelopePlus /></Link>
       </div>
 
       {Conversations?.map((conversation) => {
