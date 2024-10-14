@@ -98,7 +98,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />
           <button
-            className="h-8 w-8 rounded bg-purple-600 bg-opacity-50 text-white hover:bg-purple-400"
+            className="h-8 w-8 rounded bg-purple-500 text-white hover:bg-purple-400"
             onClick={() => setShowTranscription(!showTranscription)}
           >
             A
