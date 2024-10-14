@@ -60,7 +60,12 @@ const useNotifications = () => {
       .channel('realtime-notification-channel')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${userId}`,
+        },
         (payload) => {
           console.log(payload.new);
           toast(`New notification received: ${payload.new.context}`, {
