@@ -58,3 +58,10 @@ export interface Session {
     phone: number;
   };
 }
+
+export interface Favourite {
+  id: string;
+  created_at: Date;
+  user_id: string;
+  post_id: string;
+}
