@@ -7,7 +7,7 @@ import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { useSessionContext } from '../context/SessionContext';
-import { HiArrowsUpDown } from "react-icons/hi2";
+import { HiArrowsUpDown, HiArrowDown, HiArrowUp } from "react-icons/hi2";
 
 export default function Feed() {
 
@@ -74,9 +74,12 @@ export default function Feed() {
         </div>
         <button
           onClick={() => setSortOrder(!sortOrder)}
-          className={`${sortOrder ? 'bg-purple-700 text-white' : 'bg-purple-400'} text-white rounded-md p-1 ml-48`}
+          className={`${sortOrder ? 'bg-purple-700 text-white' : 'bg-purple-700'} text-white rounded-md p-1 ml-44 flex`}
         >
-          {sortOrder? <HiArrowsUpDown strokeWidth={0}/> : <HiArrowsUpDown strokeWidth={0.5}/>}
+          {/* {sortOrder? <HiArrowsUpDown strokeWidth={0}/> : <HiArrowsUpDown strokeWidth={0.5}/>} */}
+          {sortOrder ? 
+          <><HiArrowUp strokeWidth={0}/> <HiArrowDown strokeWidth={2}/> </> : 
+          <><HiArrowUp strokeWidth={2}/> <HiArrowDown strokeWidth={0}/></>}
         </button>
       </div>
     </div>
