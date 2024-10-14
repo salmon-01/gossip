@@ -2,18 +2,19 @@
 
 export interface Notification {
   id: string;
-  type: string;
   context: string;
-  sender_id: string;
+  type: string;
   created_at: string;
   is_read: boolean;
+  user_id: string;
+  sender_id: string;
   sender: {
-    profile_img: string;
     username: string;
+    profile_img: string;
   };
   recipient: {
-    profile_img: string;
     username: string;
+    profile_img: string;
   };
 }
 
