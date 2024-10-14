@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AudioList from './AudioListTest';
 
 const AudioNoteApp = () => {
   const [text, setText] = useState(''); // State to hold the user input text
@@ -41,7 +42,6 @@ const AudioNoteApp = () => {
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <h1>Text to Audio Note</h1>
-
       <textarea
         value={text}
         onChange={handleTextChange}
@@ -55,7 +55,6 @@ const AudioNoteApp = () => {
         }}
         className="dark:text-white"
       />
-
       <button
         onClick={handleTextToSpeech}
         disabled={loading || !text.trim()}
@@ -71,13 +70,13 @@ const AudioNoteApp = () => {
       >
         {loading ? 'Generating...' : 'Generate Audio'}
       </button>
-
       {audioUrl && (
         <div style={{ marginTop: '20px' }}>
           <h2>Listen to your audio:</h2>
           <audio controls src={audioUrl} style={{ width: '100%' }} />
         </div>
       )}
+      <AudioList />
     </div>
   );
 };
