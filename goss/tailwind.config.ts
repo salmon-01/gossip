@@ -15,6 +15,7 @@ const config: Config = {
         customPurple: '#1b1a57',
         customBlueGray: '#4f5e7b',
         darkModePrimaryBackground: '#1D283B',
+        darkModePurpleBtn: '#7d1fc0',
       },
       keyframes: {
         pulse: {

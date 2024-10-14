@@ -11,7 +11,6 @@ import axios from 'axios';
 
 import AudioRecorder from './AudioRecorder';
 
-
 interface CreatePostProps {
   onPostCreated: () => void;
 }
@@ -60,11 +59,15 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
       const formData = new FormData();
       formData.append('file', audioBlob, 'audio.webm');
 
-      const transcriptionResponse = await axios.post('/api/transcribe', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const transcriptionResponse = await axios.post(
+        '/api/transcribe',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       const transcription = transcriptionResponse.data.transcription;
 
@@ -140,7 +143,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
           <div className="mt-2 flex justify-center">
             <button
               type="submit"
-              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700"
+              className="dark:bg-darkModePurpleBtn rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:hover:bg-purple-700"
               disabled={loading}
             >
               Post
