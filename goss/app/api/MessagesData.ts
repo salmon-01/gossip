@@ -30,7 +30,9 @@ export async function fetchUserConversations(loggedInUserId) {
       participant_2_profile: profiles!participant_2_fkey (*)
     `)
     .or(`participant_1.eq.${loggedInUserId},participant_2.eq.${loggedInUserId}`)
-    .order('last_message_time', { ascending: false });
+    .order('last_message_time', { ascending: false })
+    .not('last_message', 'is', null)  
+    .neq('last_message', ''); 
  
 
    
