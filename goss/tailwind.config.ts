@@ -14,6 +14,7 @@ const config: Config = {
         foreground: 'var(--foreground)',
         customPurple: '#1b1a57',
         customBlueGray: '#4f5e7b',
+        darkModePrimaryBackground: '#1D283B',
       },
       keyframes: {
         pulse: {
