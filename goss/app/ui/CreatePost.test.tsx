@@ -3,8 +3,18 @@ import { render, screen } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import CreatePost from './CreatePost';
 import { useSessionContext } from '../../app/context/SessionContext';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  UseMutationOptions,
+} from '@tanstack/react-query';
 import { createClient } from '../../utils/supabase/client';
+
+interface MockMutationOptions {
+  mutationFn: () => Promise<any>;
+  onSuccess?: () => void;
+  onError?: (error: any) => void;
+}
 
 // Mock dependencies
 import * as SessionContextModule from '../../app/context/SessionContext';
@@ -91,18 +101,20 @@ describe('CreatePost Component', () => {
 
     // Mock useSessionContext using vi.spyOn
     vi.spyOn(SessionContextModule, 'useSessionContext').mockReturnValue({
-      data: mockUser,
+      data: mockUser as any,
       isLoading: false,
       error: null,
-    });
+    } as any);
 
     const invalidateQueriesMock = vi.fn();
+    // @ts-ignore
     (useQueryClient as vi.Mock).mockReturnValue({
       invalidateQueries: invalidateQueriesMock,
     });
-
+    // @ts-ignore
     (useMutation as vi.Mock).mockImplementation(
-      ({ mutationFn, onSuccess, onError }) => {
+      (options: MockMutationOptions) => {
+        const { mutationFn, onSuccess, onError } = options;
         return {
           mutate: () => {
             mutationFn().then(onSuccess).catch(onError);
@@ -111,6 +123,7 @@ describe('CreatePost Component', () => {
       }
     );
 
+    // @ts-ignore
     (createClient as vi.Mock).mockReturnValue({
       auth: {
         getUser: vi.fn().mockResolvedValue({
@@ -137,6 +150,7 @@ describe('CreatePost Component', () => {
   });
 
   test('displays loading state when session is loading', () => {
+    // @ts-ignore
     (useSessionContext as vi.Mock).mockReturnValue({
       data: null,
       isLoading: true,
@@ -148,6 +162,7 @@ describe('CreatePost Component', () => {
   });
 
   test('displays error message when session has error', () => {
+    // @ts-ignore
     (useSessionContext as vi.Mock).mockReturnValue({
       data: null,
       isLoading: false,
@@ -159,6 +174,7 @@ describe('CreatePost Component', () => {
   });
 
   test('displays not logged in message when session is null', () => {
+    // @ts-ignore
     (useSessionContext as vi.Mock).mockReturnValue({
       data: null,
       isLoading: false,
