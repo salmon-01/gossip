@@ -7,7 +7,6 @@ import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
-import ThemeSwitch from './ThemeSwitch';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -19,7 +18,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const handleAudioSave = (audioBlob: Blob) => {
     setAudioBlob(audioBlob);
