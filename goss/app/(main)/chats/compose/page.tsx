@@ -1,16 +1,21 @@
-"use client"
-import React from 'react';
+"use client"; // Add this at the very top to specify that this is a client-side component
+
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
-import ProfileCard from '@/app/ui/ProfileCard';
 import LoadingSpinner from '@/app/ui/LoadingSpinner';
 import { createClient } from '@/utils/supabase/client';
+import { useSessionContext } from '@/app/context/SessionContext';
+import { createConversation } from '@/app/api/MessagesData';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 const supabase = createClient();
 
 interface Profile {
   user_id: string;
   display_name: string;
+  username: string;
+  profile_img: string;
 }
 
 export default function Page() {
@@ -18,12 +23,23 @@ export default function Page() {
   const [searchResults, setSearchResults] = useState<Profile[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null); // Create a ref for the input field
+  const [clickedUser, setClickedUser] = useState('');
+  const { data: session } = useSessionContext();
+  const loggedInUserId = session?.user.id;
 
-  const handleSearchChange = (e) => {
+  const router = useRouter();
+
+  // Picks a user by userId
+  function pick(userId:string) {
+    setClickedUser(userId);
+  }
+
+  // Handle search input change
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
+  // Search data from Supabase
   const searchData = async (query: string): Promise<Profile[]> => {
     const { data, error } = await supabase
       .from('profiles')
@@ -35,8 +51,9 @@ export default function Page() {
       throw error;
     }
     return data || [];
-  }
+  };
 
+  // Handle search with debounce effect
   useEffect(() => {
     const handleSearch = async () => {
       if (!searchQuery.trim()) {
@@ -66,20 +83,40 @@ export default function Page() {
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
+  // Mutation to create a conversation
+  const { mutate: createConversationMutation } = useMutation({
+    mutationFn: () => createConversation(loggedInUserId, clickedUser),
+    onSuccess: (conversationData) => {
+      if (conversationData && conversationData.id) {
+        router.push(`/chats/${conversationData.id}`);
+      }
+    },
+    onError: (error) => {
+      console.error('Error creating conversation:', error);
+    },
+  });
+
+  // Check if conversation can be created
+  useEffect(() => {
+    if (clickedUser && loggedInUserId) {
+      createConversationMutation();
+    }
+  }, [clickedUser, loggedInUserId]);
+
   return (
     <>
-      <div className='flex items-center justify-start px-4 py-6'>
-        <Link href="/chats" className='text-2xl'>{'\u2190'}</Link>
-        <h2 className='font-bold text-2xl ml-4'>New message</h2>
+      <div className="flex items-center justify-start px-4 py-6">
+        <Link href="/chats" className="text-2xl">{'\u2190'}</Link>
+        <h2 className="font-bold text-2xl ml-4">New message</h2>
       </div>
 
-      <form className='px-4'>
+      <form className="px-4">
         <input
-          type='search'
+          type="search"
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder='Search people'
-          className='w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500'
+          placeholder="Search people"
+          className="w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </form>
 
@@ -88,28 +125,29 @@ export default function Page() {
           <LoadingSpinner size={30} color="#3B82F6" bgColor="" />
         ) : searchResults.length > 0 ? (
           searchResults.map((result) => (
-            <Link href="/chats">
-              <div key={result.user_id} className="flex items-center p-3 bg-white shadow-sm rounded-lg w-11/12 mx-auto mb-3 hover:bg-purple-100">
-                <img
-                  src={result.profile_img}
-                  alt={result.display_name}
-                  className='w-14 h-14 rounded-full mr-4'
-                />
-                <div>
-                  <p className='font-semibold text-lg'>{result.display_name}</p>
-                  <p className='text-gray-500'>@{result.username}</p>
-                </div>
+            <div
+              key={result.user_id}
+              onClick={() => pick(result.user_id)}
+              className="flex items-center p-3 bg-white shadow-sm rounded-lg w-11/12 mx-auto mb-3 hover:bg-purple-100 cursor-pointer"
+            >
+              <img
+                src={result.profile_img || '/default-avatar.png'} // Fallback image
+                alt={result.display_name}
+                className="w-14 h-14 rounded-full mr-4"
+              />
+              <div>
+                <p className="font-semibold text-lg">{result.display_name}</p>
+                <p className="text-gray-500">@{result.username}</p>
               </div>
-
-            </Link>
+            </div>
           ))
         ) : (
           <div className="dark:text-darkModeParaText mt-8 text-center text-gray-500">
             {!hasSearched
-              ? `Enter a name to search`
+              ? 'Enter a name to search'
               : searchQuery.trim() !== ''
-                ? `No profile found`
-                : `Enter a name to search`}
+              ? 'No profile found'
+              : 'Enter a name to search'}
           </div>
         )}
       </div>
