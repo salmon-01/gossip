@@ -7,6 +7,7 @@ import AudioRecorder from '@/app/ui/AudioRecorder';
 import { createClient } from '@/utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import axios from 'axios';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -53,9 +54,27 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         .getPublicUrl(fileName);
       const fileUrl = publicUrlData.publicUrl;
 
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'audio.webm');
+
+      const transcriptionResponse = await axios.post('/api/transcribe', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const transcription = transcriptionResponse.data.transcription;
+
       const { data: postData, error: postError } = await supabase
         .from('posts')
-        .insert([{ user_id: userId, caption: caption, audio: fileUrl }]);
+        .insert([
+          {
+            user_id: userId,
+            caption: caption,
+            audio: fileUrl,
+            transcription: transcription,
+          },
+        ]);
 
       if (postError) {
         throw new Error('Error creating post');
@@ -71,7 +90,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
       toast.success('Post created successfully!');
       setCaption('');
       setAudioBlob(null);
-      setLoading(false); // Stop loading
+      setLoading(false);
     },
     onError: (error: any) => {
       console.error('Error creating post:', error);
