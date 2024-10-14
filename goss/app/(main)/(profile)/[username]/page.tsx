@@ -4,11 +4,17 @@ import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
 import PostComponent from '@/app/ui/Post';
 import { fetchpostData, fetchProfileData } from '@/app/api/profileData';
+import { useSessionContext } from '@/app/context/SessionContext';
+import { fetchFavourites } from '@/app/api/favourites';
+
 
 const supabase = createClient();
 
 export default function ProfilePost({ params }) {
   const { username } = params;
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.user.id;
+
   // how do i hget user_if from the username
 
   const {
@@ -19,6 +25,14 @@ export default function ProfilePost({ params }) {
     queryKey: ['profileId', username],
     queryFn: () => fetchProfileData(username),
     enabled: !!username, // Only run query if username is available
+  });
+
+  const {
+    data: favourites = [],
+  } = useQuery({
+    queryKey: ['favourites', currentUserId],
+    queryFn: () => fetchFavourites(currentUserId as string),
+    enabled: !!currentUserId,
   });
 
   const user_id = profile?.user_id;
@@ -52,7 +66,7 @@ export default function ProfilePost({ params }) {
         <div className="mt-4 p-3">
           {PostData.map((post) => (
             <div key={post.id} className="mb-4">
-              <PostComponent user={profile} post={post} />
+              <PostComponent user={profile} post={post} favourites={favourites} />
             </div>
           ))}
         </div>
