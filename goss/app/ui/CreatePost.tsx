@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { createClient } from '../../utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import axios from 'axios';
 
@@ -19,6 +20,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
 
+  const [activeTab, setActiveTab] = useState('account');
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
@@ -120,8 +122,21 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="account" onClick={() => setActiveTab('account')}>
+            Record Audio
+          </TabsTrigger>
+          <TabsTrigger
+            value="password"
+            onClick={() => setActiveTab('password')}
+          >
+            AI Voice
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
       <form onSubmit={handleSubmit}>
-        <div className="dark:bg-darkModeSecondaryBackground flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3">
+        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
           <div className="flex h-8 w-full items-center">
             <img
               src={user.profile_img}
@@ -133,7 +148,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="dark:bg-darkModePrimaryBackground z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:text-white dark:focus:border-slate-300"
+              className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
@@ -143,7 +158,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
           <div className="mt-2 flex justify-center">
             <button
               type="submit"
-              className="dark:bg-darkModePurpleBtn rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:hover:bg-purple-700"
+              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
               disabled={loading}
             >
               Post
