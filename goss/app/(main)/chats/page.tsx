@@ -67,7 +67,7 @@ export default function ChatsPage() {
                   className="w-14 h-14 rounded-full mr-4"
                 />
                 <div className="flex-1">
-                  <div className="flex justify-between items-center w-[60lvw] max-w-[60lvw] lg:w-[20lvw] lg:max-w-[20lvw]">
+                  <div className="flex justify-between items-center ">
                     <span className="font-semibold text-customPurple dark:text-gray-100">
                       {otherParticipant.display_name}
                     </span>
