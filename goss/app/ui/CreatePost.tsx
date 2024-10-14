@@ -8,6 +8,7 @@ import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioNoteApp from './TextToSpeech';
+import { BsStars } from 'react-icons/bs';
 
 import axios from 'axios';
 
@@ -21,7 +22,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
 
-  const [activeTab, setActiveTab] = useState('AIvoice');
+  const [activeTab, setActiveTab] = useState('recordAudio');
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
@@ -133,6 +134,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
           </TabsTrigger>
           <TabsTrigger value="AIvoice" onClick={() => setActiveTab('AIvoice')}>
             AI Voice
+            <BsStars className="ml-1.5 h-4 w-4" />
           </TabsTrigger>
         </TabsList>
       </Tabs>
