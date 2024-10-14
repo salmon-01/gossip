@@ -95,8 +95,8 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
               </Link>
               <div className='ml-auto' onClick={() => handleCreateFavourite()}>
                 {favourites.some(favourite => favourite.post_id === post.id) ?
-                <HiOutlineBookmark color="#9333ea" size={18}/> :
-                <HiBookmark color="#9333ea" size={18}/>}
+                <HiBookmark color="#9333ea" size={18}/> :
+                <HiOutlineBookmark color="#9333ea" size={18}/> }
               </div>
             </div>
         </div>
