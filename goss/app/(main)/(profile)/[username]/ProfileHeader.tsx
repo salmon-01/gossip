@@ -34,7 +34,7 @@ export default function ProfileHeader({ user }) {
 
         {/* Follow button */}
         {user.username === loggedInUsername ? (
-          <div className='mr-10'>
+          <div>
           <Link
             href={`/settings/profile`}
             className="p-0 text-2xl hover:text-purple-700  mt-1 mr-3"
