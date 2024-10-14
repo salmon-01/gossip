@@ -35,3 +35,17 @@ export const fetchFavourites = async (userId: string) => {
   if (error) throw error;
   return data;
 };
+
+export const deleteFavourite = async (userId: string, postId: string) => {
+  const { data, error } = await supabase
+    .from('favourites')          
+    .delete()                     
+    .eq('user_id', userId)       
+    .eq('post_id', postId);       
+
+  if (error) {
+    console.error('Error deleting favourite:', error);
+    throw error;
+  }
+  return data; 
+};
