@@ -19,22 +19,22 @@ const AudioNoteApp = () => {
       const response = await fetch('/api/speech', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Required headers for JSON payload
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }), // Send the user input text
+        body: JSON.stringify({ text }),
       });
 
       if (response.ok) {
-        const audioBlob = await response.blob(); // Get the audio file as a Blob
-        const audioUrl = URL.createObjectURL(audioBlob); // Create a URL for the Blob
-        setAudioUrl(audioUrl); // Set the URL for playback
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
       } else {
         console.error('Error generating audio');
       }
     } catch (err) {
       console.error('Error:', err);
     } finally {
-      setLoading(false); // Stop loading when the request is done
+      setLoading(false);
     }
   };
 
@@ -53,7 +53,7 @@ const AudioNoteApp = () => {
           padding: '10px',
           fontSize: '16px',
         }}
-        className="text-white"
+        className="dark:text-white"
       />
 
       <button

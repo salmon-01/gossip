@@ -19,7 +19,6 @@ export default function Create() {
           Create Post
         </h1>
         <CreatePost onPostCreated={handlePostCreated} />
-        {/* <TextToSpeech /> */}
       </main>
     </div>
   );

@@ -124,7 +124,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   return (
     <>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid grid-cols-2">
           <TabsTrigger
             value="recordAudio"
             onClick={() => setActiveTab('recordAudio')}
