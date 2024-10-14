@@ -18,6 +18,7 @@ import {
   deleteCommentById,
 } from '@/app/api/post';
 import LoadingSpinner from '@/app/ui/LoadingSpinner';
+import { useState } from 'react';
 
 const supabase = createClient();
 
@@ -25,6 +26,7 @@ export default function PostPage() {
   const params = useParams();
   const postId = params.id;
   const queryClient = useQueryClient();
+  const [showTranscription, setShowTranscription] = useState(false);
 
   const {
     data: postData,
@@ -110,7 +112,20 @@ export default function PostPage() {
           </div>
         </div>
         <div>{postData.caption}</div>
-        <VoiceNote audioUrl={postData.audio} />
+        <div className="flex items-center">
+          <VoiceNote audioUrl={postData.audio} />
+          <button
+            className="h-8 w-8 rounded bg-purple-600 bg-opacity-50 text-white hover:bg-purple-400"
+            onClick={() => setShowTranscription(!showTranscription)}
+          >
+            A
+          </button>
+        </div>
+        {showTranscription && postData.transcription && (
+          <div className="mt-4 text-sm text-gray-700">
+            {postData.transcription}
+          </div>
+        )}
         <div className="mt-4">
           <Reactions
             postId={postId as string}
