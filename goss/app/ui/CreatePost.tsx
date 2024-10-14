@@ -7,6 +7,7 @@ import { createClient } from '../../utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AudioNoteApp from './TextToSpeech';
 
 import axios from 'axios';
 
@@ -20,7 +21,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
 
-  const [activeTab, setActiveTab] = useState('account');
+  const [activeTab, setActiveTab] = useState('AIvoice');
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
@@ -124,48 +125,55 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     <>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="account" onClick={() => setActiveTab('account')}>
+          <TabsTrigger
+            value="recordAudio"
+            onClick={() => setActiveTab('recordAudio')}
+          >
             Record Audio
           </TabsTrigger>
-          <TabsTrigger
-            value="password"
-            onClick={() => setActiveTab('password')}
-          >
+          <TabsTrigger value="AIvoice" onClick={() => setActiveTab('AIvoice')}>
             AI Voice
           </TabsTrigger>
         </TabsList>
       </Tabs>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
-          <div className="flex h-8 w-full items-center">
-            <img
-              src={user.profile_img}
-              alt="Profile picture"
-              className="mr-3 mt-5 h-12 w-12 rounded-full bg-black shadow-md"
-            />
-            <input
-              type="text"
-              name="caption"
-              value={caption}
-              placeholder="Write a caption"
-              className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
-              onChange={(e) => setCaption(e.target.value)}
+      {activeTab === 'recordAudio' && (
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
+            <div className="flex h-8 w-full items-center">
+              <img
+                src={user.profile_img}
+                alt="Profile picture"
+                className="mr-3 mt-5 h-12 w-12 rounded-full bg-black shadow-md"
+              />
+              <input
+                type="text"
+                name="caption"
+                value={caption}
+                placeholder="Write a caption"
+                className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
+                onChange={(e) => setCaption(e.target.value)}
+              />
+            </div>
+            <AudioRecorder
+              onAudioSave={handleAudioSave}
+              audioBlob={audioBlob}
             />
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
-        </div>
-        {audioBlob && (
-          <div className="mt-2 flex justify-center">
-            <button
-              type="submit"
-              className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
-              disabled={loading}
-            >
-              Post
-            </button>
-          </div>
-        )}
-      </form>
+          {audioBlob && (
+            <div className="mt-2 flex justify-center">
+              <button
+                type="submit"
+                className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+                disabled={loading}
+              >
+                Post
+              </button>
+            </div>
+          )}
+        </form>
+      )}
+
+      {activeTab === 'AIvoice' && <AudioNoteApp />}
       {loading && (
         <div className="mt-4 flex justify-center">
           <LoadingSpinner />
