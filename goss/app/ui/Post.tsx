@@ -1,5 +1,8 @@
-
-import { HiOutlineChatBubbleLeftEllipsis, HiOutlineBookmark, HiBookmark } from 'react-icons/hi2';
+import {
+  HiOutlineChatBubbleLeftEllipsis,
+  HiOutlineBookmark,
+  HiBookmark,
+} from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
@@ -17,9 +20,7 @@ interface PostProps {
   favourites: Favourite[];
 }
 
-
 export default function PostComponent({ user, post, favourites }: PostProps) {
-
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
 
@@ -114,23 +115,22 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
           </div>
 
-
-            <div className="flex items-center pt-2">
-              <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
-              <Link href={`/post/${post.id}`}>
-                <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                  Comment {comments.length > 0 ? `(${comments.length})` : null}
-                </div>
-              </Link>
-              {favourites.some(favourite => favourite.post_id === post.id) ? 
-                <div className='ml-auto' onClick={() => handleDeleteFavourite()}>
-                  <HiBookmark color="#9333ea" size={18}/>
-                </div> :
-                <div className='ml-auto' onClick={() => handleCreateFavourite()}>
-                  <HiOutlineBookmark color="#9333ea" size={18}/>
-                </div>}
-
-            </div>
+          <div className="flex items-center pt-2">
+            <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
+            <Link href={`/post/${post.id}`}>
+              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
+                Comment {comments.length > 0 ? `(${comments.length})` : null}
+              </div>
+            </Link>
+            {favourites.some((favourite) => favourite.post_id === post.id) ? (
+              <div className="ml-auto" onClick={() => handleDeleteFavourite()}>
+                <HiBookmark color="#9333ea" size={18} />
+              </div>
+            ) : (
+              <div className="ml-auto" onClick={() => handleCreateFavourite()}>
+                <HiOutlineBookmark color="#9333ea" size={18} />
+              </div>
+            )}
           </div>
         </div>
       </div>
