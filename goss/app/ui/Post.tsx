@@ -23,6 +23,8 @@ interface PostProps {
 export default function PostComponent({ user, post, favourites }: PostProps) {
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
+  const [favouriteSelect, setFavouriteSelect] = useState(true);
+  
 
   const [showTranscription, setShowTranscription] = useState(false);
 
@@ -51,7 +53,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     );
   }
 
-  const handleCreateFavourite = async () => {
+  async function handleCreateFavourite () {
     if (!currentUserId) {
       return;
     }
@@ -62,7 +64,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     }
   };
 
-  const handleDeleteFavourite = async () => {
+  async function handleDeleteFavourite () {
     if (!currentUserId) {
       return;
     }
@@ -123,12 +125,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
               </div>
             </Link>
             {favourites.some((favourite) => favourite.post_id === post.id) ? (
-              <div className="ml-auto" onClick={() => handleDeleteFavourite()}>
-                <HiBookmark color="#9333ea" size={18} />
+              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleDeleteFavourite() : handleCreateFavourite()}; {setFavouriteSelect(!favouriteSelect)}}}>
+                {favouriteSelect ? <HiBookmark color="#9333ea" size={18} /> : <HiOutlineBookmark color="#9333ea" size={18} />}
               </div>
             ) : (
-              <div className="ml-auto" onClick={() => handleCreateFavourite()}>
-                <HiOutlineBookmark color="#9333ea" size={18} />
+              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleCreateFavourite() : handleDeleteFavourite()}; setFavouriteSelect(!favouriteSelect)}}>
+                {favouriteSelect? <HiOutlineBookmark color="#9333ea" size={18} /> : <HiBookmark color="#9333ea" size={18} />}
               </div>
             )}
           </div>
