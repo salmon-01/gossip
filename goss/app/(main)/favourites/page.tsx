@@ -47,6 +47,13 @@ export default function FavouritesPage() {
     );
   }
 
+  const sortedFavourites = [...favourites].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+
+    return dateB - dateA;
+  });
+
   return (
     <>
     <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-white pb-2 pl-4 pt-4 mb-2 text-base text-purple-500 font-bold">
@@ -54,7 +61,7 @@ export default function FavouritesPage() {
     </div>
     <div className="flex min-h-screen w-full items-center justify-center mt-4 bg-white">
       <div className="space-y-4 w-full p-4">
-        {favourites.map((favourite) => (
+        {sortedFavourites.map((favourite) => (
               <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />
             ))}
       </div>
