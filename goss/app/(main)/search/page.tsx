@@ -150,7 +150,7 @@ export default function Search() {
             )
           )
         ) : (
-          <div className="col-span-full mt-8 text-center text-gray-500 dark:text-slate-200">
+          <div className="dark:text-darkModeParaText col-span-full mt-8 text-center text-gray-500">
             {!hasSearched
               ? `Enter a ${searchType === 'profiles' ? 'name' : 'caption'} to search`
               : searchQuery.trim() !== ''
