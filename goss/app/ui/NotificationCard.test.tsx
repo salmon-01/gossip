@@ -18,7 +18,8 @@ vi.mock('next/link', () => ({
 
 describe('NotificationCard component', () => {
   const notification: Notification = {
-    id: 'e232133',
+    id: '1',
+    user_id: 'e232133',
     sender_id: 'eweq2321',
     type: 'new_comment',
     context: 'This is a comment.',
@@ -65,28 +66,28 @@ describe('NotificationCard component', () => {
   test('renders follow request notification', () => {
     const followNotification: Notification = {
       ...notification,
-      type: 'follow_request',
+      type: 'follow',
       context: '', // No context for follow requests
     };
 
     render(<NotificationCard notification={followNotification} />);
 
     // Check if the follow request message is rendered
-    const followRequestText = screen.getByText('requested to follow you.');
+    const followRequestText = screen.getByText('has followed you.');
     expect(followRequestText).toBeInTheDocument();
   });
 
   test('renders like notification', () => {
     const likeNotification: Notification = {
       ...notification,
-      type: 'like',
+      type: 'reaction',
       context: '', // No context for likes
     };
 
     render(<NotificationCard notification={likeNotification} />);
 
     // Check if the like notification message is rendered
-    const likeNotificationText = screen.getByText('liked your post!');
+    const likeNotificationText = screen.getByText('reacted to your post:');
     expect(likeNotificationText).toBeInTheDocument();
   });
 

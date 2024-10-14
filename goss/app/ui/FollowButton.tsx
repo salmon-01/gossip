@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchFollowStatus, updateFollowStatus } from '../api/updateFollow';
+import { fetchFollowStatus, updateFollowStatus } from '../api/follow';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { debounce } from 'lodash';

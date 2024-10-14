@@ -22,14 +22,6 @@ function NavBar() {
 
   const isActive = (path: string) => pathname === path;
 
-  // // Fetch all notifications
-  // const { data: notifications = [], isLoading } = useQuery({
-  //   queryKey: ['notifications', userId],
-  //   queryFn: () => fetchNotifications(userId),
-  //   enabled: !!userId, // Only fetch if userId is available
-  //   refetchOnWindowFocus: true, // Refetch the data when window is refocused
-  // });
-
   const { notifications, isLoading } = useGlobalNotifications();
 
   // Filter unread notifications from fetched data
