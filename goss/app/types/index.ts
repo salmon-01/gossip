@@ -36,6 +36,7 @@ export interface Post {
   audio: string;
   caption: string;
   user_id: string;
+  transcription: string;
 }
 
 export interface Session {
