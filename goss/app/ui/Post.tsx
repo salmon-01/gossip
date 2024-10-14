@@ -1,24 +1,25 @@
-import {
-  HiOutlineChatBubbleLeftEllipsis,
-  HiOutlineBookmark,
-} from 'react-icons/hi2';
+
+import { HiOutlineChatBubbleLeftEllipsis, HiOutlineBookmark, HiBookmark } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { User, Post } from '@/app/types';
+import { User, Post, Favourite } from '@/app/types';
 import { fetchCommentsByPostId } from '../api/post';
-import { createFavourite } from '../api/favourites';
+import { createFavourite, deleteFavourite } from '../api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useState } from 'react';
 
 interface PostProps {
   user: User;
   post: Post;
+  favourites: Favourite[];
 }
 
-export default function PostComponent({ user, post }: PostProps) {
+
+export default function PostComponent({ user, post, favourites }: PostProps) {
+
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
 
@@ -55,6 +56,17 @@ export default function PostComponent({ user, post }: PostProps) {
     }
     try {
       await createFavourite(currentUserId, post.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteFavourite = async () => {
+    if (!currentUserId) {
+      return;
+    }
+    try {
+      await deleteFavourite(currentUserId, post.id);
     } catch (error) {
       console.error(error);
     }
@@ -101,15 +113,23 @@ export default function PostComponent({ user, post }: PostProps) {
           <div className="relative flex items-center">
             <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
           </div>
-          <div className="flex items-center pt-2">
-            <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
-            <Link href={`/post/${post.id}`}>
-              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                Comment {comments.length > 0 ? `(${comments.length})` : null}
-              </div>
-            </Link>
-            <div className="ml-auto" onClick={() => handleCreateFavourite()}>
-              <HiOutlineBookmark color="#9333ea" size={18} />
+
+
+            <div className="flex items-center pt-2">
+              <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
+              <Link href={`/post/${post.id}`}>
+                <div className="ml-2 flex items-center text-base font-medium text-purple-600">
+                  Comment {comments.length > 0 ? `(${comments.length})` : null}
+                </div>
+              </Link>
+              {favourites.some(favourite => favourite.post_id === post.id) ? 
+                <div className='ml-auto' onClick={() => handleDeleteFavourite()}>
+                  <HiBookmark color="#9333ea" size={18}/>
+                </div> :
+                <div className='ml-auto' onClick={() => handleCreateFavourite()}>
+                  <HiOutlineBookmark color="#9333ea" size={18}/>
+                </div>}
+
             </div>
           </div>
         </div>

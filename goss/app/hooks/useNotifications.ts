@@ -14,7 +14,25 @@ const fetchNotifications = async (
 
   const { data, error } = await supabase
     .from('notifications')
-    .select('*')
+    .select(
+      `
+      id,
+      context,
+      type,
+      created_at,
+      is_read,
+      user_id,
+      sender_id,
+      recipient:user_id (
+        username,
+        profile_img
+      ),
+      sender:sender_id (
+        username,
+        profile_img
+      )
+    `
+    )
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
@@ -22,7 +40,11 @@ const fetchNotifications = async (
     throw new Error(error.message);
   }
 
-  return data;
+  if (!data) {
+    return [];
+  }
+
+  return data as unknown as Notification[];
 };
 
 const useNotifications = () => {
@@ -60,7 +82,12 @@ const useNotifications = () => {
       .channel('realtime-notification-channel')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${userId}`,
+        },
         (payload) => {
           console.log(payload.new);
           toast(`New notification received: ${payload.new.context}`, {

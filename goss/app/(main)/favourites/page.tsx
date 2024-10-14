@@ -55,7 +55,7 @@ export default function FavouritesPage() {
     <div className="flex min-h-screen w-full items-center justify-center mt-4 bg-white">
       <div className="space-y-4 w-full p-4">
         {favourites.map((favourite) => (
-              <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} />
+              <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />
             ))}
       </div>
     </div>

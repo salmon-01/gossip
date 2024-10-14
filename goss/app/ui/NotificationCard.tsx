@@ -35,6 +35,19 @@ const NotificationCard: React.FC<NotificationProps> = ({
     return notification.context;
   };
 
+  // Ensure the notification.sender exists before trying to render it
+  if (!notification.sender) {
+    return (
+      <div
+        className={`mb-4 rounded-lg border bg-gray-100 p-4 ${className}`} // Styling for unknown sender
+      >
+        <p className="text-gray-500">Unknown sender</p>
+        <p>{formatContext()}</p>
+        <p className="text-sm text-gray-500">{formattedDate}</p>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`mb-4 rounded-lg border p-4 ${

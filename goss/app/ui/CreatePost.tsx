@@ -1,13 +1,16 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSessionContext } from '@/app/context/SessionContext';
+import { useSessionContext } from '../../app/context/SessionContext';
 import toast from 'react-hot-toast';
-import AudioRecorder from '@/app/ui/AudioRecorder';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '../../utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+
 import axios from 'axios';
+
+import AudioRecorder from './AudioRecorder';
+
 
 interface CreatePostProps {
   onPostCreated: () => void;

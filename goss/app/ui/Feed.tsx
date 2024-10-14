@@ -4,9 +4,15 @@ import { fetchPosts } from '../api/fetchPosts';
 import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import { useSessionContext } from '../context/SessionContext';
+import { fetchFavourites } from '../api/favourites';
 import ThemeSwitch from './ThemeSwitch';
 
 export default function Feed() {
+
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.user.id;
+
   const {
     data: posts = [],
     isLoading,
@@ -16,6 +22,15 @@ export default function Feed() {
     queryKey: ['posts'],
     queryFn: () => fetchPosts(),
   });
+
+  const {
+    data: favourites = [],
+  } = useQuery({
+    queryKey: ['favourites', currentUserId],
+    queryFn: () => fetchFavourites(currentUserId as string),
+    enabled: !!currentUserId,
+  });
+
   const [sortOrder, setSortOrder] = useState<'oldest' | 'newest'>('newest');
 
   if (isLoading) return <LoadingSpinner />;
@@ -49,7 +64,7 @@ export default function Feed() {
       <div className="mt-8 flex flex-col items-center">
         {sortedPosts.length > 0 &&
           sortedPosts.map((post) => (
-            <PostComponent key={post.id} post={post} user={post.profiles} />
+            <PostComponent key={post.id} post={post} user={post.profiles} favourites={favourites} />
           ))}
       </div>
     </>

@@ -21,14 +21,29 @@ export default function ThemeSwitch() {
         alt="Loading Light/Dark Toggle"
         priority={false}
         title="Loading Light/Dark Toggle"
+        data-testid="loading-image"
       />
     );
 
   if (resolvedTheme === 'dark') {
-    return <FiSun className="mt-5" onClick={() => setTheme('light')} />;
+    return (
+      <FiSun
+        className="mt-5"
+        data-testid="sun-icon"
+        aria-label="Switch to light theme"
+        onClick={() => setTheme('light')}
+      />
+    );
   }
 
   if (resolvedTheme === 'light') {
-    return <FiMoon className="mt-5" onClick={() => setTheme('dark')} />;
+    return (
+      <FiMoon
+        className="mt-5"
+        data-testid="moon-icon"
+        aria-label="Switch to dark theme"
+        onClick={() => setTheme('dark')}
+      />
+    );
   }
 }
