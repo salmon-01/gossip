@@ -5,6 +5,9 @@ export async function POST(req: Request) {
     // Parse the request body to get the text
     const { text } = await req.json();
 
+    const apiKey = process.env.PLAY_HT_API_KEY!;
+    const userId = process.env.PLAY_HT_USER_ID!;
+
     // Set up the Play.ht API URL and options
     const url = 'https://api.play.ht/api/v2/tts/stream';
     const options = {
@@ -12,8 +15,8 @@ export async function POST(req: Request) {
       headers: {
         accept: 'audio/mpeg',
         'content-type': 'application/json',
-        AUTHORIZATION: 'Bearer 11655f2bac444467a685cfaa3c3c245d',
-        'X-USER-ID': 'ATjawSG3KzXtktz6KvyShKxTEBc2',
+        AUTHORIZATION: `Bearer ${apiKey}`,
+        'X-USER-ID': userId,
       },
       body: JSON.stringify({
         voice:
@@ -26,12 +29,8 @@ export async function POST(req: Request) {
         // 's3://voice-cloning-zero-shot/a5cc7dd9-069c-4fe8-9ae7-0c4bae4779c5/micahsaad/manifest.json',
         // 's3://voice-cloning-zero-shot/d99d35e6-e625-4fa4-925a-d65172d358e1/adriansaad/manifest.json',
         output_format: 'mp3',
-        text: text, // Pass the user's text
+        text: text,
         voice_engine: 'Play3.0-mini',
-        // emotion: 'female_happy',
-        // text_guidance: 1.2,
-        // speed: 1,
-        // style_guidance: 20,
       }),
     };
 
