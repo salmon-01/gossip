@@ -173,7 +173,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
   };
 
   return (
-    <div className="mt-10 rounded-lg bg-gray-100 p-4 shadow dark:bg-slate-800">
+    <div className="dark:bg-darkModePrimaryBackground mt-10 rounded-lg bg-gray-100 p-4 shadow">
       <div
         ref={waveformRef}
         id="mic"
@@ -185,7 +185,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         <select
           value={selectedDevice}
           onChange={(e) => setSelectedDevice(e.target.value)}
-          className="mr-2 rounded border p-2 dark:bg-slate-700 dark:text-slate-200"
+          className="dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText mr-2 rounded border p-2"
         >
           {devices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
@@ -199,7 +199,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           disabled={!!recordedBlob} // Disable if recordedBlob exists
           className={`mr-2 mt-4 rounded-full px-4 py-4 font-bold text-white ${
             recordedBlob
-              ? 'cursor-not-allowed bg-gray-300'
+              ? 'cursor-not-allowed bg-gray-300 dark:bg-purple-300 dark:opacity-50'
               : isRecording
                 ? 'bg-red-500 hover:bg-red-600'
                 : 'bg-purple-500 hover:bg-purple-600'
@@ -226,7 +226,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         )}
       </div>
       <div className="mb-4">
-        <p className="text-lg font-semibold dark:text-slate-200">
+        <p className="dark:text-darkModeParaText text-lg font-semibold">
           Duration: {formatTime(time)}
         </p>
       </div>

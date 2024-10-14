@@ -14,6 +14,11 @@ const config: Config = {
         foreground: 'var(--foreground)',
         customPurple: '#1b1a57',
         customBlueGray: '#4f5e7b',
+        darkModePrimaryBackground: '#1D283B',
+        darkModeSecondaryBackground: '#475569',
+        darkModeHeader: '#E2E8F0',
+        darkModeParaText: '#e9e9e9',
+        darkModePurpleBtn: '#7d1fc0',
       },
       keyframes: {
         pulse: {
