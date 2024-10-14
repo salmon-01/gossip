@@ -194,6 +194,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           ))}
         </select>
         <button
+          aria-label={isRecording ? 'Stop Recording' : 'Start Recording'}
           onClick={handleRecord}
           disabled={!!recordedBlob} // Disable if recordedBlob exists
           className={`mr-2 mt-4 rounded-full px-4 py-4 font-bold text-white ${
@@ -212,6 +213,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         </button>
         {isRecording && (
           <button
+            aria-label={isPaused ? 'Resume Recording' : 'Pause Recording'}
             onClick={handlePause}
             className="mr-2 mt-4 rounded-full bg-yellow-500 px-4 py-4 font-bold text-white hover:bg-yellow-600"
           >
@@ -244,6 +246,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           <div ref={playbackRef} className="mb-2" />
           <div className="flex justify-between">
             <button
+              aria-label={isPlaying ? 'Pause Playback' : 'Play Recording'}
               onClick={handlePlayPause}
               className="mr-2 rounded bg-purple-500 px-4 py-2 font-bold text-white hover:bg-purple-600"
             >
@@ -255,6 +258,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
             </button>
             <button
               onClick={handleDelete}
+              aria-label="Delete Recording"
               className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
             >
               <FaTrash className="h-5 w-5" />
