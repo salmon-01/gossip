@@ -29,7 +29,7 @@ export default function ChatHeader({conversationId, loggedInUserId}) {
 console.log(profileData)
 
   return (
-<div className="p-3 rounded-md sticky top-0 flex items-center shadow bg-white z-20">
+<div className="p-3  sticky top-0 flex items-center shadow dark:shadow-xl bg-white dark:bg-darkModePrimaryBackground z-20">
   <Link href="/chats" className="flex items-center text-lg font-bold text-gray-700 hover:text-gray-900 transition duration-200">
 
     <span className="text-3xl mb-1 mr-2">{'\u2190'}</span>
@@ -43,8 +43,8 @@ console.log(profileData)
     alt="Profile"
   />
   <div>
-    <h2 className="text-lg font-bold text-black">{profileData?.display_name}</h2>
-    <p className="text-sm text-gray-500">@{profileData?.username}</p>
+    <h2 className="text-lg font-bold text-black dark:text-darkModeParaText">{profileData?.display_name}</h2>
+    <p className="text-sm text-gray-500 dark:text-darkModeParaText">@{profileData?.username}</p>
   </div>
 </div>
 
