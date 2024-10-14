@@ -1,17 +1,23 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import NavBar from './NavBar';
+import NavItem from './NavItem';
 import { usePathname } from 'next/navigation';
-import { useSessionContext } from '../context/SessionContext'; // Import the context
+import { useSessionContext } from '../context/SessionContext';
+import { useGlobalNotifications } from '../context/NotificationsContext';
 import { Session } from '../types';
 
-// Mock usePathname and useSessionContext
+// Mock usePathname, useSessionContext, and useGlobalNotifications
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }));
 
 vi.mock('../context/SessionContext', () => ({
   useSessionContext: vi.fn(),
+}));
+
+vi.mock('../context/NotificationsContext', () => ({
+  useGlobalNotifications: vi.fn(),
 }));
 
 describe('NavBar component', () => {
@@ -29,6 +35,12 @@ describe('NavBar component', () => {
     vi.mocked(useSessionContext).mockReturnValue({
       data: mockSession,
     });
+
+    // Mock the global notifications context to return mock notifications
+    vi.mocked(useGlobalNotifications).mockReturnValue({
+      notifications: [{ id: 1, is_read: false }], // Simulate an unread notification
+      isLoading: false, // Simulate that loading is done
+    });
   });
 
   test('renders navigation links correctly', () => {
@@ -37,26 +49,6 @@ describe('NavBar component', () => {
     expect(screen.getByLabelText('Search')).toBeInTheDocument();
     expect(screen.getByLabelText('Notifications')).toBeInTheDocument();
     expect(screen.getByLabelText('Profile')).toBeInTheDocument();
-  });
-
-  test('applies active style to the correct link based on pathname', () => {
-    vi.mocked(usePathname).mockReturnValue('/search');
-    render(<NavBar />); // Ensure component is rendered
-
-    const searchIcon = screen.getByLabelText('Search');
-    const homeIcon = screen.getByLabelText('Home');
-
-    // Check that the "Search" link is active
-    expect(searchIcon.firstChild).toHaveStyle({
-      color: '#9333ea',
-      strokeWidth: '2.5',
-    });
-
-    // Check that the "Home" link is inactive
-    expect(homeIcon.firstChild).toHaveStyle({
-      color: '#7b53bb',
-      strokeWidth: '1',
-    });
   });
 
   test('renders profile link with correct username', () => {

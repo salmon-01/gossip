@@ -1,11 +1,8 @@
 'use client';
 
 import NotificationCard from '@/app/ui/NotificationCard';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  fetchNotifications,
-  markNotificationsRead,
-} from '@/app/api/fetchNotifications';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { markNotificationsRead } from '@/app/api/notifications';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useEffect } from 'react';
 import { useGlobalNotifications } from '@/app/context/NotificationsContext';
@@ -17,7 +14,7 @@ export default function Notifications() {
 
   const queryClient = useQueryClient();
 
-  const { notifications, isLoading, error } = useGlobalNotifications();
+  const { notifications = [], isLoading, error } = useGlobalNotifications();
 
   const mutation = useMutation({
     mutationFn: () => markNotificationsRead(user.user_id),
