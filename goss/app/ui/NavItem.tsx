@@ -19,18 +19,21 @@ function NavItem({
   return (
     <Link href={href} aria-label={label} className="w-1/4">
       <div
-        className={`flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
+        className={`relative flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
           isActive ? 'bg-purple-100' : 'bg-white'
         }`}
       >
-        {children ||
-          (Icon && (
+        <div className="relative flex items-center justify-center">
+          {Icon && (
             <Icon
               color={isActive ? '#9333ea' : '#7b53bb'}
               size={32}
               style={{ strokeWidth: isActive ? 2.5 : 1 }}
             />
-          ))}
+          )}
+
+          {children && children}
+        </div>
       </div>
     </Link>
   );
