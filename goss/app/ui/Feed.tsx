@@ -31,7 +31,7 @@ export default function Feed() {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-white pb-2 pl-4 pt-4 text-base text-purple-500">
+      <div className="left-0 top-0 z-40 flex w-full max-w-[430px] items-center bg-white pb-2 pl-4 pt-4 text-base text-purple-500">
         <div>Sort:</div>
         <button
           onClick={() => setSortOrder('newest')}

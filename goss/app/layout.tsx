@@ -21,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Toaster />
-        <Providers>
-          <SessionProvider>{children}</SessionProvider>
-        </Providers>
+        <div className="mx-auto max-h-[932px] min-h-screen w-full max-w-[430px] bg-gray-100">
+          <Toaster />
+          <Providers>
+            <SessionProvider>{children}</SessionProvider>
+          </Providers>
+        </div>
       </body>
     </html>
   );

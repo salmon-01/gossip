@@ -33,7 +33,7 @@ function NavBar() {
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   return (
-    <nav className="fixed bottom-0 w-full rounded-t-lg bg-gray-50 shadow-md">
+    <nav className="fixed bottom-0 w-full max-w-[430px] rounded-t-lg bg-gray-50 shadow-md">
       {isActive('/home') && (
         <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform">
           <RecordPost />
@@ -56,7 +56,6 @@ function NavBar() {
           label="Search"
         />
 
-        {/* Notifications */}
         {/* Notifications */}
         <NavItem
           href="/notifications"
