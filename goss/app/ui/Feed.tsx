@@ -76,14 +76,13 @@ export default function Feed() {
           onClick={() => setSortOrder(!sortOrder)}
           className={`${sortOrder ? 'bg-purple-700 text-white' : 'bg-purple-700'} text-white rounded-md p-1 ml-44 flex`}
         >
-          {/* {sortOrder? <HiArrowsUpDown strokeWidth={0}/> : <HiArrowsUpDown strokeWidth={0.5}/>} */}
           {sortOrder ? 
           <><HiArrowUp strokeWidth={0}/> <HiArrowDown strokeWidth={2}/> </> : 
           <><HiArrowUp strokeWidth={2}/> <HiArrowDown strokeWidth={0}/></>}
         </button>
       </div>
     </div>
-      <div className="mt-6 flex flex-col items-center">
+      <div className="mt-6 flex flex-col">
         {feedContent === 'all' ? 
           sortedPosts.length > 0 &&
             sortedPosts.map((post) => (

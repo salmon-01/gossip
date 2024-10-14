@@ -3,8 +3,7 @@ import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
 import MessageButton from '@/app/ui/MessageButton';
-import { GoMail } from "react-icons/go";
-import { FiEdit } from "react-icons/fi";
+import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlinePencilSquare } from "react-icons/hi2";
 
 
 export default function ProfileHeader({ user }) {
@@ -37,17 +36,24 @@ export default function ProfileHeader({ user }) {
           <div>
           <Link
             href={`/settings/profile`}
-            className="p-0 text-2xl hover:text-purple-700  mt-1 mr-3"
+            className="p-0 text-2xl hover:text-purple-700  mx-1"
             prefetch={true}
           >
-            <FiEdit className='inline' />
+            <HiOutlinePencilSquare className='inline' />
+          </Link>
+          <Link
+            href={`/favourites`}
+            className="p-0 text-2xl hover:text-purple-700 mx-1"
+            prefetch={true}
+          >
+            <HiOutlineBookmark className='inline' />
           </Link>
           <Link
             href={`/chats`}
-            className="p-0 text-2xl hover:text-purple-700 "
+            className="p-0 text-2xl hover:text-purple-700 mx-1"
             prefetch={true}
           >
-            <GoMail className='inline' />
+            <HiOutlineEnvelope className='inline' />
           </Link>
         </div>) : (<></>)}
       </div>
