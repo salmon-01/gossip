@@ -14,7 +14,7 @@ export default function Notifications() {
 
   const queryClient = useQueryClient();
 
-  const { notifications = [], isLoading, error } = useGlobalNotifications();
+  const { notifications = null, isLoading, error } = useGlobalNotifications();
 
   const mutation = useMutation({
     mutationFn: () => markNotificationsRead(user.user_id),
@@ -36,7 +36,8 @@ export default function Notifications() {
     }
   }, [notifications]);
 
-  if (isLoading) {
+  // Handle the loading state
+  if (isLoading || notifications === null) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner />
@@ -44,6 +45,7 @@ export default function Notifications() {
     );
   }
 
+  // Handle the error state
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -54,6 +56,21 @@ export default function Notifications() {
     );
   }
 
+  // If no notifications are found after loading is complete
+  if (!isLoading && notifications.length === 0) {
+    return (
+      <div className="min-h-screen p-4">
+        <h1 className="mb-6 text-center text-2xl font-bold dark:text-slate-200">
+          Notifications
+        </h1>
+        <p className="text-center text-gray-500">
+          You have no new notifications
+        </p>
+      </div>
+    );
+  }
+
+  // If notifications are present, display them
   return (
     <div className="min-h-screen p-4">
       <h1 className="mb-6 text-center text-2xl font-bold dark:text-slate-200">
@@ -61,19 +78,13 @@ export default function Notifications() {
       </h1>
 
       <div className="flex flex-col items-center">
-        {notifications?.length === 0 && (
-          <p className="text-center text-gray-500">
-            You have no new notifications
-          </p>
-        )}
-        {notifications?.length > 0 &&
-          notifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              notification={notification}
-              className="transform transition-transform hover:scale-105 hover:shadow-lg"
-            />
-          ))}
+        {notifications.map((notification) => (
+          <NotificationCard
+            key={notification.id}
+            notification={notification}
+            className="transform transition-transform hover:scale-105 hover:shadow-lg"
+          />
+        ))}
       </div>
     </div>
   );
