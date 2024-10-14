@@ -1,6 +1,7 @@
 'use client';
 
 import CreatePost from '@/app/ui/CreatePost';
+import TextToSpeech from '@/app/ui/TextToSpeech';
 import { useRouter } from 'next/navigation';
 
 export default function Create() {
@@ -14,10 +15,11 @@ export default function Create() {
   return (
     <div className="pb-16">
       <main className="p-4">
-        <h1 className="dark:text-darkModeHeader mb-4 text-2xl font-bold">
+        <h1 className="mb-4 text-2xl font-bold dark:text-darkModeHeader">
           Create Post
         </h1>
         <CreatePost onPostCreated={handlePostCreated} />
+        <TextToSpeech />
       </main>
     </div>
   );
