@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { User, Post, Favourite } from '@/app/types';
 import { fetchCommentsByPostId } from '../api/post';
-import { createFavourite } from '../api/favourites';
+import { createFavourite, deleteFavourite } from '../api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
 
 interface PostProps {
@@ -56,6 +56,17 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     }
   };
 
+  const handleDeleteFavourite = async () => {
+    if (!currentUserId) {
+      return;
+    }
+    try {
+      await deleteFavourite(currentUserId, post.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6">
@@ -93,11 +104,13 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                   Comment {comments.length > 0 ? `(${comments.length})` : null}
                 </div>
               </Link>
-              <div className='ml-auto' onClick={() => handleCreateFavourite()}>
-                {favourites.some(favourite => favourite.post_id === post.id) ?
-                <HiBookmark color="#9333ea" size={18}/> :
-                <HiOutlineBookmark color="#9333ea" size={18}/> }
-              </div>
+              {favourites.some(favourite => favourite.post_id === post.id) ? 
+                <div className='ml-auto' onClick={() => handleDeleteFavourite()}>
+                  <HiBookmark color="#9333ea" size={18}/>
+                </div> :
+                <div className='ml-auto' onClick={() => handleCreateFavourite()}>
+                  <HiOutlineBookmark color="#9333ea" size={18}/>
+                </div>}
             </div>
         </div>
       </div>
