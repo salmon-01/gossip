@@ -1,12 +1,13 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../api/fetchPosts';
+import { fetchFavourites } from '../api/favourites';
+import { fetchFollowingById } from '../api/fetchFollowers';
 import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { useSessionContext } from '../context/SessionContext';
-import { fetchFavourites } from '../api/favourites';
-import ThemeSwitch from './ThemeSwitch';
+import { HiArrowsUpDown } from "react-icons/hi2";
 
 export default function Feed() {
 
@@ -31,7 +32,16 @@ export default function Feed() {
     enabled: !!currentUserId,
   });
 
-  const [sortOrder, setSortOrder] = useState<'oldest' | 'newest'>('newest');
+  const {
+    data: following = [],
+  } = useQuery({
+    queryKey: ['following', currentUserId],
+    queryFn: () => fetchFollowingById(currentUserId as string),
+    enabled: !!currentUserId,
+  });
+
+  const [sortOrder, setSortOrder] = useState(true);
+  const [feedContent, setFeedContent] = useState<'all' | 'following'>('all');
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -41,31 +51,51 @@ export default function Feed() {
     const dateA = new Date(a.created_at).getTime();
     const dateB = new Date(b.created_at).getTime();
 
-    return sortOrder === 'oldest' ? dateA - dateB : dateB - dateA;
+    return sortOrder ? dateB - dateA : dateA - dateB;
   });
 
   return (
     <>
-      <div className="left-0 top-0 z-40 flex w-full max-w-[430px] items-center bg-white pb-2 pl-4 pt-4 text-base text-purple-500">
-        <div>Sort:</div>
+    <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white pb-1 pl-4 pt-4">
+      <div className="flex max-w-[430px] items-center w-full">
+        <div className="flex space-x-4" style={{ minWidth: '180px' }}>
+          <button
+            onClick={() => setFeedContent('all')}
+            className={`${feedContent === 'all' ? 'text-purple-700 font-bold' : 'text-purple-400'} px-2 underline`}
+          >
+            All Posts
+          </button>
+          <button
+            onClick={() => setFeedContent('following')}
+            className={`${feedContent === 'following' ? 'text-purple-700 font-bold' : 'text-purple-400'} px-2 underline`}
+          >
+            For You
+          </button>
+        </div>
         <button
-          onClick={() => setSortOrder('newest')}
-          className={`${sortOrder === 'newest' ? 'bg-purple-700' : 'bg-purple-400'} mx-1 rounded px-2 text-white`}
+          onClick={() => setSortOrder(!sortOrder)}
+          className={`${sortOrder ? 'bg-purple-700 text-white' : 'bg-purple-400'} text-white rounded-md p-1 ml-48`}
         >
-          New
-        </button>
-        <button
-          onClick={() => setSortOrder('oldest')}
-          className={`${sortOrder === 'oldest' ? 'bg-purple-700' : 'bg-purple-400'} mx-1 rounded px-2 text-white`}
-        >
-          Old
+          {sortOrder? <HiArrowsUpDown strokeWidth={0}/> : <HiArrowsUpDown strokeWidth={0.5}/>}
         </button>
       </div>
-      <div className="mt-8 flex flex-col items-center">
-        {sortedPosts.length > 0 &&
-          sortedPosts.map((post) => (
-            <PostComponent key={post.id} post={post} user={post.profiles} favourites={favourites} />
-          ))}
+    </div>
+      <div className="mt-6 flex flex-col items-center">
+        {feedContent === 'all' ? 
+          sortedPosts.length > 0 &&
+            sortedPosts.map((post) => (
+              <PostComponent key={post.id} post={post} user={post.profiles} favourites={favourites} />
+            )) 
+          :
+          sortedPosts.length > 0 &&
+            sortedPosts.map((post) => {
+              if (following.some(follow => follow.user_id === post.user_id)) {
+                return (
+                  <PostComponent key={post.id} post={post} user={post.profiles} favourites={favourites} />
+                );
+              }
+            })
+        }
       </div>
     </>
   );
