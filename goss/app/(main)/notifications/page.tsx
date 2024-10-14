@@ -8,6 +8,8 @@ import {
 } from '@/app/api/fetchNotifications';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useEffect } from 'react';
+import { useGlobalNotifications } from '@/app/context/NotificationsContext';
+import LoadingSpinner from '@/app/ui/LoadingSpinner';
 
 export default function Notifications() {
   const { data: session } = useSessionContext();
@@ -15,17 +17,7 @@ export default function Notifications() {
 
   const queryClient = useQueryClient();
 
-  const {
-    data: notifications = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => fetchNotifications(user.user_id),
-    staleTime: 0, // Ensure cache is not used, and fresh data is fetched
-    refetchOnWindowFocus: true, // Fetch fresh data whenever the window is refocused
-  });
+  const { notifications, isLoading, error } = useGlobalNotifications();
 
   const mutation = useMutation({
     mutationFn: () => markNotificationsRead(user.user_id),
@@ -39,24 +31,23 @@ export default function Notifications() {
     },
   });
 
-  const unreadNotifications = notifications.filter((n) => !n.is_read);
+  const unreadNotifications = notifications?.filter((n) => !n.is_read) || [];
 
   useEffect(() => {
     if (user && unreadNotifications.length > 0) {
       mutation.mutate(); // Automatically mark unread notifications as read
     }
-    console.log('notifications read!'); // This was to check for looping
   }, [notifications]);
 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg font-medium">Loading notifications...</p>
+        <LoadingSpinner />
       </div>
     );
   }
 
-  if (isError) {
+  if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p className="text-lg text-red-500">
@@ -73,12 +64,12 @@ export default function Notifications() {
       </h1>
 
       <div className="flex flex-col items-center">
-        {notifications.length === 0 && (
+        {notifications?.length === 0 && (
           <p className="text-center text-gray-500">
             You have no new notifications
           </p>
         )}
-        {notifications.length > 0 &&
+        {notifications?.length > 0 &&
           notifications.map((notification) => (
             <NotificationCard
               key={notification.id}
