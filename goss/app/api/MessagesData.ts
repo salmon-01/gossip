@@ -7,16 +7,16 @@ export async function fetchMessages(conversationId) {
     .from('messages')
     .select('*')
     .eq('conversation_id', conversationId)
-  
-
+    .not('content', 'is', null)  
+    .neq('content', '');  
 
   if (error) {
     throw new Error(error.message);
   }
 
   return data;
-
 }
+
 
 export async function fetchUserConversations(loggedInUserId) {
   if (!loggedInUserId) {
@@ -77,7 +77,7 @@ export async function createConversation(loggedInUserId, otherUserId) {
   const conversationId = newConversationData[0].id;
 
   
-  const initialMessage = "Conversation started."; 
+  const initialMessage = ""; 
   const { error: messageError } = await supabase
     .from('messages')
     .insert([{ conversation_id: conversationId, sender_id: loggedInUserId, content: initialMessage }]);
