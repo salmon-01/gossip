@@ -1,50 +1,171 @@
+// CreatePost.test.tsx
 import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 import CreatePost from './CreatePost';
-import { useSessionContext } from '../context/SessionContext';
-import { Session } from '../types';
+import { useSessionContext } from '../../app/context/SessionContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createClient } from '../../utils/supabase/client';
 
-// Mock useRouter and usePathname from next/navigation
-vi.mock('next/navigation', () => ({
-  usePathname: vi.fn(),
+// Mock dependencies
+import * as SessionContextModule from '../../app/context/SessionContext';
+
+// Mock other dependencies
+vi.mock('@tanstack/react-query', () => ({
+  useMutation: vi.fn(),
+  useQueryClient: vi.fn(),
 }));
 
-vi.mock('../context/SessionContext', () => ({
-  useSessionContext: vi.fn(),
+vi.mock('@tanstack/react-query', () => ({
+  useMutation: vi.fn(),
+  useQueryClient: vi.fn(),
 }));
 
-describe('CreatePost component', () => {
-  const mockSession: Session = {
-    profile: {
-      user_id: 'ae12',
-      username: 'MockyBoy',
-      badge: 'badge',
-      profile_img: '/dogface.jpg',
-      bio: '',
-      created_at: new Date(),
-      updated_at: new Date(),
-      display_name: 'MockyMan',
+vi.mock('../../utils/supabase/client', () => ({
+  createClient: vi.fn(() => ({
+    auth: {
+      getUser: vi.fn().mockResolvedValue({
+        data: { user: { id: 'user123' } },
+        error: null,
+      }),
     },
+    storage: {
+      from: vi.fn().mockReturnThis(),
+      upload: vi.fn().mockResolvedValue({
+        data: { path: 'path/to/audio.webm' },
+        error: null,
+      }),
+      getPublicUrl: vi.fn().mockReturnValue({
+        data: { publicUrl: 'http://example.com/audio.webm' },
+      }),
+    },
+    from: vi.fn().mockReturnThis(),
+    insert: vi.fn().mockResolvedValue({
+      data: [{ id: 'post123' }],
+      error: null,
+    }),
+  })),
+}));
+
+vi.mock('@/app/ui/AudioRecorder', () => ({
+  __esModule: true,
+  default: vi.fn(({ onAudioSave }) => {
+    // Simulate rendering the component and calling onAudioSave when needed
+    const handleSave = () => {
+      const blob = new Blob(['audio data'], { type: 'audio/webm' });
+      onAudioSave(blob);
+    };
+    return (
+      <div data-testid="audio-recorder">
+        <button onClick={handleSave}>Simulate Audio Save</button>
+      </div>
+    );
+  }),
+}));
+
+vi.mock('./LoadingSpinner', () => ({
+  __esModule: true,
+  default: vi.fn(() => <div data-testid="loading-spinner">Loading...</div>),
+}));
+
+vi.mock('react-hot-toast', () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+describe('CreatePost Component', () => {
+  const mockUser = {
     user: {
-      id: 'ae12',
-      aud: 'string',
-      role: 'string',
-      email: 'string@string.com',
-      email_confirmed_at: new Date(),
-      phone: 793647483,
+      id: 'user123',
+    },
+    profile: {
+      profile_img: 'http://example.com/profile.jpg',
     },
   };
 
+  const onPostCreatedMock = vi.fn();
+
   beforeEach(() => {
-    // Mock the session context to return a valid session object
-    vi.mocked(useSessionContext).mockReturnValue({
-      data: mockSession,
+    vi.resetAllMocks();
+
+    // Mock useSessionContext using vi.spyOn
+    vi.spyOn(SessionContextModule, 'useSessionContext').mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
+    const invalidateQueriesMock = vi.fn();
+    (useQueryClient as vi.Mock).mockReturnValue({
+      invalidateQueries: invalidateQueriesMock,
+    });
+
+    (useMutation as vi.Mock).mockImplementation(
+      ({ mutationFn, onSuccess, onError }) => {
+        return {
+          mutate: () => {
+            mutationFn().then(onSuccess).catch(onError);
+          },
+        };
+      }
+    );
+
+    (createClient as vi.Mock).mockReturnValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({
+          data: { user: { id: 'user123' } },
+          error: null,
+        }),
+      },
+      storage: {
+        from: vi.fn().mockReturnThis(),
+        upload: vi.fn().mockResolvedValue({
+          data: { path: 'path/to/audio.webm' },
+          error: null,
+        }),
+        getPublicUrl: vi.fn().mockReturnValue({
+          data: { publicUrl: 'http://example.com/audio.webm' },
+        }),
+      },
+      from: vi.fn().mockReturnThis(),
+      insert: vi.fn().mockResolvedValue({
+        data: [{ id: 'post123' }],
+        error: null,
+      }),
     });
   });
 
-  render(<CreatePost />);
+  test('displays loading state when session is loading', () => {
+    (useSessionContext as vi.Mock).mockReturnValue({
+      data: null,
+      isLoading: true,
+      error: null,
+    });
 
-  test('', () => {
-    expect(screen.getByLabelText('Post')).toBeInTheDocument();
+    render(<CreatePost onPostCreated={onPostCreatedMock} />);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
+  test('displays error message when session has error', () => {
+    (useSessionContext as vi.Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: { message: 'Session error' },
+    });
+
+    render(<CreatePost onPostCreated={onPostCreatedMock} />);
+    expect(screen.getByText('Error: Session error')).toBeInTheDocument();
+  });
+
+  test('displays not logged in message when session is null', () => {
+    (useSessionContext as vi.Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+    });
+
+    render(<CreatePost onPostCreated={onPostCreatedMock} />);
+    expect(screen.getByText('Not logged in')).toBeInTheDocument();
   });
 });
