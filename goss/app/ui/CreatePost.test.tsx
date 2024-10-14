@@ -4,7 +4,6 @@ import CreatePost from './CreatePost';
 import { useSessionContext } from '../context/SessionContext';
 import { Session } from '../types';
 
-
 // Mock useRouter and usePathname from next/navigation
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
@@ -12,8 +11,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('../context/SessionContext', () => ({
   useSessionContext: vi.fn(),
-}));  
-
+}));
 
 describe('CreatePost component', () => {
   const mockSession: Session = {
@@ -33,8 +31,8 @@ describe('CreatePost component', () => {
       role: 'string',
       email: 'string@string.com',
       email_confirmed_at: new Date(),
-      phone: 793647483
-    }
+      phone: 793647483,
+    },
   };
 
   beforeEach(() => {
@@ -43,11 +41,10 @@ describe('CreatePost component', () => {
       data: mockSession,
     });
   });
-  
-  render(<CreatePost />)
+
+  render(<CreatePost />);
 
   test('', () => {
     expect(screen.getByLabelText('Post')).toBeInTheDocument();
   });
-  
 });
