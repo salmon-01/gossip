@@ -133,7 +133,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
               name="caption"
               value={caption}
               placeholder="Write a caption"
-              className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-slate-800 dark:text-white dark:focus:border-slate-300"
+              className="dark:bg-darkModePrimaryBackground z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:text-white dark:focus:border-slate-300"
               onChange={(e) => setCaption(e.target.value)}
             />
           </div>
