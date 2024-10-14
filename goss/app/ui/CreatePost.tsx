@@ -9,6 +9,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioNoteApp from './TextToSpeech';
 import { BsStars } from 'react-icons/bs';
+import { MdOutlineMic } from 'react-icons/md';
 
 import axios from 'axios';
 
@@ -131,6 +132,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
             onClick={() => setActiveTab('recordAudio')}
           >
             Record Audio
+            <MdOutlineMic className="ml-1 h-4 w-4" />
           </TabsTrigger>
           <TabsTrigger value="AIvoice" onClick={() => setActiveTab('AIvoice')}>
             AI Voice
