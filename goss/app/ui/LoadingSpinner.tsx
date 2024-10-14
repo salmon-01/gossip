@@ -1,5 +1,4 @@
 import React from 'react';
-import Kier from '../../public/kier.png';
 
 interface LoadingSpinnerProps {
   size?: number;
@@ -17,7 +16,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       className={`fixed inset-0 flex items-center justify-center ${bgColor}`}
     >
       <img
-        src="/nesar.png"
+        src="/loadingImg.png"
         alt="Profile"
         className="mb-4 h-24 w-24 animate-spin rounded-full"
       />
