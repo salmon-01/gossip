@@ -12,6 +12,7 @@ import { useSessionContext } from '../context/SessionContext';
 import NavItem from './NavItem';
 import { useQuery } from '@tanstack/react-query';
 import { fetchNotifications } from '@/app/api/fetchNotifications';
+import { useGlobalNotifications } from '../context/NotificationsContext';
 
 function NavBar() {
   const { data: session } = useSessionContext();
@@ -21,16 +22,18 @@ function NavBar() {
 
   const isActive = (path: string) => pathname === path;
 
-  // Fetch all notifications
-  const { data: notifications = [], isLoading } = useQuery({
-    queryKey: ['notifications', userId],
-    queryFn: () => fetchNotifications(userId),
-    enabled: !!userId, // Only fetch if userId is available
-    refetchOnWindowFocus: true, // Refetch the data when window is refocused
-  });
+  // // Fetch all notifications
+  // const { data: notifications = [], isLoading } = useQuery({
+  //   queryKey: ['notifications', userId],
+  //   queryFn: () => fetchNotifications(userId),
+  //   enabled: !!userId, // Only fetch if userId is available
+  //   refetchOnWindowFocus: true, // Refetch the data when window is refocused
+  // });
+
+  const { notifications, isLoading } = useGlobalNotifications();
 
   // Filter unread notifications from fetched data
-  const unreadCount = notifications.filter((n) => !n.is_read).length;
+  const unreadCount = notifications?.filter((n) => !n.is_read).length || 0;
 
   return (
     <nav className="fixed bottom-0 w-full max-w-[430px] rounded-t-lg bg-gray-50 shadow-md">

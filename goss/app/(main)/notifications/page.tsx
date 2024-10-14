@@ -72,14 +72,6 @@ export default function Notifications() {
         Notifications
       </h1>
 
-      {/* <button
-        onClick={handleMarkAllAsRead}
-        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
-      >
-        Mark all as read
-      </button> */}
-
-      {/* Container for notifications, centered in the screen */}
       <div className="flex flex-col items-center">
         {notifications.length === 0 && (
           <p className="text-center text-gray-500">
