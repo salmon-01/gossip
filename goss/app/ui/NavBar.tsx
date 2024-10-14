@@ -63,17 +63,12 @@ function NavBar() {
           isActive={isActive('/notifications')}
           label="Notifications"
         >
-          <div className="relative">
-            {/* Bell Icon */}
-            <HiOutlineBell size={32} />
-
-            {/* Badge for unread notifications */}
-            {!isLoading && unreadCount > 0 && (
-              <span className="absolute -right-3 -top-3 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
-                {unreadCount}
-              </span>
-            )}
-          </div>
+          {/* Badge for unread notifications */}
+          {!isLoading && unreadCount > 0 && (
+            <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
+              {unreadCount}
+            </span>
+          )}
         </NavItem>
 
         {/* Profile */}
