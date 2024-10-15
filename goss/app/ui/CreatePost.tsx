@@ -199,6 +199,8 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         <AIVoiceGenerator
           onAudioSave={handleAudioSave}
           onSubmitPost={handleSubmit}
+          caption={caption}
+          setCaption={setCaption}
         />
       )}
       {loading && (

@@ -5,7 +5,12 @@ import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
 import { FaTrash, FaPlay, FaPause } from 'react-icons/fa';
 
-const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
+const AIVoiceGenerator = ({
+  onAudioSave,
+  onSubmitPost,
+  caption,
+  setCaption,
+}) => {
   const [text, setText] = useState('');
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -13,7 +18,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(null);
 
-  // ? Moving border experiment
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef(null);
@@ -179,7 +183,16 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
         )}
       </div>
       <div className="mb-0 ml-auto mr-auto mt-4 w-full max-w-5xl">
-        <h1 className="mb-1 dark:text-darkModeParaText">Your text</h1>
+        {/* Add caption input field */}
+        <input
+          type="text"
+          name="caption"
+          value={caption}
+          placeholder="Write a caption"
+          className="mb-2 mt-2 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
+          onChange={(e) => setCaption(e.target.value)}
+        />
+        <h1 className="mb-1 mt-3 dark:text-darkModeParaText">Your text</h1>
         <textarea
           value={text}
           onChange={handleTextChange}
