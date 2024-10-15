@@ -6,7 +6,7 @@ type Message = {
 };
 
 
-export function formatDate(date) {
+export function formatDate(date:string |number) {
   const messageDate = new Date(date);
   const today = new Date();
 
@@ -30,7 +30,7 @@ export function formatDate(date) {
   return messageDate.toLocaleDateString();
 }
 
-export function formatMessageDate(date) {
+export function formatMessageDate(date:string | number) {
   const messageDate = new Date(date);
   const today = new Date();
   const diffTime = today.getTime() - messageDate.getTime();
@@ -72,7 +72,7 @@ export function groupMessagesByDate(messages: Message[]): Record<string, Message
   return groupedMessages;
 }
 
-export function formatMessageTime(date) {
+export function formatMessageTime(date:string | number) {
   const messageDate = new Date(date);
   return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }

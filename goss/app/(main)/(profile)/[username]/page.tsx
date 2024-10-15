@@ -51,7 +51,7 @@ export default function ProfilePost({ params }) {
   return (
     <>
       {PostData && PostData.length > 0 ? (
-        <div className="mt-4 p-3">
+        <div className="mt-4 p-3 min-h-[60lvh] bg-white">
           {PostData.map((post) => (
             <div key={post.id} className="mb-4">
               <PostComponent user={profile} post={post} favourites={favourites} />
@@ -59,7 +59,7 @@ export default function ProfilePost({ params }) {
           ))}
         </div>
       ) : (
-        <div>No posts found.</div>
+        <div className='pl-4 min-h-[60lvh] bg-white'>No posts found.</div>
       )}
     </>
   );
