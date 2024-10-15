@@ -4,13 +4,19 @@ import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
 import MessageButton from '@/app/ui/MessageButton';
 import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlinePencilSquare } from "react-icons/hi2";
+import { useProfile } from '@/app/context/ProfileContext';
 
 
-export default function ProfileHeader({ user }) {
+export default function ProfileHeader() {
   const { data: session } = useSessionContext();
   const loggedInUsername = session?.profile.username;
   const loggedInUserId = session?.profile.user_id
+
+  const profile = useProfile();
+  const user = profile;
   const otherUserId = user?.user_id
+
+
 
 
 

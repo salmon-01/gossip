@@ -107,7 +107,7 @@ export default function Page() {
     <>
       <div className="flex items-center justify-start px-4 py-6">
         <Link href="/chats" className="text-2xl">{'\u2190'}</Link>
-        <h2 className="font-bold text-2xl ml-4">New message</h2>
+        <h2 className="font-bold text-2xl ml-4 dark:text-darkModeHeader">New message</h2>
       </div>
 
       <form className="px-4">
@@ -116,7 +116,7 @@ export default function Page() {
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search people"
-          className="w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-darkModeParaText"
         />
       </form>
 

@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/client';
 
 const supabase = createClient();
 
-export async function fetchMessages(conversationId) {
+export async function fetchMessages(conversationId:string) {
   const { data, error } = await supabase
     .from('messages')
     .select('*')
@@ -18,7 +18,7 @@ export async function fetchMessages(conversationId) {
 }
 
 
-export async function fetchUserConversations(loggedInUserId) {
+export async function fetchUserConversations(loggedInUserId:string) {
   if (!loggedInUserId) {
     throw new Error("Logged in user ID is missing"); // Early return if loggedInUserId is undefined
   }
@@ -44,7 +44,7 @@ export async function fetchUserConversations(loggedInUserId) {
   return data;
 }
 
-export async function createConversation(loggedInUserId, otherUserId) {
+export async function createConversation(loggedInUserId:string, otherUserId:string) {
 
   const { data: existingConversation, error: checkError } = await supabase
     .from('conversations')
@@ -93,7 +93,7 @@ export async function createConversation(loggedInUserId, otherUserId) {
 }
 
 
-export async function fetchConversationProfile(loggedInUserId, conversationId) {
+export async function fetchConversationProfile(loggedInUserId:string, conversationId:string) {
   if (!loggedInUserId) {
     throw new Error("Logged in user ID is missing"); // Early return if loggedInUserId is undefined
   }

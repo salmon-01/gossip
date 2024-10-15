@@ -103,7 +103,7 @@ export default function ProfilePage() {
       toast.error('Error updating profile.');
     } else {
       queryClient.invalidateQueries({ queryKey: ['profile', username] });
-      queryClient.invalidateQueries({ queryKey: ['profileId', username] });
+      queryClient.invalidateQueries({ queryKey: ['session'] });
 
       router.push(`/${username}`);
 
