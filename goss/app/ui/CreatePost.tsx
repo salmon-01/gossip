@@ -132,7 +132,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
-      <div className="flex items-center justify-center">
+      <div className="mt-8 flex items-center justify-center">
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
