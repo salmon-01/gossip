@@ -9,13 +9,9 @@ interface ProfileCardProps {
   isLoading: boolean;
 }
 
-const ProfileCard = ({ user, isFollowing, isLoading }: ProfileCardProps) => {
+const ProfileCard = ({ user, isLoading }: ProfileCardProps) => {
   const { data: session } = useSessionContext();
   const currentUserId = session?.profile.user_id;
-
-  // Add logging to debug the issue
-  console.log('currentUserId:', currentUserId);
-  console.log('user.user_id:', user.user_id);
 
   return (
     <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow">
@@ -33,12 +29,10 @@ const ProfileCard = ({ user, isFollowing, isLoading }: ProfileCardProps) => {
         </Link>
       </div>
 
-      {/* Follow Button */}
       {String(user.user_id) !== String(currentUserId) && ( // Force comparison as strings
         <FollowButton
           targetUserId={user.user_id}
           targetUserName={user.display_name}
-          isFollowing={isFollowing}
           isLoading={isLoading}
         />
       )}

@@ -1,9 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { fetchFollowers } from '@/app/api/fetchFollowers';
 import ProfileCard from '@/app/ui/ProfileCard';
 import { useQuery } from '@tanstack/react-query';
+import { fetchFollowersUsername } from '@/app/api/follow';
 
 interface Follower {
   user_id: string; // Ensure user_id is defined in the interface
@@ -25,7 +25,7 @@ export default function FollowPage() {
     error,
   } = useQuery<Follower[]>({
     queryKey: ['followers', username],
-    queryFn: () => fetchFollowers(username),
+    queryFn: () => fetchFollowersUsername(username),
     enabled: !!username,
   });
 
@@ -59,14 +59,14 @@ export default function FollowPage() {
   return (
     <div className="space-y-4">
       {followers.map((follower) =>
-        follower.statusprofiles ? (
+        follower ? (
           <ProfileCard
             key={follower.user_id} // Ensure follower.user_id is valid
             user={{
-              user_id: follower.target_user_id, // Pass user_id from the follower object
-              username: follower.statusprofiles.username,
-              display_name: follower.statusprofiles.display_name,
-              profile_img: follower.statusprofiles.profile_img,
+              user_id: follower.user_id, // Pass user_id from the follower object
+              username: follower.username,
+              display_name: follower.display_name,
+              profile_img: follower.profile_img,
             }}
           />
         ) : null

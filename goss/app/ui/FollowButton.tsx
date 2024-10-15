@@ -1,32 +1,38 @@
 import { debounce } from 'lodash';
 import { useCallback, useState, useEffect } from 'react';
-import { useFollow } from '../context/FollowContext';
+import { useFollow } from '../hooks/useFollow';
 import { useSessionContext } from '../context/SessionContext';
 
 interface FollowButtonProps {
   targetUserId: string;
   targetUserName: string;
-  isFollowing: boolean;
   isLoading: boolean;
 }
 
 const FollowButton = ({
-  isFollowing: initialIsFollowing, // Renamed for clarity
   isLoading,
   targetUserId,
   targetUserName,
 }: FollowButtonProps) => {
-  const { handleFollowToggle } = useFollow(); // Get the follow/unfollow handler from context
-  const { data: session } = useSessionContext();
+  const { handleFollowToggle, followingData } = useFollow(); // Access following data and toggle function from context
+  const { data: session } = useSessionContext(); // Access the session to get the current user
   const currentUserId = session?.profile.user_id;
+  console.log(currentUserId);
+  // Determine if the current user is following the target user
+  const isInitiallyFollowing = followingData?.some((follow) => {
+    console.log('target button:', follow.target_user_id);
+    return follow.target_user_id === targetUserId; // Add return statement
+  });
+
+  console.log('target prop:', targetUserId);
 
   // Local state to manage the following status optimistically
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
+  const [isFollowing, setIsFollowing] = useState(isInitiallyFollowing);
 
-  // Sync local state with prop changes (in case follow status changes externally)
+  // Sync local state with context changes (in case follow status changes globally)
   useEffect(() => {
-    setIsFollowing(initialIsFollowing);
-  }, [initialIsFollowing]);
+    setIsFollowing(isInitiallyFollowing);
+  }, [isInitiallyFollowing]);
 
   // Debounced function to avoid rapid clicks
   const debouncedHandleClick = useCallback(

@@ -3,9 +3,12 @@ import {
   useMutation,
   useQueryClient,
   UseMutationResult,
+  useQuery,
 } from '@tanstack/react-query';
 import { updateFollowStatus } from '@/app/api/follow';
 import toast from 'react-hot-toast';
+import { fetchFollowing } from '@/app/api/follow';
+import { useSessionContext } from './SessionContext';
 
 // Define the type for the follow response
 interface FollowResponse {
@@ -30,15 +33,27 @@ interface FollowContextType {
     targetUserName: string
   ) => void;
   isLoading: boolean;
+  followingData: any;
+  isFollowingLoading: boolean;
+  refetchFollowing: () => void;
 }
 
 // Create the FollowContext with a default value of null
-const FollowContext = createContext<FollowContextType | null>(null);
+export const FollowContext = createContext<FollowContextType | null>(null);
 
 // Provide the FollowContext to the app
 export const FollowProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
+  const { data: session, isLoading } = useSessionContext(); // Assuming useSessionContext returns session and isLoading
 
+  // Check if session and user_id are available
+  const userId = session?.user?.id; // Adjust this based on the actual session structure
+
+  if (!userId && !isLoading) {
+    console.error('User ID is not available');
+  }
+
+  // Mutation for following/unfollowing a user
   const mutation: UseMutationResult<
     FollowResponse,
     Error,
@@ -62,6 +77,10 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
         queryClient.invalidateQueries({
           queryKey: ['followStatus', response.userId, response.targetUserId],
         });
+
+        queryClient.invalidateQueries({
+          queryKey: ['following', response.userId],
+        });
       }
     },
     onError: () => {
@@ -69,6 +88,20 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  // Query to fetch following data, only enabled when userId is available
+  const {
+    data: followingData,
+    isLoading: isFollowingLoading,
+    refetch: refetchFollowing,
+  } = useQuery({
+    queryKey: ['following', userId], // Include userId in the query key for uniqueness
+    queryFn: () => fetchFollowing(userId as string),
+    staleTime: 60000, // Cache data for 60 seconds
+    refetchOnWindowFocus: false,
+    enabled: !!userId, // Only run the query if userId is available
+  });
+
+  // Function to toggle follow status
   const handleFollowToggle = (
     userId: string,
     targetUserId: string,
@@ -79,18 +112,15 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <FollowContext.Provider
-      value={{ handleFollowToggle, isLoading: mutation.isPending }}
+      value={{
+        handleFollowToggle,
+        isLoading: mutation.isPending,
+        followingData,
+        isFollowingLoading,
+        refetchFollowing,
+      }}
     >
       {children}
     </FollowContext.Provider>
   );
-};
-
-// Hook to use the FollowContext
-export const useFollow = () => {
-  const context = useContext(FollowContext);
-  if (!context) {
-    throw new Error('useFollow must be used within a FollowProvider');
-  }
-  return context;
 };
