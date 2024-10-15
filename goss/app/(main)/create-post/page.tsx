@@ -1,7 +1,6 @@
 'use client';
 
 import CreatePost from '@/app/ui/CreatePost';
-import TextToSpeech from '@/app/ui/TextToSpeech';
 import { useRouter } from 'next/navigation';
 
 export default function Create() {

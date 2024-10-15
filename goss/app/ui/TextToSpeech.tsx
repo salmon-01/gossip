@@ -41,7 +41,7 @@ const AudioNoteApp = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Text to Audio Note</h1>
+      <h1 className="dark:text-darkModeParaText">Text to Audio Note</h1>
       <textarea
         value={text}
         onChange={handleTextChange}
