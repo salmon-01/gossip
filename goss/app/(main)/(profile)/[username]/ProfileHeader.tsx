@@ -13,11 +13,7 @@ export default function ProfileHeader() {
   const loggedInUserId = session?.profile.user_id
 
   const profile = useProfile();
-
   const user = profile;
-
-  console.log(user)
-
   const otherUserId = user?.user_id
 
 
