@@ -64,12 +64,12 @@ const AIVoiceGenerator = () => {
 
   return (
     <>
-      <div className="dark:bg-experimentBG mx-auto mt-2 max-w-96 rounded-lg bg-white p-6 shadow">
-        <h2 className="text-md mb-3 font-medium dark:text-darkModeHeader">
+      <div className="dark:bg-experimentBG mx-auto mt-2 max-w-96 rounded-lg bg-white p-8 shadow">
+        <h2 className="mb-5 text-lg font-medium dark:text-darkModeHeader">
           Select a voice for your audio note
         </h2>
         <button
-          className="mb-4 rounded bg-gray-700 px-4 py-2 text-sm text-white"
+          className="mb-1 rounded bg-gray-700 px-4 py-2 text-sm text-white"
           onClick={toggleDropdown}
         >
           {selectedVoice
@@ -83,8 +83,6 @@ const AIVoiceGenerator = () => {
                 <h3 className="text-md mb-2 font-semibold">
                   {entry.name} - {entry.accent}
                 </h3>
-
-                {/* Audio Player */}
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={() => handlePlayPause(entry.id)}
@@ -115,17 +113,12 @@ const AIVoiceGenerator = () => {
           </div>
         )}
       </div>
-      <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
+      <div className="mb-0 ml-auto mr-auto mt-4 max-w-96">
         <h1 className="mb-1 dark:text-darkModeParaText">Your text</h1>
         <textarea
           value={text}
           onChange={handleTextChange}
           placeholder="Enter text here"
-          style={
-            {
-              // height: '100px',
-            }
-          }
           className="h-32 w-full resize-none rounded-lg p-2 dark:text-white"
         />
         <button

@@ -140,7 +140,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         </TabsList>
       </Tabs>
       {activeTab === 'recordAudio' && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="mt-2">
           <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
             <div className="flex h-8 w-full items-center">
               <img
