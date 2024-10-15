@@ -5,7 +5,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
+import { FollowProvider } from './context/FollowContext';
 import { ThemeProvider } from 'next-themes';
+import { SessionProvider } from './context/SessionContext';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(
@@ -24,14 +26,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
-        <NotificationsProvider>
-          <Toaster />
-          {children}
-          <ReactQueryDevtools
-            initialIsOpen={false}
-            buttonPosition="top-right"
-          />
-        </NotificationsProvider>
+        <SessionProvider>
+          <NotificationsProvider>
+            <FollowProvider>
+              <Toaster />
+              {children}
+              <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="top-right"
+              />
+            </FollowProvider>
+          </NotificationsProvider>
+        </SessionProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

@@ -23,9 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="mx-auto max-h-[932px] min-h-screen w-full max-w-[430px] bg-gray-100">
           <Toaster />
-          <Providers>
-            <SessionProvider>{children}</SessionProvider>
-          </Providers>
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>
