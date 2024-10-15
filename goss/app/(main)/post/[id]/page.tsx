@@ -38,11 +38,6 @@ export default function PostPage() {
     queryFn: () => fetchPostById(postId as string),
   });
 
-  const { data: comments, isLoading: isLoadingComments } = useQuery({
-    queryKey: ['comments', postId],
-    queryFn: () => fetchCommentsByPostId(postId as string),
-  });
-
   const addCommentMutation = useMutation({
     mutationFn: async (newComment: { post_id: string; content: string }) => {
       const { data: userData, error: userError } =
@@ -130,6 +125,7 @@ export default function PostPage() {
           <Reactions
             postId={postId as string}
             postAuthorId={postData.profiles.user_id}
+            post={postData}
           />
         </div>
         <p className="mb-2 mt-6 font-semibold">Goss about it</p>
@@ -139,7 +135,7 @@ export default function PostPage() {
           }
         />
         <CommentSection
-          comments={comments || []}
+          comments={postData.comments || []}
           onDeleteComment={(commentId: string) =>
             deleteCommentMutation.mutate(commentId)
           }
