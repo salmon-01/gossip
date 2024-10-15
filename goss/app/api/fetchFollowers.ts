@@ -100,13 +100,12 @@ export const fetchFollowersUsername = async (
 //     if (followingError) throw followingError;
 //     console.log(followingData);
 
-    return followingData as Following[];
-  } catch (error) {
-    console.error('Error fetching following:', error);
-    throw error; // Re-throw the error to be handled by the calling function
-  }
-};
-
+//     return followingData as Following[];
+//   } catch (error) {
+//     console.error('Error fetching following:', error);
+//     throw error; // Re-throw the error to be handled by the calling function
+//   }
+// };
 
 export const fetchFollowingById = async (
   userId: string
@@ -141,5 +140,3 @@ export const fetchFollowingById = async (
     throw error; // Re-throw the error to be handled by the calling function
   }
 };
-
-

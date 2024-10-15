@@ -44,8 +44,7 @@ export default function FollowPage() {
   if (!followers || followers.length === 0) {
     return (
       <div className="py-8 text-center">
-        <h1>{username}</h1>
-        <p className="text-gray-500">No followers found</p>
+        <p className="text-gray-500">{username} is not following anyone.</p>
       </div>
     );
   }
