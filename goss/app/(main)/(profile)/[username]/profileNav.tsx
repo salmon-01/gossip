@@ -7,7 +7,7 @@ export default function ProfileNav({ username }: { username: string }) {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-10 mt-4 flex w-full max-w-[430px] justify-start bg-white py-2 pl-6 dark:bg-darkModePrimaryBackground ">
+    <nav className="sticky top-0 z-10 mt-6 flex w-full max-w-full justify-center bg-white dark:bg-darkModePrimaryBackground">
       <Link
         href={`/${username}`}
         className={

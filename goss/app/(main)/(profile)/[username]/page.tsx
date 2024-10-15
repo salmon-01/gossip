@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -13,19 +12,14 @@ export default function ProfilePost({ params }) {
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
 
-  
   const profile = useProfile();
 
-
-  const {
-    data: favourites = [],
-  } = useQuery({
+  const { data: favourites = [] } = useQuery({
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
   });
-    // Get profileData from context
-    
+  // Get profileData from context
 
   const user_id = profile?.user_id;
 
@@ -51,15 +45,21 @@ export default function ProfilePost({ params }) {
   return (
     <>
       {PostData && PostData.length > 0 ? (
-        <div className="mt-4 p-3 min-h-[60lvh]  bg-white dark:bg-darkModePrimaryBackground">
+        <div className="min-h-[60lvh] bg-white p-3 dark:bg-darkModePrimaryBackground">
           {PostData.map((post) => (
             <div key={post.id} className="mb-4 flex justify-center">
-              <PostComponent user={profile} post={post} favourites={favourites} />
+              <PostComponent
+                user={profile}
+                post={post}
+                favourites={favourites}
+              />
             </div>
           ))}
         </div>
       ) : (
-        <div className='pl-4 min-h-[60lvh] bg-white dark:bg-darkModePrimaryBackground dark:text-darkModeParaText'>No posts available.</div>
+        <div className="min-h-[60lvh] bg-white pl-4 dark:bg-darkModePrimaryBackground dark:text-darkModeParaText">
+          No posts available.
+        </div>
       )}
     </>
   );
