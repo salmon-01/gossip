@@ -132,24 +132,31 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList className="grid grid-cols-2">
-          <TabsTrigger
-            value="recordAudio"
-            onClick={() => handleTabChange('recordAudio')}
-          >
-            Record Audio
-            <MdOutlineMic className="ml-1 h-4 w-4" />
-          </TabsTrigger>
-          <TabsTrigger
-            value="AIvoice"
-            onClick={() => handleTabChange('AIvoice')}
-          >
-            AI Voice
-            <BsStars className="ml-1.5 h-4 w-4" />
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex items-center justify-center">
+        <Tabs
+          value={activeTab}
+          onValueChange={handleTabChange}
+          className="w-full max-w-4xl"
+        >
+          <TabsList className="grid grid-cols-2">
+            <TabsTrigger
+              value="recordAudio"
+              onClick={() => handleTabChange('recordAudio')}
+            >
+              Record Audio
+              <MdOutlineMic className="ml-1 h-4 w-4" />
+            </TabsTrigger>
+            <TabsTrigger
+              value="AIvoice"
+              onClick={() => handleTabChange('AIvoice')}
+            >
+              AI Voice
+              <BsStars className="ml-1.5 h-4 w-4" />
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
       {activeTab === 'recordAudio' && (
         <form onSubmit={handleSubmit} className="mt-2">
           <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
