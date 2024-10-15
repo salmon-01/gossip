@@ -3,12 +3,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchFavourites } from '@/app/api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
+import { HiArrowLongLeft } from "react-icons/hi2";
 import PostComponent from '@/app/ui/Post';
+import Link from 'next/link';
 
 export default function FavouritesPage() {
 
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
+  const username = session?.profile.username;
 
   const {
     data: favourites = [],
@@ -61,7 +64,14 @@ export default function FavouritesPage() {
     <>
     <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white pb-1 pl-4 pt-4">
       <div className="flex max-w-[430px] items-center w-full text-purple-700 font-bold">
-        Favourites
+        <Link href={`/${username}`}>
+          <button className='bg-purple-700 rounded px-1 text-white mr-3 hover:bg-purple-500'>
+            <HiArrowLongLeft size={25} strokeWidth={0.5}/>
+          </button>
+        </Link>
+        <div>
+          Saved
+        </div>
       </div>
     </div>
     <div className="flex min-h-screen w-full justify-center mt-6 bg-white">

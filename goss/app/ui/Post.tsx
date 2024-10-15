@@ -2,17 +2,19 @@ import {
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineBookmark,
   HiBookmark,
+  HiTrash,
 } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { User, Post, Favourite } from '@/app/types';
-import { fetchCommentsByPostId } from '../api/post';
+import { deletePostById, fetchCommentsByPostId } from '../api/post';
 import { createFavourite, deleteFavourite } from '../api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useState } from 'react';
+import DeletePostModal from '@/app/ui/DeletePostModal';
 
 interface PostProps {
   user: User;
@@ -21,12 +23,26 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post, favourites }: PostProps) {
+  const [favouriteSelect, setFavouriteSelect] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const queryClient = useQueryClient();
+  const [showTranscription, setShowTranscription] = useState(false);
+
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
-  const [favouriteSelect, setFavouriteSelect] = useState(true);
-  
 
-  const [showTranscription, setShowTranscription] = useState(false);
+  const deletePostMutation = useMutation({
+    mutationFn: async () => {
+      if (!currentUserId) return;
+      await deletePostById(post.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+    onError: (error) => {
+      console.error("Error deleting post:", error);
+    },
+  });
 
   const {
     data: comments = [],
@@ -75,6 +91,11 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     }
   };
 
+  async function handleDeletePost () {
+    deletePostMutation.mutate();
+    setShowModal(false);
+  }
+
   return (
     <>
       <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6">
@@ -116,7 +137,6 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           <div className="relative flex items-center">
             <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
           </div>
-
           <div className="flex items-center pt-2">
             <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
             <Link href={`/post/${post.id}`}>
@@ -124,18 +144,30 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                 Comment {comments.length > 0 ? `(${comments.length})` : null}
               </div>
             </Link>
+            <div className='ml-auto flex'>
+            {post.user_id === currentUserId && 
+            <button onClick={() => setShowModal(true)} className='mr-4'>
+              <HiTrash color="#9333ea" size={18} />
+            </button> }
             {favourites.some((favourite) => favourite.post_id === post.id) ? (
-              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleDeleteFavourite() : handleCreateFavourite()}; {setFavouriteSelect(!favouriteSelect)}}}>
+              <button onClick={() => {{favouriteSelect ? handleDeleteFavourite() : handleCreateFavourite()}; {setFavouriteSelect(!favouriteSelect)}}}>
                 {favouriteSelect ? <HiBookmark color="#9333ea" size={18} /> : <HiOutlineBookmark color="#9333ea" size={18} />}
-              </div>
+              </button>
             ) : (
-              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleCreateFavourite() : handleDeleteFavourite()}; setFavouriteSelect(!favouriteSelect)}}>
+              <button onClick={() => {{favouriteSelect ? handleCreateFavourite() : handleDeleteFavourite()}; setFavouriteSelect(!favouriteSelect)}}>
                 {favouriteSelect? <HiOutlineBookmark color="#9333ea" size={18} /> : <HiBookmark color="#9333ea" size={18} />}
-              </div>
+              </button>
             )}
+            </div>
           </div>
         </div>
       </div>
+
+      <DeletePostModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDeletePost}
+      />
     </>
   );
 }
