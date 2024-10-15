@@ -19,6 +19,9 @@ export default function FavouritesPage() {
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
+    refetchOnWindowFocus: true, 
+    refetchOnMount: true,        
+    staleTime: 0,  
   });
 
   if (isLoading) {
