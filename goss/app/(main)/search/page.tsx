@@ -135,7 +135,7 @@ export default function Search() {
           className="w-full rounded-lg border border-gray-300 bg-slate-100 p-4 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
         />
       </div>
-      <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1">
         {isSearching ? (
           <LoadingSpinner size={30} color="#3B82F6" bgColor="" />
         ) : searchResults.length > 0 ? (
