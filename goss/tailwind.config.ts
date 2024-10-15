@@ -19,7 +19,9 @@ const config: Config = {
         darkModeThirdBackground: '#0EA5E9',
         darkModeHeader: '#E2E8F0',
         darkModeParaText: '#e9e9e9',
+        darkModeDimText: '#C7C7C7',
         darkModePurpleBtn: '#7d1fc0',
+        darkModePostBackground: '#77849A',
       },
       keyframes: {
         pulse: {
