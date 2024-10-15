@@ -26,7 +26,7 @@ export default function Feed() {
     error,
   } = useQuery({
     queryKey: ['posts'],
-    queryFn: () => fetchPostsAndReactions(),
+    queryFn: () => fetchPosts(),
   });
 
   // const { data: reactposts = [] } = useQuery({
