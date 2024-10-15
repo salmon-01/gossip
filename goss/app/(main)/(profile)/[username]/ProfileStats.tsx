@@ -29,7 +29,7 @@ export default function ProfileStats() {
       </Link>
       <Link href={`/${user.username}/following`} className="hover:underline dark:text-darkModeParaText">
         <span>{profileData.follower_count}</span>
-        <span className="mr-3 text-gray-600 dark:text-darkModeParaText"> Followers</span>
+        <span className="mr-3 text-gray-600 dark:text-darkModeParaText"> Following</span>
       </Link>
     </div>
   );

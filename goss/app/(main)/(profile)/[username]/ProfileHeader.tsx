@@ -3,6 +3,9 @@ import Link from 'next/link';
 import FollowButton from '@/app/ui/FollowButton';
 import { useSessionContext } from '@/app/context/SessionContext';
 import MessageButton from '@/app/ui/MessageButton';
+
+import { useQuery } from '@tanstack/react-query';
+import { fetchFollowStatus } from '@/app/api/follow';
 import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlinePencilSquare } from "react-icons/hi2";
 import { useProfile } from '@/app/context/ProfileContext';
 
@@ -10,21 +13,30 @@ import { useProfile } from '@/app/context/ProfileContext';
 export default function ProfileHeader() {
   const { data: session } = useSessionContext();
   const loggedInUsername = session?.profile.username;
+
   const loggedInUserId = session?.profile.user_id
 
   const profile = useProfile();
   const user = profile;
   const otherUserId = user?.user_id
 
+  // Fetch the follow status using the modern useQuery format
+  const { data: followStatus, isLoading } = useQuery({
+    queryKey: ['followStatus', loggedInUserId, otherUserId],
+    queryFn: () => fetchFollowStatus(loggedInUserId, otherUserId),
+    enabled: !!loggedInUserId && !!otherUserId, // Enable the query only if both IDs are present
+  });
 
+  // Check if the user is following the other user
+  const isFollowing = followStatus?.status === 'active';
 
 
 
   return (
     <>
+
       <div className="mx-auto flex w-11/12 items-center  justify-between pt-4 ">
         <div className="flex items-center">
-
           <img
             src={user.profile_img}
             className="h-16 w-16 rounded-full bg-black"
@@ -37,9 +49,10 @@ export default function ProfileHeader() {
           </div>
         </div>
 
-        {/* Follow button */}
+        {/* Edit and message buttons for the logged-in user */}
         {user.username === loggedInUsername ? (
           <div>
+
           <Link
             href={`/settings/profile`}
             className="p-0 text-2xl hover:text-purple-700  mx-1 dark:text-darkModeParaText"
@@ -69,20 +82,28 @@ export default function ProfileHeader() {
           {user.bio}
         </p>
 
+        {/* Badge display for the logged-in user */}
         {user.username === loggedInUsername ? (
+
           <p className="my-3 w-24 rounded border border-gray-200 bg-gray-200 py-1 text-center text-md dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground">
             {user.badge}
           </p>
-
         ) : (
           <>
-            <div className="flex items-center space-x-2"> {/* Use Flexbox to align items and add spacing */}
-              <FollowButton user={user} targetUserId={loggedInUserId} />
-              <MessageButton otherUserId={otherUserId} loggedInUserId={loggedInUserId} />
+            <div className="flex items-center space-x-2">
+              {/* FollowButton with isFollowing and isLoading passed as props */}
+              <FollowButton
+                targetUserId={user.user_id}
+                targetUserName={user.display_name}
+                isFollowing={isFollowing}
+                isLoading={isLoading}
+              />
+              <MessageButton
+                otherUserId={otherUserId}
+                loggedInUserId={loggedInUserId}
+              />
             </div>
           </>
-
-
         )}
       </div>
     </>

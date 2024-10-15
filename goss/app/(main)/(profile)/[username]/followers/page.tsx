@@ -1,13 +1,17 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { fetchFollowers } from '@/app/api/fetchFollowers';
 import ProfileCard from '@/app/ui/ProfileCard';
 import { useQuery } from '@tanstack/react-query';
+import { fetchFollowersUsername } from '@/app/api/follow';
 
 interface Follower {
-  user_name: string;
-  // Add other follower properties as needed
+  user_id: string; // Ensure user_id is defined in the interface
+  statusprofiles: {
+    username: string;
+    display_name: string;
+    profile_img: string;
+  };
 }
 
 export default function FollowPage() {
@@ -21,19 +25,12 @@ export default function FollowPage() {
     error,
   } = useQuery<Follower[]>({
     queryKey: ['followers', username],
-    queryFn: () => fetchFollowers(username),
+    queryFn: () => fetchFollowersUsername(username),
     enabled: !!username,
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {/* <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" /> */}
-        Loading followers...
-      </div>
-    );
+    return <div className="space-y-4">Loading followers...</div>;
   }
 
   if (isError) {
@@ -56,16 +53,20 @@ export default function FollowPage() {
     );
   }
 
+  // Log follower objects to check for user_id
+  console.log('Followers:', followers);
+
   return (
     <div className="space-y-4">
       {followers.map((follower) =>
-        follower.statusprofiles ? (
+        follower ? (
           <ProfileCard
-            key={follower.target_user_id}
+            key={follower.user_id} // Ensure follower.user_id is valid
             user={{
-              username: follower.statusprofiles.username,
-              display_name: follower.statusprofiles.display_name,
-              profile_img: follower.statusprofiles.profile_img,
+              user_id: follower.user_id, // Pass user_id from the follower object
+              username: follower.username,
+              display_name: follower.display_name,
+              profile_img: follower.profile_img,
             }}
           />
         ) : null

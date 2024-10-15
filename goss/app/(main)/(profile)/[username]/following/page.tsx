@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { fetchFollowing } from '@/app/api/fetchFollowers';
 import ProfileCard from '@/app/ui/ProfileCard';
 import { useQuery } from '@tanstack/react-query';
+import { fetchFollowingUsername } from '@/app/api/follow';
 
 interface Follower {
   user_name: string;
@@ -21,19 +22,12 @@ export default function FollowPage() {
     error,
   } = useQuery<Follower[]>({
     queryKey: ['following', username],
-    queryFn: () => fetchFollowing(username),
+    queryFn: () => fetchFollowingUsername(username),
     enabled: !!username,
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {/* <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" /> */}
-        Loading followers...
-      </div>
-    );
+    return <div className="space-y-4">Loading followers...</div>;
   }
 
   if (isError) {
@@ -59,13 +53,14 @@ export default function FollowPage() {
   return (
     <div className="space-y-4">
       {followers.map((follower) =>
-        follower.profiles ? (
+        follower ? (
           <ProfileCard
-            key={follower.user_id}
+            key={follower.target_user_id}
             user={{
-              username: follower.profiles.username,
-              display_name: follower.profiles.display_name,
-              profile_img: follower.profiles.profile_img,
+              user_id: follower.target_user_id,
+              username: follower.username,
+              display_name: follower.display_name,
+              profile_img: follower.profile_img,
             }}
           />
         ) : null
