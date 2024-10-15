@@ -8,7 +8,6 @@ export default function MainLayout({
   return (
     <div className="dark:bg-darkModePrimaryBackground min-h-screen bg-gray-100 pb-16 text-black ">
       {children}
-      <NavBar />
     </div>
   );
 }
