@@ -6,24 +6,28 @@ const supabase = createClient();
 export const fetchPostById = async (postId: string) => {
   const { data, error } = await supabase
     .from('posts')
-    .select('*, profiles!user_id(*)')
+    .select(
+      `
+      *,
+      profiles!user_id(*),
+      comments (
+        *,
+        profiles!user_id(*)
+      ),
+      reactions (
+        reaction,
+        user_id,
+        profiles!user_id(*)
+      )
+    `
+    )
     .eq('id', postId)
-    .single();
+    .single(); // Since you're fetching a single post by ID
 
-  if (error) throw error;
-  return data;
-};
+  if (error) {
+    throw new Error(error.message);
+  }
 
-// Fetch comments for a specific post
-export const fetchCommentsByPostId = async (postId: string) => {
-  const { data, error } = await supabase
-    .from('comments')
-    .select('*, profiles!user_id(*)')
-    .eq('post_id', postId)
-    .order('created_at', { ascending: true });
-
-  if (error) throw error;
-  // console.log(data);
   return data;
 };
 
@@ -83,10 +87,7 @@ export const deleteCommentById = async (commentId: string) => {
 };
 
 export const deletePostById = async (postId: string) => {
-  const { error } = await supabase
-    .from('posts')
-    .delete()
-    .eq('id', postId);
+  const { error } = await supabase.from('posts').delete().eq('id', postId);
 
   if (error) throw error;
   return true;

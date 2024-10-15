@@ -38,6 +38,14 @@ export interface Post {
   caption: string;
   user_id: string;
   transcription: string;
+  comments: Comment[];
+  reactions: Reaction[];
+}
+
+export interface Reaction {
+  reaction: string;
+  count: number;
+  userHasReacted: boolean;
 }
 
 export interface Session {
