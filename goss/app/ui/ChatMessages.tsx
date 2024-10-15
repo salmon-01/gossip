@@ -48,6 +48,8 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
     };
   }, [conversationId, queryClient]);
 
+  
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
@@ -104,5 +106,10 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
 
   );
 }
+
+
+
+
+
 
 

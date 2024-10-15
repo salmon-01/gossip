@@ -47,8 +47,6 @@ export default function ChatsPage() {
     );
   }
 
-
-
   if (error) {
     return <div>Error loading messages: {error.message}</div>;
   }
@@ -69,7 +67,7 @@ export default function ChatsPage() {
           : conversation.participant_1_profile;
 
         return (
-          <div key={conversation.id} className="flex items-center p-2 mx-auto  rounded-md  mb-3  border-gray-200 hover:bg-purple-100 dark:hover:bg-blue-900 transition duration-200">
+          <div key={conversation.id} className="flex items-center p-2 mx-auto  rounded-md w-11/12 mb-3  border-gray-200 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:hover:bg-blue-900 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
               <div className="flex items-center w-full cursor-pointer ">
                 <img
