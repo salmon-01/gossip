@@ -62,8 +62,8 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className='flex fixed max-w-[430px] w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
-        <div className="flex max-w-[430px] w-full text-purple-700 dark:text-darkModeParaText font-bold">
+    <div className='flex fixed w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
+        <div className="flex w-full text-purple-700 dark:text-darkModeParaText font-bold">
           <Link href={`/${username}`}>
             <button className='bg-purple-700 dark:bg-darkModePurpleBtn rounded px-1 text-white mr-3 hover:bg-purple-500'>
               <HiArrowLongLeft size={25} strokeWidth={0.5}/>

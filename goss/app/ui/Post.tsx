@@ -79,7 +79,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
 
   return (
     <>
-      <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 dark:bg-darkModePostBackground dark:text-darkModeParaText p-2 px-6 pt-6">
+      <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText p-2 px-6 pt-6">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
             <img
@@ -102,7 +102,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />
           <button
-            className="h-8 w-8 rounded bg-purple-500 text-white hover:bg-purple-400"
+            className="h-8 w-8 rounded bg-purple-500 dark:bg-darkModePurpleBtn text-white hover:bg-purple-400 dark:hover:bg-purple-500"
             onClick={() => setShowTranscription(!showTranscription)}
           >
             A

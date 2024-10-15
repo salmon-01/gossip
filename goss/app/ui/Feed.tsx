@@ -2,8 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchPosts,
-  fetchPostsAndReactions,
-  fetchPostsWithComments,
 } from '../api/fetchPosts';
 import { fetchFavourites } from '../api/favourites';
 import PostComponent from './Post';
@@ -28,11 +26,6 @@ export default function Feed() {
     queryFn: () => fetchPosts(),
   });
 
-  // const { data: reactposts = [] } = useQuery({
-  //   queryKey: ['postsandreactions'],
-  //   queryFn: () => fetchPostsAndReactions(),
-  // });
-
   const { data: favourites = [] } = useQuery({
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
@@ -55,8 +48,8 @@ export default function Feed() {
 
   return (
     <>
-      <div className='flex fixed max-w-[430px] w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 px-4 pt-4'>
-        <div className="flex max-w-[430px] w-full text-purple-700 font-bold">
+      <div className='flex fixed w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 px-4 pt-4'>
+        <div className="flex w-full text-purple-700 font-bold">
           <div className="flex space-x-4" style={{ minWidth: '180px' }}>
             <button
               onClick={() => setFeedContent('all')}
@@ -73,7 +66,7 @@ export default function Feed() {
           </div>
           <button
             onClick={() => setSortOrder(!sortOrder)}
-            className={'bg-purple-700 dark:bg-darkModePurpleBtn text-white ml-44 flex rounded-md p-1'}
+            className={'bg-purple-700 dark:bg-darkModePurpleBtn text-white flex ml-8 rounded-md p-1'}
           >
             {sortOrder ? (
               <>
