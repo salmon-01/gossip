@@ -67,3 +67,22 @@ export interface Favourite {
   user_id: string;
   post_id: string;
 }
+
+export interface FollowResponse {
+  success: boolean;
+  status: 'active' | 'inactive';
+  userId: string;
+  targetUserId: string;
+}
+
+export interface FollowContextType {
+  handleFollowToggle: (
+    userId: string,
+    targetUserId: string,
+    targetUserName: string
+  ) => void;
+  isLoading: boolean;
+  followingData: any;
+  isFollowingLoading: boolean;
+  refetchFollowing: () => void;
+}
