@@ -81,3 +81,13 @@ export const deleteCommentById = async (commentId: string) => {
 
   if (error) throw error;
 };
+
+export const deletePostById = async (postId: string) => {
+  const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', postId);
+
+  if (error) throw error;
+  return true;
+};
