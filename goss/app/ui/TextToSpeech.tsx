@@ -5,7 +5,12 @@ import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
 import { FaTrash, FaPlay, FaPause } from 'react-icons/fa';
 
-const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
+const AIVoiceGenerator = ({
+  onAudioSave,
+  onSubmitPost,
+  caption,
+  setCaption,
+}) => {
   const [text, setText] = useState('');
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -13,7 +18,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(null);
 
-  // ? Moving border experiment
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef(null);
@@ -53,12 +57,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-  // const handleTimeUpdate = () => {
-  //   const audio = audioRef.current;
-  //   const percentage = (audio.currentTime / audio.duration) * 100;
-  //   setProgress(percentage);
-  // };
-
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -83,10 +81,9 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
       return;
     }
 
-    setLoading(true); // Set loading to true while waiting for the API response
+    setLoading(true);
 
     try {
-      // Make a POST request to the API route (your own server-side proxy)
       const response = await fetch('/api/speech', {
         method: 'POST',
         headers: {
@@ -131,7 +128,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
 
   return (
     <>
-      <div className="dark:bg-experimentBG mx-auto mt-2 max-w-96 rounded-lg bg-white p-8 shadow">
+      <div className="dark:bg-experimentBG mx-auto mt-5 w-full max-w-5xl rounded-lg bg-white p-8 shadow">
         <h2 className="mb-5 text-lg font-medium dark:text-darkModeHeader">
           Select a voice for your audio note
         </h2>
@@ -185,13 +182,22 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
           </div>
         )}
       </div>
-      <div className="mb-0 ml-auto mr-auto mt-4 max-w-96">
-        <h1 className="mb-1 dark:text-darkModeParaText">Your text</h1>
+      <div className="mb-0 ml-auto mr-auto mt-4 w-full max-w-5xl">
+        {/* Add caption input field */}
+        <input
+          type="text"
+          name="caption"
+          value={caption}
+          placeholder="Write a caption"
+          className="mb-2 mt-2 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
+          onChange={(e) => setCaption(e.target.value)}
+        />
+        <h1 className="mb-1 mt-3 dark:text-darkModeParaText">Your text</h1>
         <textarea
           value={text}
           onChange={handleTextChange}
           placeholder="Enter text here"
-          className="h-32 w-full resize-none rounded-lg p-2 dark:text-white"
+          className="h-32 w-full resize-none rounded-lg border-gray-300 p-2 outline-none transition duration-200 focus:ring-0 focus:ring-slate-500 dark:border dark:border-gray-700 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-500"
         />
         <button
           onClick={handleTextToSpeech}
@@ -244,7 +250,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
               </div>
               <div className="mx-4 flex-grow">
                 {' '}
-                {/* Added margin and flex-grow */}
                 <div className="h-2 rounded bg-gray-200">
                   <div
                     className="h-full rounded bg-green-400"

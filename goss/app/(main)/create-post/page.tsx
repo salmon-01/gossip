@@ -14,7 +14,7 @@ export default function Create() {
   return (
     <div className="pb-16">
       <main className="p-4">
-        <h1 className="mb-4 text-2xl font-bold dark:text-darkModeHeader">
+        <h1 className="ml-2 mt-2 text-2xl font-bold dark:text-darkModeHeader">
           Create Post
         </h1>
         <CreatePost onPostCreated={handlePostCreated} />
