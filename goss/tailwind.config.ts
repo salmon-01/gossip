@@ -16,6 +16,7 @@ const config: Config = {
         customBlueGray: '#4f5e7b',
         darkModePrimaryBackground: '#1D283B',
         darkModeSecondaryBackground: '#475569',
+        darkModeThirdBackground: '#0EA5E9',
         darkModeHeader: '#E2E8F0',
         darkModeParaText: '#e9e9e9',
         darkModePurpleBtn: '#7d1fc0',

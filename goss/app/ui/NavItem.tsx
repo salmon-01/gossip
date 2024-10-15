@@ -17,16 +17,20 @@ function NavItem({
   children,
 }: NavItemProps) {
   return (
-    <Link href={href} aria-label={label} className="w-1/4">
+    <Link href={href} aria-label={label} className="w-1/4 md:w-full">
       <div
-        className={`relative flex h-16 transform items-center justify-center transition-transform hover:scale-110 ${
-          isActive ? 'bg-purple-100' : 'bg-white'
+        className={`relative flex h-16 transform items-center justify-center transition-transform hover:scale-110 md:justify-start md:rounded-xl md:px-14 ${
+          isActive
+            ? 'dark:bg-darkModeThirdBackground bg-purple-100'
+            : 'dark:bg-darkModeSecondaryBackground bg-white'
         }`}
       >
         <div className="relative flex items-center justify-center">
           {Icon && (
             <Icon
-              color={isActive ? '#9333ea' : '#7b53bb'}
+              className={`${
+                isActive ? 'text-[#9333ea]' : 'text-[#7b53bb]'
+              } dark:text-white`}
               size={32}
               style={{ strokeWidth: isActive ? 2.5 : 1 }}
             />

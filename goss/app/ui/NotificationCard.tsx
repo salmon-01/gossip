@@ -39,20 +39,26 @@ const NotificationCard: React.FC<NotificationProps> = ({
   if (!notification.sender) {
     return (
       <div
-        className={`mb-4 rounded-lg border bg-gray-100 p-4 ${className}`} // Styling for unknown sender
+        className={`dark:bg-darkModeSecondaryBackground mb-4 rounded-lg border bg-gray-100 p-4 ${className}`} // Styling for unknown sender in dark mode
       >
-        <p className="text-gray-500">Unknown sender</p>
-        <p>{formatContext()}</p>
-        <p className="text-sm text-gray-500">{formattedDate}</p>
+        <p className="dark:text-darkModeParaText text-gray-500">
+          Unknown sender
+        </p>
+        <p className="dark:text-darkModeParaText">{formatContext()}</p>
+        <p className="dark:text-darkModeParaText text-sm text-gray-500">
+          {formattedDate}
+        </p>
       </div>
     );
   }
 
   return (
     <div
-      className={`mb-4 rounded-lg border p-4 ${
-        notification.is_read ? 'bg-gray-100' : 'bg-white'
-      } ${className}`} // Combine default styles with custom className if provided
+      className={`mb-4 rounded-lg border p-4 md:w-2/3 ${
+        notification.is_read
+          ? 'dark:bg-darkModeSecondaryBackground bg-gray-100'
+          : 'dark:bg-darkModePrimaryBackground bg-white'
+      } ${className} md:mx-auto md:max-w-4xl`} // Wider on desktop, centered
     >
       <Link href={`/${notification.sender.username}`}>
         <div className="flex items-center justify-between gap-4">
@@ -61,13 +67,15 @@ const NotificationCard: React.FC<NotificationProps> = ({
             className="h-8 w-8 rounded-full"
             alt={`${notification.sender.username}'s profile image`}
           />
-          <p>
+          <p className="dark:text-darkModeParaText flex-grow">
             <span className="font-bold hover:underline">
               {notification.sender.username}
             </span>{' '}
             {formatContext()}
           </p>
-          <p className="text-sm text-gray-500">{formattedDate}</p>
+          <p className="dark:text-darkModeParaText text-sm text-gray-500">
+            {formattedDate}
+          </p>
         </div>
       </Link>
     </div>
