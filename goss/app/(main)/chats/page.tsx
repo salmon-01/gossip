@@ -83,8 +83,9 @@ export default function ChatsPage() {
                       {otherParticipant.display_name}
                     </span>
                     <span className="text-gray-600 text-sm dark:text-gray-400">
-                      {formatDate(conversation.last_message_time)}
+                      {formatDate(new Date(conversation.last_message_time).setHours(new Date(conversation.last_message_time).getHours() + 1))}
                     </span>
+
                   </div>
                   <p className="text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate dark:text-gray-400 lg:max-w-[20lvw]">
                     {conversation.last_message}
@@ -100,5 +101,6 @@ export default function ChatsPage() {
     </div>
   )
 }
+
 
 
