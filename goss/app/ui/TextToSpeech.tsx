@@ -53,12 +53,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-  // const handleTimeUpdate = () => {
-  //   const audio = audioRef.current;
-  //   const percentage = (audio.currentTime / audio.duration) * 100;
-  //   setProgress(percentage);
-  // };
-
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -131,7 +125,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
 
   return (
     <>
-      <div className="dark:bg-experimentBG mx-auto mt-2 max-w-96 rounded-lg bg-white p-8 shadow">
+      <div className="dark:bg-experimentBG mx-auto mt-5 w-full max-w-5xl rounded-lg bg-white p-8 shadow">
         <h2 className="mb-5 text-lg font-medium dark:text-darkModeHeader">
           Select a voice for your audio note
         </h2>
@@ -185,7 +179,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
           </div>
         )}
       </div>
-      <div className="mb-0 ml-auto mr-auto mt-4 max-w-96">
+      <div className="mb-0 ml-auto mr-auto mt-4 w-full max-w-5xl">
         <h1 className="mb-1 dark:text-darkModeParaText">Your text</h1>
         <textarea
           value={text}
@@ -244,7 +238,6 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
               </div>
               <div className="mx-4 flex-grow">
                 {' '}
-                {/* Added margin and flex-grow */}
                 <div className="h-2 rounded bg-gray-200">
                   <div
                     className="h-full rounded bg-green-400"
