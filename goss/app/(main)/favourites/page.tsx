@@ -19,6 +19,9 @@ export default function FavouritesPage() {
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
+    refetchOnWindowFocus: true, 
+    refetchOnMount: true,        
+    staleTime: 0,  
   });
 
   if (isLoading) {
@@ -56,10 +59,12 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-white pb-2 pl-4 pt-4 mb-2 text-base text-purple-500 font-bold">
-      Favourites
+    <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white pb-1 pl-4 pt-4">
+      <div className="flex max-w-[430px] items-center w-full text-purple-700 font-bold">
+        Favourites
+      </div>
     </div>
-    <div className="flex min-h-screen w-full items-center justify-center mt-4 bg-white">
+    <div className="flex min-h-screen w-full justify-center mt-6 bg-white">
       <div className="space-y-4 w-full p-4">
         {sortedFavourites.map((favourite) => (
               <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />

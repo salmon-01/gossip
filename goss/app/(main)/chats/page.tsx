@@ -6,6 +6,7 @@ import { useSessionContext } from '@/app/context/SessionContext'
 import Link from 'next/link'
 import Loading from '../loading'
 import { formatDate } from './time'
+import { BsEnvelopePlus } from "react-icons/bs";
 
 
 
@@ -30,12 +31,18 @@ export default function ChatsPage() {
   if (Conversations?.length === 0) {
     return (
       <div>
-        <h2 className="px-4 py-6 font-bold text-xl sticky top-0">Messages</h2>
+        <div className='flex justify-between items-center px-4 py-6 sticky top-0'>
+          <h2 className='font-bold text-2xl'>Messages</h2>
+          <Link href="chats/compose" className='text-xl'><BsEnvelopePlus /></Link>
+        </div>
         <p className="text-4xl font-bold text-black block ml-10">
           Welcome to your<br />inbox!
         </p>
-
-        <button className='bg-purple-600 text-white py-2 px-5 mt-5 rounded-full mx-auto block hover:bg-purple-700'>Write a message</button>
+        <Link href="chats/compose">
+          <button className='bg-purple-600 text-white py-2 px-5 mt-5 rounded-full mx-auto block hover:bg-purple-700'>
+            Write a message
+          </button>
+        </Link>
       </div>
     );
   }
@@ -51,7 +58,11 @@ export default function ChatsPage() {
 
   return (
     <div>
-      <h2 className=' px-4 py-6 font-bold text-2xl sticky top-0'>Messages</h2>
+      <div className='flex justify-between items-center px-4 py-6 sticky top-0'>
+        <h2 className='font-bold text-2xl dark:text-darkModeHeader'>Messages</h2>
+        <Link href="chats/compose" className='text-xl dark:text-darkModeHeader'><BsEnvelopePlus /></Link>
+      </div>
+
       {Conversations?.map((conversation) => {
         const otherParticipant = conversation.participant_1 === loggedInUserId
           ? conversation.participant_2_profile
