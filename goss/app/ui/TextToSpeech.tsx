@@ -96,11 +96,11 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
-          <div className="dark:bg-experimentSecondaryBG mt-2 max-h-80 overflow-auto rounded-lg p-2">
+          <div className="dark:bg-experimentSecondaryBG mt-2 max-h-80 overflow-auto rounded-lg bg-slate-200 p-2">
             {voices.map((entry) => (
               <div
                 key={entry.id}
-                className="mb-2 rounded-lg border-slate-500 p-4 last:mb-0 last:border-0 dark:bg-black"
+                className="mb-2 rounded-lg border border-slate-500 bg-white p-4 last:mb-0 last:border-0 dark:bg-black"
               >
                 <h3 className="text-md mb-2 font-semibold capitalize dark:text-darkModeParaText">
                   {entry.name} - {entry.accent}
@@ -109,7 +109,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
                   <div className="flex items-center space-x-4">
                     <button
                       onClick={() => handlePlayPause(entry.id)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white text-white dark:bg-black"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-gray-500 text-white dark:bg-black"
                     >
                       {isPlaying === entry.id ? (
                         <FiPause className="h-5 w-5" />
@@ -148,7 +148,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
         <button
           onClick={handleTextToSpeech}
           disabled={loading || !text.trim()}
-          className="rounded-sm p-3 text-sm text-white dark:bg-darkModePurpleBtn"
+          className="rounded-sm bg-gray-700 p-3 text-sm text-white dark:bg-darkModePurpleBtn"
           style={{
             cursor: loading ? 'not-allowed' : 'pointer',
           }}
