@@ -2,7 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../api/fetchPosts';
 import { fetchFavourites } from '../api/favourites';
-import { fetchFollowingById } from '../api/fetchFollowers';
 import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';

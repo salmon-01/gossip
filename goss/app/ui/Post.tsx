@@ -142,7 +142,9 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
           </div>
           <div className="flex items-center pt-2">
+            <Link href={`/post/${post.id}`}>
             <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
+            </Link>
             <Link href={`/post/${post.id}`}>
               <div className="ml-2 flex items-center text-base font-medium text-purple-600">
                 Comment {comments.length > 0 ? `(${comments.length})` : null}

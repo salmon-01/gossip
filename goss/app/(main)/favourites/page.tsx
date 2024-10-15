@@ -62,7 +62,7 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white pb-1 pl-4 pt-4">
+    <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4">
       <div className="flex max-w-[430px] items-center w-full text-purple-700 font-bold">
         <Link href={`/${username}`}>
           <button className='bg-purple-700 rounded px-1 text-white mr-3 hover:bg-purple-500'>
