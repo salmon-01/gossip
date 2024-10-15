@@ -33,8 +33,6 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
         filter: `conversation_id=eq.${conversationId}`,
       }, (payload) => {
         console.log('New message received: ', payload.new);
-
-
         queryClient.invalidateQueries({ queryKey: ['conversationMessages', conversationId] });
       })
       .subscribe();

@@ -26,7 +26,7 @@ export default function ChatHeader({conversationId, loggedInUserId}) {
     return <Loading/>; // Display loading state for profile data
   }
   
-console.log(profileData)
+
 
   return (
 <div className="p-3  sticky top-0 flex items-center shadow dark:shadow-xl bg-white dark:bg-darkModePrimaryBackground z-20">
