@@ -53,9 +53,6 @@ export default function FollowPage() {
     );
   }
 
-  // Log follower objects to check for user_id
-  console.log('Followers:', followers);
-
   return (
     <div className="space-y-4">
       {followers.map((follower) =>
