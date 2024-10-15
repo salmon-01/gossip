@@ -11,6 +11,7 @@ import RecordPost from './RecordPost';
 import { useSessionContext } from '../context/SessionContext';
 import NavItem from './NavItem';
 import { useGlobalNotifications } from '../context/NotificationsContext';
+import Link from 'next/link';
 
 function NavBar() {
   const { data: session } = useSessionContext();
@@ -94,10 +95,12 @@ function NavBar() {
 
         {/* Record Post Button for Desktop */}
         <div className="hidden w-full md:block">
-          <button className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:bg-purple-700">
-            <RecordPost />
-            <span>Record Post</span>
-          </button>
+          <Link href="/create-post">
+            <button className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 md:rounded-xl">
+              <RecordPost />
+              <span>Record Post</span>
+            </button>
+          </Link>
         </div>
       </div>
     </nav>
