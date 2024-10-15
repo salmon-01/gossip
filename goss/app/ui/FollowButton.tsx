@@ -9,22 +9,15 @@ interface FollowButtonProps {
   isLoading: boolean;
 }
 
-const FollowButton = ({
-  isLoading,
-  targetUserId,
-  targetUserName,
-}: FollowButtonProps) => {
+const FollowButton = ({ targetUserId, targetUserName }: FollowButtonProps) => {
   const { handleFollowToggle, followingData } = useFollow(); // Access following data and toggle function from context
   const { data: session } = useSessionContext(); // Access the session to get the current user
   const currentUserId = session?.profile.user_id;
   console.log(currentUserId);
   // Determine if the current user is following the target user
   const isInitiallyFollowing = followingData?.some((follow) => {
-    console.log('target button:', follow.target_user_id);
     return follow.target_user_id === targetUserId; // Add return statement
   });
-
-  console.log('target prop:', targetUserId);
 
   // Local state to manage the following status optimistically
   const [isFollowing, setIsFollowing] = useState(isInitiallyFollowing);
@@ -47,10 +40,9 @@ const FollowButton = ({
   return (
     <button
       onClick={debouncedHandleClick}
-      disabled={isLoading}
       className={`flex items-center justify-center rounded-lg border border-white px-5 py-3 drop-shadow-2xl ${
         isFollowing ? 'bg-gray-300 text-black' : 'bg-purple-600 text-white'
-      } ${isLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+      } cursor-pointer`}
     >
       {isFollowing ? 'Unfollow' : 'Follow'}
     </button>
