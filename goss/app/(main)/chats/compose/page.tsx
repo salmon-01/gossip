@@ -8,6 +8,7 @@ import { useSessionContext } from '@/app/context/SessionContext';
 import { createConversation } from '@/app/api/MessagesData';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { searchData } from '@/app/api/searchData';
 
 const supabase = createClient();
 
@@ -37,20 +38,6 @@ export default function Page() {
   // Handle search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-  };
-
-  // Search data from Supabase
-  const searchData = async (query: string): Promise<Profile[]> => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .ilike('display_name', `%${query}%`);
-
-    if (error) {
-      console.error('Error searching profiles:', error);
-      throw error;
-    }
-    return data || [];
   };
 
   // Handle search with debounce effect
