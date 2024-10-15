@@ -31,6 +31,11 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     setAudioBlob(audioBlob);
   };
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setAudioBlob(null);
+  };
+
   // Separate the mutation logic into its own function
   const createPost = async () => {
     const supabase = createClient();
@@ -127,16 +132,19 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsList className="grid grid-cols-2">
           <TabsTrigger
             value="recordAudio"
-            onClick={() => setActiveTab('recordAudio')}
+            onClick={() => handleTabChange('recordAudio')}
           >
             Record Audio
             <MdOutlineMic className="ml-1 h-4 w-4" />
           </TabsTrigger>
-          <TabsTrigger value="AIvoice" onClick={() => setActiveTab('AIvoice')}>
+          <TabsTrigger
+            value="AIvoice"
+            onClick={() => handleTabChange('AIvoice')}
+          >
             AI Voice
             <BsStars className="ml-1.5 h-4 w-4" />
           </TabsTrigger>

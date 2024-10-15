@@ -67,7 +67,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   };
 
   const sendPostToDB = () => {
-    onSubmitPost(); // Trigger the post creation after saving the audio
+    onSubmitPost();
   };
 
   const handleDelete = () => {
