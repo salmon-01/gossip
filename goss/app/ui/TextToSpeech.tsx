@@ -77,10 +77,9 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
       return;
     }
 
-    setLoading(true); // Set loading to true while waiting for the API response
+    setLoading(true);
 
     try {
-      // Make a POST request to the API route (your own server-side proxy)
       const response = await fetch('/api/speech', {
         method: 'POST',
         headers: {
@@ -185,7 +184,7 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
           value={text}
           onChange={handleTextChange}
           placeholder="Enter text here"
-          className="h-32 w-full resize-none rounded-lg p-2 dark:text-white"
+          className="h-32 w-full resize-none rounded-lg border-gray-300 p-2 outline-none transition duration-200 focus:ring-0 focus:ring-slate-500 dark:border dark:border-gray-700 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-500"
         />
         <button
           onClick={handleTextToSpeech}

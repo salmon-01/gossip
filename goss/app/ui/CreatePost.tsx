@@ -20,6 +20,7 @@ interface CreatePostProps {
 
 export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
+
   const { data: session, isLoading, error } = useSessionContext();
 
   const [activeTab, setActiveTab] = useState('recordAudio');
