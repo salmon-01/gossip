@@ -55,25 +55,25 @@ export default function Feed() {
 
   return (
     <>
-      <div className="fixed left-0 right-0 top-0 z-40 flex w-full justify-center bg-white pb-1 pl-4 pt-4">
-        <div className="flex w-full max-w-[430px] items-center">
+      <div className='flex fixed max-w-[430px] w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 px-4 pt-4'>
+        <div className="flex max-w-[430px] w-full text-purple-700 font-bold">
           <div className="flex space-x-4" style={{ minWidth: '180px' }}>
             <button
               onClick={() => setFeedContent('all')}
-              className={`${feedContent === 'all' ? 'font-bold text-purple-700' : 'text-purple-400'} px-2 underline`}
+              className={`${feedContent === 'all' ? 'font-bold text-purple-700 dark:text-darkModeHeader' : 'text-purple-400 dark:text-darkModeSecondaryBackground'} px-2 underline`}
             >
               All Posts
             </button>
             <button
               onClick={() => setFeedContent('following')}
-              className={`${feedContent === 'following' ? 'font-bold text-purple-700' : 'text-purple-400'} px-2 underline`}
+              className={`${feedContent === 'following' ? 'font-bold text-purple-700 dark:text-darkModeHeader' : 'text-purple-400 dark:text-darkModeSecondaryBackground'} px-2 underline`}
             >
               For You
             </button>
           </div>
           <button
             onClick={() => setSortOrder(!sortOrder)}
-            className={`${sortOrder ? 'bg-purple-700 text-white' : 'bg-purple-700'} ml-44 flex rounded-md p-1 text-white`}
+            className={'bg-purple-700 dark:bg-darkModePurpleBtn text-white ml-44 flex rounded-md p-1'}
           >
             {sortOrder ? (
               <>
@@ -87,7 +87,7 @@ export default function Feed() {
           </button>
         </div>
       </div>
-      <div className="mt-6 flex flex-col">
+      <div className="mt-8 flex flex-col p-4">
         {feedContent === 'all'
           ? sortedPosts.length > 0 &&
             sortedPosts.map((post) => (

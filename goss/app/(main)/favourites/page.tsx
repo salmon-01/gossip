@@ -62,19 +62,19 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className="fixed left-0 right-0 top-0 z-40 flex justify-center w-full bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4">
-      <div className="flex max-w-[430px] items-center w-full text-purple-700 font-bold">
-        <Link href={`/${username}`}>
-          <button className='bg-purple-700 rounded px-1 text-white mr-3 hover:bg-purple-500'>
-            <HiArrowLongLeft size={25} strokeWidth={0.5}/>
-          </button>
-        </Link>
-        <div>
-          Saved
+    <div className='flex fixed max-w-[430px] w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
+        <div className="flex max-w-[430px] w-full text-purple-700 dark:text-darkModeParaText font-bold">
+          <Link href={`/${username}`}>
+            <button className='bg-purple-700 dark:bg-darkModePurpleBtn rounded px-1 text-white mr-3 hover:bg-purple-500'>
+              <HiArrowLongLeft size={25} strokeWidth={0.5}/>
+            </button>
+          </Link>
+          <div>
+            Saved
+          </div>
         </div>
-      </div>
     </div>
-    <div className="flex min-h-screen w-full justify-center mt-6 bg-white">
+    <div className="flex min-h-screen w-full justify-center mt-8 bg-white dark:bg-darkModePrimaryBackground">
       <div className="space-y-4 w-full p-4">
         {sortedFavourites.map((favourite) => (
               <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />
