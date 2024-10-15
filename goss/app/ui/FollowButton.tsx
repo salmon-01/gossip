@@ -1,110 +1,41 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchFollowStatus, updateFollowStatus } from '../api/follow';
-import { useCallback } from 'react';
-import toast from 'react-hot-toast';
 import { debounce } from 'lodash';
-import { updateProfileCount } from '@/utils/followUtils';
-
-interface User {
-  user_id: string;
-  username: string;
-}
+import { useCallback, useState, useEffect } from 'react';
+import { useFollow } from '../context/FollowContext';
+import { useSessionContext } from '../context/SessionContext';
 
 interface FollowButtonProps {
-  user: User;
   targetUserId: string;
+  targetUserName: string;
+  isFollowing: boolean;
+  isLoading: boolean;
 }
 
-interface FollowStatus {
-  status: 'active' | 'inactive';
-}
+const FollowButton = ({
+  isFollowing: initialIsFollowing, // Renamed for clarity
+  isLoading,
+  targetUserId,
+  targetUserName,
+}: FollowButtonProps) => {
+  const { handleFollowToggle } = useFollow(); // Get the follow/unfollow handler from context
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.profile.user_id;
 
-const FollowButton = ({ user, targetUserId }: FollowButtonProps) => {
-  const queryClient = useQueryClient();
-  const userId = user.user_id;
+  // Local state to manage the following status optimistically
+  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
 
-  const { data: followStatus, isLoading: isFetchingStatus } = useQuery({
-    queryKey: ['followStatus', userId, targetUserId],
-    queryFn: () => fetchFollowStatus(userId, targetUserId),
-    enabled: !!targetUserId,
-  });
+  // Sync local state with prop changes (in case follow status changes externally)
+  useEffect(() => {
+    setIsFollowing(initialIsFollowing);
+  }, [initialIsFollowing]);
 
-  const followMutation = useMutation({
-    mutationFn: () => updateFollowStatus(userId, targetUserId),
-    onMutate: async () => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({
-        queryKey: ['followStatus', userId, targetUserId],
-      });
-
-      const previousStatus = queryClient.getQueryData<FollowStatus>([
-        'followStatus',
-        userId,
-        targetUserId,
-      ]);
-
-      // Optimistically update follow status
-      const newStatus: FollowStatus = {
-        status: previousStatus?.status === 'active' ? 'inactive' : 'active',
-      };
-      queryClient.setQueryData(
-        ['followStatus', userId, targetUserId],
-        newStatus
-      );
-
-      // Optimistically update follower counts
-      updateProfileCount(
-        queryClient,
-        ['profile', targetUserId],
-        newStatus.status === 'active' ? 1 : -1
-      );
-      updateProfileCount(
-        queryClient,
-        ['profile', userId],
-        newStatus.status === 'active' ? 1 : -1
-      );
-
-      return { previousStatus };
-    },
-
-    // On success, send toast and update status
-    onSuccess: (response) => {
-      if (response.success) {
-        const message =
-          response.status === 'active'
-            ? `You are now following ${user.username}`
-            : `You are no longer following ${user.username}`;
-        toast.success(message);
-
-        // Invalidate profiles to refetch latest data
-        queryClient.invalidateQueries({ queryKey: ['profile', targetUserId] });
-        queryClient.invalidateQueries({ queryKey: ['profile', userId] });
-      } else {
-        toast.error('Failed to update follow status');
-      }
-    },
-
-    // On error revert to previous status
-    onError: (err, variables, context) => {
-      toast.error('An error occurred while updating follow status');
-      if (context?.previousStatus) {
-        queryClient.setQueryData(
-          ['followStatus', userId, targetUserId],
-          context.previousStatus
-        );
-      }
-    },
-  });
-
-  const isFollowing = followStatus?.status === 'active';
-  const isLoading = followMutation.isPending || isFetchingStatus;
-
-  // Debounced outside of the render to avoid recreating it
+  // Debounced function to avoid rapid clicks
   const debouncedHandleClick = useCallback(
     debounce(() => {
-      followMutation.mutate();
+      // Optimistically toggle the follow status
+      setIsFollowing((prev) => !prev);
+      handleFollowToggle(currentUserId, targetUserId, targetUserName); // Use the context function
     }, 1000),
-    [followMutation]
+    [handleFollowToggle, currentUserId, targetUserId, targetUserName] // Add necessary dependencies
   );
 
   return (

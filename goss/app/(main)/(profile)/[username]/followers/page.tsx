@@ -6,8 +6,12 @@ import ProfileCard from '@/app/ui/ProfileCard';
 import { useQuery } from '@tanstack/react-query';
 
 interface Follower {
-  user_name: string;
-  // Add other follower properties as needed
+  user_id: string; // Ensure user_id is defined in the interface
+  statusprofiles: {
+    username: string;
+    display_name: string;
+    profile_img: string;
+  };
 }
 
 export default function FollowPage() {
@@ -26,14 +30,7 @@ export default function FollowPage() {
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {/* <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" /> */}
-        Loading followers...
-      </div>
-    );
+    return <div className="space-y-4">Loading followers...</div>;
   }
 
   if (isError) {
@@ -56,13 +53,17 @@ export default function FollowPage() {
     );
   }
 
+  // Log follower objects to check for user_id
+  console.log('Followers:', followers);
+
   return (
     <div className="space-y-4">
       {followers.map((follower) =>
         follower.statusprofiles ? (
           <ProfileCard
-            key={follower.target_user_id}
+            key={follower.user_id} // Ensure follower.user_id is valid
             user={{
+              user_id: follower.target_user_id, // Pass user_id from the follower object
               username: follower.statusprofiles.username,
               display_name: follower.statusprofiles.display_name,
               profile_img: follower.statusprofiles.profile_img,

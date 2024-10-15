@@ -28,7 +28,8 @@ export const fetchFollowStatus = async (
 
 export const updateFollowStatus = async (
   userID: string,
-  targetUserID: string
+  targetUserID: string,
+  targetUserName: string
 ): Promise<FollowResponse> => {
   const supabase = createClient();
 
@@ -57,8 +58,8 @@ export const updateFollowStatus = async (
       success: true,
       message:
         data.new_status === 'active'
-          ? 'You are now following this user.'
-          : 'You have unfollowed this user.',
+          ? `You are now following ${targetUserName}.`
+          : `You have unfollowed ${targetUserName}.`,
     };
   } catch (error) {
     console.error(

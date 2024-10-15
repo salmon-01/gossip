@@ -63,6 +63,7 @@ export default function FollowPage() {
           <ProfileCard
             key={follower.user_id}
             user={{
+              user_id: follower.user_id,
               username: follower.profiles.username,
               display_name: follower.profiles.display_name,
               profile_img: follower.profiles.profile_img,
