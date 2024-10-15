@@ -69,7 +69,7 @@ export default function Search() {
   const [searchResults, setSearchResults] = useState<Profile[] | Post[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null); // Create a ref for the input field
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleSearch = async () => {
