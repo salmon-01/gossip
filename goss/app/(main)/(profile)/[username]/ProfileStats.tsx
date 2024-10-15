@@ -15,10 +15,6 @@ export default function ProfileStats() {
   const profile = useProfile();
 
   const user = profile;
-  // const { data: profileData } = useQuery({
-  //   queryKey: ['profile', user.user_id],
-  //   initialData: user,
-  // });
 
   return (
     <div className="mx-auto my-3 mt-4 w-11/12">
