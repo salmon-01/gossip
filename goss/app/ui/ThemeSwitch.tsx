@@ -27,23 +27,39 @@ export default function ThemeSwitch() {
 
   if (resolvedTheme === 'dark') {
     return (
-      <FiSun
-        className="mt-5"
-        data-testid="sun-icon"
-        aria-label="Switch to light theme"
-        onClick={() => setTheme('light')}
-      />
+      <>
+        <div className="flex items-center space-x-2">
+          <p className="text-base text-white">Switch theme</p>
+          <button
+            className="flex items-center justify-center rounded-full bg-gray-700 p-2 shadow-md transition duration-300 ease-in-out hover:bg-gray-600 focus:outline-none"
+            data-testid="sun-icon"
+            type="button"
+            aria-label="Switch to light theme"
+            onClick={() => setTheme('light')}
+          >
+            <FiSun className="h-6 w-6 text-yellow-200" />
+          </button>
+        </div>
+      </>
     );
   }
 
   if (resolvedTheme === 'light') {
     return (
-      <FiMoon
-        className="mt-5"
-        data-testid="moon-icon"
-        aria-label="Switch to dark theme"
-        onClick={() => setTheme('dark')}
-      />
+      <>
+        <div className="flex items-center space-x-2">
+          <p className="text-base text-black">Switch theme</p>
+          <button
+            className="flex items-center justify-center rounded-full bg-gray-300 p-2 shadow-md transition duration-300 ease-in-out hover:bg-gray-400 focus:outline-none"
+            data-testid="moon-icon"
+            type="button"
+            aria-label="Switch to dark theme"
+            onClick={() => setTheme('dark')}
+          >
+            <FiMoon className="h-6 w-6 text-gray-800" />
+          </button>
+        </div>
+      </>
     );
   }
 }
