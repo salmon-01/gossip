@@ -77,20 +77,20 @@ const AIVoiceGenerator = () => {
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
-          <div className="dark:bg-experimentSecondaryBG max-h-80 overflow-auto rounded-lg p-4">
+          <div className="dark:bg-experimentSecondaryBG mt-2 max-h-80 overflow-auto rounded-lg p-2">
             {voices.map((entry) => (
               <div
                 key={entry.id}
-                className="mb-4 border-b border-gray-300 pb-4"
+                className="mb-2 rounded-lg border-slate-500 p-4 last:mb-0 last:border-0 dark:bg-black"
               >
                 <h3 className="text-md mb-2 font-semibold dark:text-darkModeParaText">
                   {entry.name} - {entry.accent}
                 </h3>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-4">
                   <div className="flex items-center space-x-4">
                     <button
                       onClick={() => handlePlayPause(entry.id)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full text-white dark:bg-black"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white text-white dark:bg-black"
                     >
                       {isPlaying === entry.id ? (
                         <FiPause className="h-5 w-5" />
@@ -107,7 +107,7 @@ const AIVoiceGenerator = () => {
                     />
                   </div>
                   <button
-                    className="rounded bg-purple-700 px-4 py-2 text-white dark:bg-darkModePurpleBtn"
+                    className="rounded bg-purple-700 px-3 py-1.5 text-sm text-white dark:bg-darkModePurpleBtn"
                     onClick={() => handleVoiceSelect(entry.id)}
                   >
                     Select
