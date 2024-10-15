@@ -7,13 +7,12 @@ import { createClient } from '../../utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AudioNoteApp from './TextToSpeech';
 import { BsStars } from 'react-icons/bs';
 import { MdOutlineMic } from 'react-icons/md';
+import AudioRecorder from './AudioRecorder';
+import AIVoiceGenerator from './TextToSpeech';
 
 import axios from 'axios';
-
-import AudioRecorder from './AudioRecorder';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -177,7 +176,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         </form>
       )}
 
-      {activeTab === 'AIvoice' && <AudioNoteApp />}
+      {activeTab === 'AIvoice' && <AIVoiceGenerator />}
       {loading && (
         <div className="mt-4 flex justify-center">
           <LoadingSpinner />
