@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
 
-const AIVoiceGenerator = () => {
+const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [text, setText] = useState('');
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,10 @@ const AIVoiceGenerator = () => {
       if (response.ok) {
         const audioBlob = await response.blob();
         const audioUrl = URL.createObjectURL(audioBlob);
+
         setAudioUrl(audioUrl);
+
+        onAudioSave(audioBlob);
       } else {
         console.error('Error generating audio');
       }
@@ -60,6 +63,10 @@ const AIVoiceGenerator = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const sendPostToDB = () => {
+    onSubmitPost(); // Trigger the post creation after saving the audio
   };
 
   return (
@@ -145,6 +152,11 @@ const AIVoiceGenerator = () => {
           </div>
         )}
       </div>
+      {audioUrl && (
+        <div className="">
+          <button onClick={sendPostToDB}>Post</button>
+        </div>
+      )}
     </>
   );
 };

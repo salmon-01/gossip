@@ -31,67 +31,148 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     setAudioBlob(audioBlob);
   };
 
-  const createPostMutation = useMutation({
-    mutationFn: async () => {
-      const supabase = createClient();
-      const fileName = `audio-${Date.now()}.webm`;
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError) throw userError;
+  // Separate the mutation logic into its own function
+  const createPost = async () => {
+    const supabase = createClient();
+    const fileName = `audio-${Date.now()}.webm`;
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError) throw userError;
 
-      const userId = user!.id;
+    const userId = user!.id;
 
-      if (!audioBlob) {
-        throw new Error('Audio file is missing.');
+    if (!audioBlob) {
+      throw new Error('Audio file is missing.');
+    }
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('voice-notes')
+      .upload(fileName, audioBlob);
+
+    if (uploadError) {
+      throw new Error('Error uploading file');
+    }
+
+    const { data: publicUrlData } = await supabase.storage
+      .from('voice-notes')
+      .getPublicUrl(fileName);
+    const fileUrl = publicUrlData.publicUrl;
+
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'audio.webm');
+
+    const transcriptionResponse = await axios.post(
+      '/api/transcribe',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }
+    );
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('voice-notes')
-        .upload(fileName, audioBlob);
+    const transcription = transcriptionResponse.data.transcription;
 
-      if (uploadError) {
-        throw new Error('Error uploading file');
-      }
-
-      const { data: publicUrlData } = supabase.storage
-        .from('voice-notes')
-        .getPublicUrl(fileName);
-      const fileUrl = publicUrlData.publicUrl;
-
-      const formData = new FormData();
-      formData.append('file', audioBlob, 'audio.webm');
-
-      const transcriptionResponse = await axios.post(
-        '/api/transcribe',
-        formData,
+    const { data: postData, error: postError } = await supabase
+      .from('posts')
+      .insert([
         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+          user_id: userId,
+          caption: caption,
+          audio: fileUrl,
+          transcription: transcription,
+        },
+      ]);
 
-      const transcription = transcriptionResponse.data.transcription;
+    if (postError) {
+      throw new Error('Error creating post');
+    }
 
-      const { data: postData, error: postError } = await supabase
-        .from('posts')
-        .insert([
-          {
-            user_id: userId,
-            caption: caption,
-            audio: fileUrl,
-            transcription: transcription,
-          },
-        ]);
+    return postData;
+  };
 
-      if (postError) {
-        throw new Error('Error creating post');
-      }
+  // const createPostMutation = useMutation({
+  //   mutationFn: async () => {
+  //     const supabase = createClient();
+  //     const fileName = `audio-${Date.now()}.webm`;
+  //     const {
+  //       data: { user },
+  //       error: userError,
+  //     } = await supabase.auth.getUser();
+  //     if (userError) throw userError;
 
-      return postData;
-    },
+  //     const userId = user!.id;
+
+  //     if (!audioBlob) {
+  //       throw new Error('Audio file is missing.');
+  //     }
+
+  //     const { data: uploadData, error: uploadError } = await supabase.storage
+  //       .from('voice-notes')
+  //       .upload(fileName, audioBlob);
+
+  //     if (uploadError) {
+  //       throw new Error('Error uploading file');
+  //     }
+
+  //     const { data: publicUrlData } = supabase.storage
+  //       .from('voice-notes')
+  //       .getPublicUrl(fileName);
+  //     const fileUrl = publicUrlData.publicUrl;
+
+  //     const formData = new FormData();
+  //     formData.append('file', audioBlob, 'audio.webm');
+
+  //     const transcriptionResponse = await axios.post(
+  //       '/api/transcribe',
+  //       formData,
+  //       {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       }
+  //     );
+
+  //     const transcription = transcriptionResponse.data.transcription;
+
+  //     const { data: postData, error: postError } = await supabase
+  //       .from('posts')
+  //       .insert([
+  //         {
+  //           user_id: userId,
+  //           caption: caption,
+  //           audio: fileUrl,
+  //           transcription: transcription,
+  //         },
+  //       ]);
+
+  //     if (postError) {
+  //       throw new Error('Error creating post');
+  //     }
+
+  //     return postData;
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({
+  //       queryKey: ['posts'],
+  //     });
+  //     onPostCreated();
+  //     toast.success('Post created successfully!');
+  //     setCaption('');
+  //     setAudioBlob(null);
+  //     setLoading(false);
+  //   },
+  //   onError: (error: any) => {
+  //     console.error('Error creating post:', error);
+  //     toast.error('Failed to create post. Please try again.');
+  //     setLoading(false);
+  //   },
+  // });
+
+  const createPostMutation = useMutation({
+    mutationFn: createPost,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['posts'],
@@ -110,7 +191,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!audioBlob) return;
     setLoading(true);
     createPostMutation.mutate();
@@ -176,7 +257,12 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         </form>
       )}
 
-      {activeTab === 'AIvoice' && <AIVoiceGenerator />}
+      {activeTab === 'AIvoice' && (
+        <AIVoiceGenerator
+          onAudioSave={handleAudioSave}
+          onSubmitPost={handleSubmit}
+        />
+      )}
       {loading && (
         <div className="mt-4 flex justify-center">
           <LoadingSpinner />
