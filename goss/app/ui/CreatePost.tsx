@@ -35,6 +35,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     setAudioBlob(null);
+    setCaption('');
   };
 
   // Separate the mutation logic into its own function

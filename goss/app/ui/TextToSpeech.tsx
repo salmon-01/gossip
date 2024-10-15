@@ -128,7 +128,7 @@ const AIVoiceGenerator = ({
 
   return (
     <>
-      <div className="dark:bg-experimentBG mx-auto mt-5 w-full max-w-5xl rounded-lg bg-white p-8 shadow">
+      <div className="mx-auto mt-5 w-full max-w-5xl rounded-lg bg-white p-8 shadow dark:bg-experimentBG">
         <h2 className="mb-5 text-lg font-medium dark:text-darkModeHeader">
           Select a voice for your audio note
         </h2>
@@ -141,7 +141,7 @@ const AIVoiceGenerator = ({
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
-          <div className="dark:bg-experimentSecondaryBG mt-2 max-h-80 overflow-auto rounded-lg bg-slate-200 p-2">
+          <div className="mt-2 max-h-80 overflow-auto rounded-lg bg-slate-200 p-2 dark:bg-experimentSecondaryBG">
             {voices.map((entry) => (
               <div
                 key={entry.id}
