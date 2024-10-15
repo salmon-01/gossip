@@ -51,7 +51,7 @@ export default function ProfilePost({ params }) {
   return (
     <>
       {PostData && PostData.length > 0 ? (
-        <div className="mt-4 p-3 min-h-[60lvh] bg-white">
+        <div className="mt-4 p-3 min-h-[60lvh] bg-white dark:bg-darkModePrimaryBackground">
           {PostData.map((post) => (
             <div key={post.id} className="mb-4">
               <PostComponent user={profile} post={post} favourites={favourites} />

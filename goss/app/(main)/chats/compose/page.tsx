@@ -92,9 +92,9 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex items-center justify-start px-4 py-6">
+      <div className="flex items-center justify-start px-4 py-6 dark:text-darkModeHeader">
         <Link href="/chats" className="text-2xl">{'\u2190'}</Link>
-        <h2 className="font-bold text-2xl ml-4 dark:text-darkModeHeader">New message</h2>
+        <h2 className="font-bold text-2xl ml-4">New message</h2>
       </div>
 
       <form className="px-4">
@@ -115,7 +115,8 @@ export default function Page() {
             <div
               key={result.user_id}
               onClick={() => pick(result.user_id)}
-              className="flex items-center p-3 bg-white shadow-sm rounded-lg w-11/12 mx-auto mb-3 hover:bg-purple-100 cursor-pointer"
+              className="flex items-center p-3 bg-white shadow-sm rounded-lg w-11/12 
+              mx-auto mb-3 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:text-darkModeHeader cursor-pointer"
             >
               <img
                 src={result.profile_img || '/default-avatar.png'} // Fallback image
@@ -124,7 +125,7 @@ export default function Page() {
               />
               <div>
                 <p className="font-semibold text-lg">{result.display_name}</p>
-                <p className="text-gray-500">@{result.username}</p>
+                <p className="text-gray-500 dark:text-darkModeParaText">@{result.username}</p>
               </div>
             </div>
           ))
