@@ -9,33 +9,13 @@ import { updateFollowStatus } from '@/app/api/follow';
 import toast from 'react-hot-toast';
 import { fetchFollowing } from '@/app/api/follow';
 import { useSessionContext } from './SessionContext';
-
-// Define the type for the follow response
-interface FollowResponse {
-  success: boolean;
-  status: 'active' | 'inactive';
-  userId: string;
-  targetUserId: string;
-}
+import { FollowResponse, FollowContextType } from '../types';
 
 // Define the type for the mutation variables
 interface FollowMutationVariables {
   userId: string;
   targetUserId: string;
   targetUserName: string;
-}
-
-// Define the type for the FollowContext
-interface FollowContextType {
-  handleFollowToggle: (
-    userId: string,
-    targetUserId: string,
-    targetUserName: string
-  ) => void;
-  isLoading: boolean;
-  followingData: any;
-  isFollowingLoading: boolean;
-  refetchFollowing: () => void;
 }
 
 // Create the FollowContext with a default value of null
@@ -48,6 +28,7 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
 
   // Check if session and user_id are available
   const userId = session?.user?.id; // Adjust this based on the actual session structure
+  const username = session?.profile?.username; // Get the username from session
 
   if (!userId && !isLoading) {
     console.error('User ID is not available');
@@ -98,7 +79,7 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
     isLoading: isFollowingLoading,
     refetch: refetchFollowing,
   } = useQuery({
-    queryKey: ['following', userId], // Include userId in the query key for uniqueness
+    queryKey: ['following', username, userId], // Include userId in the query key for uniqueness
     queryFn: () => fetchFollowing(userId as string),
     staleTime: 60000, // Cache data for 60 seconds
     refetchOnWindowFocus: false,
