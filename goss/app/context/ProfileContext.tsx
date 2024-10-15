@@ -5,7 +5,13 @@ import React, { createContext, useContext, ReactNode } from 'react';
 interface ProfileData {
   user_id: string;
   username: string;
-  // Add any other fields that your profile data contains
+  badge:string,
+  profile_img:string,
+  bio: string,
+  display_name:string,
+  follower_count: number,
+  following_total:number
+  
 }
 
 // Create Profile Context with an initial value of null or ProfileData type

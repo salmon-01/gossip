@@ -40,8 +40,8 @@ export default function ProfileLayout({ children, params }) {
       <div className="bg-white dark:bg-darkModePrimaryBackground">
         {/* Pass profile data to the header and stats components */}
         <div className="border-b dark:border-darkModeSecondaryBackground">
-          <ProfileHeader user={profileData} />
-          <ProfileStats user={profileData} />
+          <ProfileHeader />
+          <ProfileStats />
         </div>
         <ProfileNav username={username} />
         <main>{children}</main>

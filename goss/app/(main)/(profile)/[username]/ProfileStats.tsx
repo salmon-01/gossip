@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useProfile } from '@/app/context/ProfileContext';
 
 interface ProfileStatsProps {
   user: {
@@ -10,7 +11,11 @@ interface ProfileStatsProps {
   };
 }
 
-export default function ProfileStats({ user }: ProfileStatsProps) {
+export default function ProfileStats() {
+
+  const profile = useProfile();
+
+  const user = profile;
   const { data: profileData } = useQuery({
     queryKey: ['profile', user.user_id],
     initialData: user,
