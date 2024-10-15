@@ -1,6 +1,6 @@
 'use client'; // Keep this as a client component
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   HiOutlineHome,
   HiOutlineMagnifyingGlass,
@@ -11,7 +11,6 @@ import RecordPost from './RecordPost';
 import { useSessionContext } from '../context/SessionContext';
 import NavItem from './NavItem';
 import { useGlobalNotifications } from '../context/NotificationsContext';
-import Link from 'next/link';
 
 function NavBar() {
   const { data: session } = useSessionContext();
@@ -20,6 +19,12 @@ function NavBar() {
   const { notifications, isLoading } = useGlobalNotifications();
 
   const isActive = (path: string) => pathname === path;
+
+  const router = useRouter();
+
+  const handleCreatePostClick = () => {
+    router.push('/create-post'); // Redirect to the create-post page
+  };
 
   // Filter unread notifications from fetched data
   const unreadCount = notifications?.filter((n) => !n.is_read).length || 0;
@@ -95,12 +100,13 @@ function NavBar() {
 
         {/* Record Post Button for Desktop */}
         <div className="hidden w-full md:block">
-          <Link href="/create-post">
-            <button className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 md:rounded-xl">
-              <RecordPost />
-              <span>Record Post</span>
-            </button>
-          </Link>
+          <button
+            onClick={handleCreatePostClick}
+            className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 md:rounded-xl"
+          >
+            <RecordPost />
+            <span>Record Post</span>
+          </button>
         </div>
       </div>
     </nav>
