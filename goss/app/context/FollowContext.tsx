@@ -54,17 +54,16 @@ export const FollowProvider = ({ children }: { children: ReactNode }) => {
             : `You have unfollowed ${variables.targetUserName}`;
 
         toast.success(message);
-        console.log(response);
         queryClient.invalidateQueries({
           queryKey: ['followStatus', response.userId, response.targetUserId],
         });
 
         queryClient.invalidateQueries({
-          queryKey: ['profile', response.targetUserName],
+          queryKey: ['profile', variables.targetUserName],
         });
 
         queryClient.invalidateQueries({
-          queryKey: ['following', response.userId],
+          queryKey: ['followers', variables.targetUserName], // Ensure correct key
         });
       }
     },

@@ -13,7 +13,7 @@ const FollowButton = ({ targetUserId, targetUserName }: FollowButtonProps) => {
   const { handleFollowToggle, followingData } = useFollow(); // Access following data and toggle function from context
   const { data: session } = useSessionContext(); // Access the session to get the current user
   const currentUserId = session?.profile.user_id;
-  console.log(currentUserId);
+
   // Determine if the current user is following the target user
   const isInitiallyFollowing = followingData?.some((follow) => {
     return follow.target_user_id === targetUserId; // Add return statement
