@@ -4,6 +4,9 @@ import { FiSun, FiMoon } from 'react-icons/fi';
 import { RiMoonClearFill } from 'react-icons/ri';
 import { IoMdSunny } from 'react-icons/io';
 import { FaSun } from 'react-icons/fa';
+import { CiLight } from 'react-icons/ci';
+import { MdLightMode } from 'react-icons/md';
+import { IoSunny } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -40,7 +43,7 @@ export default function ThemeSwitch() {
             aria-label="Switch to light theme"
             onClick={() => setTheme('light')}
           >
-            <FaSun className="h-5 w-5 text-yellow-200" />
+            <IoSunny className="h-5 w-5 text-yellow-100" />
           </button>
         </div>
       </>
