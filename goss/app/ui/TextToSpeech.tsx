@@ -77,37 +77,42 @@ const AIVoiceGenerator = () => {
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
-          <div className="max-h-80 overflow-auto rounded-lg border border-gray-300 bg-white p-4">
+          <div className="dark:bg-experimentSecondaryBG max-h-80 overflow-auto rounded-lg p-4">
             {voices.map((entry) => (
-              <div key={entry.id} className="mb-4 border-b pb-4">
-                <h3 className="text-md mb-2 font-semibold">
+              <div
+                key={entry.id}
+                className="mb-4 border-b border-gray-300 pb-4"
+              >
+                <h3 className="text-md mb-2 font-semibold dark:text-darkModeParaText">
                   {entry.name} - {entry.accent}
                 </h3>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <button
+                      onClick={() => handlePlayPause(entry.id)}
+                      className="flex h-10 w-10 items-center justify-center rounded-full text-white dark:bg-black"
+                    >
+                      {isPlaying === entry.id ? (
+                        <FiPause className="h-5 w-5" />
+                      ) : (
+                        <FiPlay className="h-5 w-5" />
+                      )}
+                    </button>
+                    <ReactPlayer
+                      url={entry.sample}
+                      playing={isPlaying === entry.id}
+                      controls={false}
+                      width="0"
+                      height="0"
+                    />
+                  </div>
                   <button
-                    onClick={() => handlePlayPause(entry.id)}
-                    className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 p-2 text-white"
+                    className="rounded bg-purple-700 px-4 py-2 text-white dark:bg-darkModePurpleBtn"
+                    onClick={() => handleVoiceSelect(entry.id)}
                   >
-                    {isPlaying === entry.id ? (
-                      <FiPause className="h-6 w-6" />
-                    ) : (
-                      <FiPlay className="h-6 w-6" />
-                    )}
+                    Select
                   </button>
-                  <ReactPlayer
-                    url={entry.sample}
-                    playing={isPlaying === entry.id}
-                    controls={false}
-                    width="0"
-                    height="0"
-                  />
                 </div>
-                <button
-                  className="mt-2 rounded bg-purple-700 px-4 py-2 text-white dark:bg-darkModePurpleBtn"
-                  onClick={() => handleVoiceSelect(entry.id)}
-                >
-                  Select
-                </button>
               </div>
             ))}
           </div>
@@ -124,7 +129,7 @@ const AIVoiceGenerator = () => {
         <button
           onClick={handleTextToSpeech}
           disabled={loading || !text.trim()}
-          className="rounded-sm bg-darkModeSecondaryBackground p-3 text-sm text-white"
+          className="rounded-sm p-3 text-sm text-white dark:bg-darkModePurpleBtn"
           style={{
             cursor: loading ? 'not-allowed' : 'pointer',
           }}
