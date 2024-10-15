@@ -15,6 +15,7 @@ import { createFavourite, deleteFavourite } from '../api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useState } from 'react';
 import DeletePostModal from '@/app/ui/DeletePostModal';
+import toast from 'react-hot-toast';
 
 interface PostProps {
   user: User;
@@ -38,6 +39,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      toast.success('Post deleted');
     },
     onError: (error) => {
       console.error("Error deleting post:", error);
@@ -75,6 +77,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     }
     try {
       await createFavourite(currentUserId, post.id);
+      toast.success('Saved to favourites')
     } catch (error) {
       console.error(error);
     }
@@ -86,6 +89,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     }
     try {
       await deleteFavourite(currentUserId, post.id);
+      toast.success('Removed from favourites')
     } catch (error) {
       console.error(error);
     }

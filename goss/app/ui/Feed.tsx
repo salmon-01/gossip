@@ -7,13 +7,14 @@ import PostComponent from './Post';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { useSessionContext } from '../context/SessionContext';
-import { HiArrowsUpDown, HiArrowDown, HiArrowUp } from "react-icons/hi2";
+import { HiArrowDown, HiArrowUp } from "react-icons/hi2";
+import { useFollow } from '../hooks/useFollow';
 
 export default function Feed() {
-
+  const {followingData} = useFollow();
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
-
+  
   const {
     data: posts = [],
     isLoading,
@@ -29,14 +30,6 @@ export default function Feed() {
   } = useQuery({
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
-    enabled: !!currentUserId,
-  });
-
-  const {
-    data: following = [],
-  } = useQuery({
-    queryKey: ['following', currentUserId],
-    queryFn: () => fetchFollowingById(currentUserId as string),
     enabled: !!currentUserId,
   });
 
@@ -91,7 +84,7 @@ export default function Feed() {
           :
           sortedPosts.length > 0 &&
             sortedPosts.map((post) => {
-              if (following.some(follow => follow.user_id === post.user_id)) {
+              if (followingData.some(follow => follow.target_user_id === post.user_id)) {
                 return (
                   <PostComponent key={post.id} post={post} user={post.profiles} favourites={favourites} />
                 );
