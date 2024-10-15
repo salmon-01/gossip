@@ -178,25 +178,13 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         ref={waveformRef}
         id="mic"
         className="mb-8 overflow-hidden"
-        // Needed because the WaveSurfer plugin has default padding that is way too high.
         style={{ marginTop: '-120px' }}
       />
-      <div className="mb-4 text-center">
-        <select
-          value={selectedDevice}
-          onChange={(e) => setSelectedDevice(e.target.value)}
-          className="mr-2 rounded border p-2 dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
-        >
-          {devices.map((device) => (
-            <option key={device.deviceId} value={device.deviceId}>
-              {device.label || device.deviceId}
-            </option>
-          ))}
-        </select>
+      <div className="tablet:flex-row tablet:space-x-4 mb-4 flex flex-col items-center justify-center text-center">
         <button
           aria-label={isRecording ? 'Stop Recording' : 'Start Recording'}
           onClick={handleRecord}
-          disabled={!!recordedBlob} // Disable if recordedBlob exists
+          disabled={!!recordedBlob}
           className={`mr-2 mt-4 rounded-full px-4 py-4 font-bold text-white ${
             recordedBlob
               ? 'cursor-not-allowed bg-gray-300 dark:bg-purple-300 dark:opacity-50'
@@ -224,7 +212,20 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
             )}
           </button>
         )}
+
+        <select
+          value={selectedDevice}
+          onChange={(e) => setSelectedDevice(e.target.value)}
+          className="tablet:mt-0 mt-4 rounded border p-2 dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+        >
+          {devices.map((device) => (
+            <option key={device.deviceId} value={device.deviceId}>
+              {device.label || device.deviceId}
+            </option>
+          ))}
+        </select>
       </div>
+
       <div className="mb-4">
         <p className="text-lg font-semibold dark:text-darkModeParaText">
           Duration: {formatTime(time)}
