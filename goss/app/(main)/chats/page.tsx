@@ -67,7 +67,7 @@ export default function ChatsPage() {
           : conversation.participant_1_profile;
 
         return (
-          <div key={conversation.id} className="flex items-center p-2 mx-auto  rounded-md w-11/12 mb-3  border-gray-200 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:hover:bg-blue-900 transition duration-200">
+          <div key={conversation.id} className="flex items-center relative p-2 mx-auto  rounded-md w-11/12 mb-3 lg:w-9/12 md:w-9/12 border-gray-200 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:hover:bg-blue-900 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
               <div className="flex items-center w-full cursor-pointer ">
                 <img
@@ -76,16 +76,16 @@ export default function ChatsPage() {
                   className="w-14 h-14 rounded-full mr-4"
                 />
                 <div className="flex-1">
-                  <div className="flex justify-between items-center w-[60lvw] max-w-[60lvw] lg:w-[20lvw] lg:max-w-[20lvw]">
+                  <div className="flex justify-between items-center w-[60lvw] max-w-[60lvw]  lg:max-w-[40lvw]">
                     <span className="font-semibold text-customPurple dark:text-gray-100">
                       {otherParticipant.display_name}
                     </span>
-                    <span className="text-gray-600 text-sm dark:text-gray-400">
+                    <span className="text-gray-600 text-sm dark:text-gray-400 absolute top-4 right-4 ">
                       {formatDate(new Date(conversation.last_message_time).setHours(new Date(conversation.last_message_time).getHours() + 1))}
                     </span>
 
                   </div>
-                  <p className="text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate dark:text-gray-400 lg:max-w-[20lvw]">
+                  <p className="text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate dark:text-gray-400 lg:max-w-[38lvw]">
                     {conversation.last_message}
                   </p>
                 </div>
