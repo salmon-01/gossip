@@ -3,6 +3,7 @@ import { FiPlay, FiPause } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
+import { FaTrash } from 'react-icons/fa';
 
 const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [text, setText] = useState('');
@@ -67,6 +68,17 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
 
   const sendPostToDB = () => {
     onSubmitPost(); // Trigger the post creation after saving the audio
+  };
+
+  const handleDelete = () => {
+    setAudioUrl(null);
+    toast.success('Audio deleted', {
+      style: {
+        border: '1px solid',
+        background: 'slategray',
+        color: 'white',
+      },
+    });
   };
 
   return (
@@ -144,12 +156,21 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
           {loading ? 'Generating...' : 'Generate Audio'}
         </button>
         {audioUrl && (
-          <div style={{ marginTop: '20px' }}>
-            <h2 className="dark:text-darkModeParaText">
-              Listen to your audio:
-            </h2>
-            <audio controls src={audioUrl} style={{ width: '100%' }} />
-          </div>
+          <>
+            <div style={{ marginTop: '20px' }}>
+              <h2 className="dark:text-darkModeParaText">
+                Listen to your audio:
+              </h2>
+              <audio controls src={audioUrl} style={{ width: '100%' }} />
+            </div>
+            <button
+              onClick={handleDelete}
+              aria-label="Delete Recording"
+              className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
+            >
+              <FaTrash className="h-5 w-5" />
+            </button>
+          </>
         )}
       </div>
       {audioUrl && (
