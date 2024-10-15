@@ -59,7 +59,7 @@ export default function ProfilePost({ params }) {
           ))}
         </div>
       ) : (
-        <div className='pl-4 min-h-[60lvh] bg-white'>No posts found.</div>
+        <div className='pl-4 min-h-[60lvh] bg-white dark:bg-darkModePrimaryBackground dark:text-darkModeParaText'>No posts available.</div>
       )}
     </>
   );
