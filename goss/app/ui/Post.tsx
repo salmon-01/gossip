@@ -112,7 +112,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           <div className="mt-4 text-sm text-gray-700">{post.transcription}</div>
         )}
         <div className="mb-2 w-full">
-          <Reactions postId={post.id} postAuthorId={post.user_id} />
+          <Reactions postId={post.id} postAuthorId={post.user_id} post={post} />
         </div>
         <div className="w-full">
           <div className="relative flex items-center">
@@ -122,7 +122,8 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
             <Link href={`/post/${post.id}`}>
               <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                Comment {comments.length > 0 ? `(${comments.length})` : null}
+                Comment
+                {post.comments?.length > 0 ? `(${post.comments.length})` : null}
               </div>
             </Link>
             <div className="ml-auto flex">

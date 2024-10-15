@@ -1,6 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPosts, fetchPostsWithComments } from '../api/fetchPosts';
+import {
+  fetchPosts,
+  fetchPostsAndReactions,
+  fetchPostsWithComments,
+} from '../api/fetchPosts';
 import { fetchFavourites } from '../api/favourites';
 import { fetchFollowingById } from '../api/fetchFollowers';
 import PostComponent from './Post';
@@ -22,8 +26,13 @@ export default function Feed() {
     error,
   } = useQuery({
     queryKey: ['posts'],
-    queryFn: () => fetchPosts(),
+    queryFn: () => fetchPostsAndReactions(),
   });
+
+  // const { data: reactposts = [] } = useQuery({
+  //   queryKey: ['postsandreactions'],
+  //   queryFn: () => fetchPostsAndReactions(),
+  // });
 
   const { data: favourites = [] } = useQuery({
     queryKey: ['favourites', currentUserId],
