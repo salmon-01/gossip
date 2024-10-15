@@ -6,10 +6,13 @@ import toast from 'react-hot-toast';
 import { createClient } from '../../utils/supabase/client';
 import { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BsStars } from 'react-icons/bs';
+import { MdOutlineMic } from 'react-icons/md';
+import AudioRecorder from './AudioRecorder';
+import AIVoiceGenerator from './TextToSpeech';
 
 import axios from 'axios';
-
-import AudioRecorder from './AudioRecorder';
 
 interface CreatePostProps {
   onPostCreated: () => void;
@@ -19,6 +22,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   const queryClient = useQueryClient();
   const { data: session, isLoading, error } = useSessionContext();
 
+  const [activeTab, setActiveTab] = useState('recordAudio');
   const [caption, setCaption] = useState('');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
@@ -27,67 +31,75 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
     setAudioBlob(audioBlob);
   };
 
-  const createPostMutation = useMutation({
-    mutationFn: async () => {
-      const supabase = createClient();
-      const fileName = `audio-${Date.now()}.webm`;
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError) throw userError;
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setAudioBlob(null);
+  };
 
-      const userId = user!.id;
+  // Separate the mutation logic into its own function
+  const createPost = async () => {
+    const supabase = createClient();
+    const fileName = `audio-${Date.now()}.webm`;
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError) throw userError;
 
-      if (!audioBlob) {
-        throw new Error('Audio file is missing.');
+    const userId = user!.id;
+
+    if (!audioBlob) {
+      throw new Error('Audio file is missing.');
+    }
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('voice-notes')
+      .upload(fileName, audioBlob);
+
+    if (uploadError) {
+      throw new Error('Error uploading file');
+    }
+
+    const { data: publicUrlData } = await supabase.storage
+      .from('voice-notes')
+      .getPublicUrl(fileName);
+    const fileUrl = publicUrlData.publicUrl;
+
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'audio.webm');
+
+    const transcriptionResponse = await axios.post(
+      '/api/transcribe',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }
+    );
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('voice-notes')
-        .upload(fileName, audioBlob);
+    const transcription = transcriptionResponse.data.transcription;
 
-      if (uploadError) {
-        throw new Error('Error uploading file');
-      }
-
-      const { data: publicUrlData } = supabase.storage
-        .from('voice-notes')
-        .getPublicUrl(fileName);
-      const fileUrl = publicUrlData.publicUrl;
-
-      const formData = new FormData();
-      formData.append('file', audioBlob, 'audio.webm');
-
-      const transcriptionResponse = await axios.post(
-        '/api/transcribe',
-        formData,
+    const { data: postData, error: postError } = await supabase
+      .from('posts')
+      .insert([
         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+          user_id: userId,
+          caption: caption,
+          audio: fileUrl,
+          transcription: transcription,
+        },
+      ]);
 
-      const transcription = transcriptionResponse.data.transcription;
+    if (postError) {
+      throw new Error('Error creating post');
+    }
 
-      const { data: postData, error: postError } = await supabase
-        .from('posts')
-        .insert([
-          {
-            user_id: userId,
-            caption: caption,
-            audio: fileUrl,
-            transcription: transcription,
-          },
-        ]);
+    return postData;
+  };
 
-      if (postError) {
-        throw new Error('Error creating post');
-      }
-
-      return postData;
-    },
+  const createPostMutation = useMutation({
+    mutationFn: createPost,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['posts'],
@@ -106,7 +118,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
   });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!audioBlob) return;
     setLoading(true);
     createPostMutation.mutate();
@@ -120,37 +132,67 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="dark:bg-darkModeSecondaryBackground flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3">
-          <div className="flex h-8 w-full items-center">
-            <img
-              src={user.profile_img}
-              alt="Profile picture"
-              className="mr-3 mt-5 h-12 w-12 rounded-full bg-black shadow-md"
-            />
-            <input
-              type="text"
-              name="caption"
-              value={caption}
-              placeholder="Write a caption"
-              className="dark:bg-darkModePrimaryBackground z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:text-white dark:focus:border-slate-300"
-              onChange={(e) => setCaption(e.target.value)}
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <TabsList className="grid grid-cols-2">
+          <TabsTrigger
+            value="recordAudio"
+            onClick={() => handleTabChange('recordAudio')}
+          >
+            Record Audio
+            <MdOutlineMic className="ml-1 h-4 w-4" />
+          </TabsTrigger>
+          <TabsTrigger
+            value="AIvoice"
+            onClick={() => handleTabChange('AIvoice')}
+          >
+            AI Voice
+            <BsStars className="ml-1.5 h-4 w-4" />
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+      {activeTab === 'recordAudio' && (
+        <form onSubmit={handleSubmit} className="mt-2">
+          <div className="flex flex-col rounded-md bg-gray-200 px-2 pb-3 pt-3 dark:bg-darkModeSecondaryBackground">
+            <div className="flex h-8 w-full items-center">
+              <img
+                src={user.profile_img}
+                alt="Profile picture"
+                className="mr-3 mt-5 h-12 w-12 rounded-full bg-black shadow-md"
+              />
+              <input
+                type="text"
+                name="caption"
+                value={caption}
+                placeholder="Write a caption"
+                className="z-50 mt-5 w-full rounded-md border border-gray-300 bg-slate-100 p-4 px-2 py-2 shadow-sm transition duration-200 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-500 dark:bg-darkModePrimaryBackground dark:text-white dark:focus:border-slate-300"
+                onChange={(e) => setCaption(e.target.value)}
+              />
+            </div>
+            <AudioRecorder
+              onAudioSave={handleAudioSave}
+              audioBlob={audioBlob}
             />
           </div>
-          <AudioRecorder onAudioSave={handleAudioSave} audioBlob={audioBlob} />
-        </div>
-        {audioBlob && (
-          <div className="mt-2 flex justify-center">
-            <button
-              type="submit"
-              className="dark:bg-darkModePurpleBtn rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:hover:bg-purple-700"
-              disabled={loading}
-            >
-              Post
-            </button>
-          </div>
-        )}
-      </form>
+          {audioBlob && (
+            <div className="mt-2 flex justify-center">
+              <button
+                type="submit"
+                className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+                disabled={loading}
+              >
+                Post
+              </button>
+            </div>
+          )}
+        </form>
+      )}
+
+      {activeTab === 'AIvoice' && (
+        <AIVoiceGenerator
+          onAudioSave={handleAudioSave}
+          onSubmitPost={handleSubmit}
+        />
+      )}
       {loading && (
         <div className="mt-4 flex justify-center">
           <LoadingSpinner />

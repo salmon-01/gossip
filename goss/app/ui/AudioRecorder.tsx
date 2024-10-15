@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 import { HiOutlineMicrophone } from 'react-icons/hi2';
-import { FaStop, FaPause, FaPlay, FaTrash } from 'react-icons/fa';
+import { FaPause, FaPlay, FaTrash } from 'react-icons/fa';
 import { IoStop, IoPause, IoPlay } from 'react-icons/io5';
 import toast from 'react-hot-toast';
 
@@ -140,7 +140,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
       playbackWavesurfer.destroy();
       setPlaybackWavesurfer(null);
     }
-    toast('Audio deleted', {
+    toast.success('Audio deleted', {
       style: {
         border: '1px solid',
         background: 'slategray',
@@ -173,7 +173,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
   };
 
   return (
-    <div className="dark:bg-darkModePrimaryBackground mt-10 rounded-lg bg-gray-100 p-4 shadow">
+    <div className="mt-10 rounded-lg bg-gray-100 p-4 shadow dark:bg-darkModePrimaryBackground">
       <div
         ref={waveformRef}
         id="mic"
@@ -185,7 +185,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         <select
           value={selectedDevice}
           onChange={(e) => setSelectedDevice(e.target.value)}
-          className="dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText mr-2 rounded border p-2"
+          className="mr-2 rounded border p-2 dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
         >
           {devices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
@@ -226,7 +226,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
         )}
       </div>
       <div className="mb-4">
-        <p className="dark:text-darkModeParaText text-lg font-semibold">
+        <p className="text-lg font-semibold dark:text-darkModeParaText">
           Duration: {formatTime(time)}
         </p>
       </div>
