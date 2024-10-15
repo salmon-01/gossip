@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* Wrapping the whole content in Providers */}
         <Providers>
-          <div className="dark:bg-darkModePrimaryBackground mx-auto min-h-screen w-full bg-gray-100 md:grid md:grid-cols-[300px_1fr] lg:gap-8 lg:px-16">
+          <div className="dark:bg-darkModePrimaryBackground mx-auto min-h-screen w-full bg-gray-100 lg:grid lg:grid-cols-[300px_1fr] lg:gap-8 lg:px-16">
             {/* Sidebar / NavBar for Desktop */}
             <div className="hidden md:block">
               <NavBar />

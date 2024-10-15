@@ -1,8 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import {
-  fetchPosts,
-} from '../api/fetchPosts';
+import { fetchPosts } from '../api/fetchPosts';
 import { fetchFavourites } from '../api/favourites';
 import PostComponent from './Post';
 import { useState } from 'react';
@@ -48,25 +46,27 @@ export default function Feed() {
 
   return (
     <>
-      <div className='flex fixed w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 px-4 pt-4'>
-        <div className="flex w-full text-purple-700 font-bold">
+      <div className="dark:bg-darkModePrimaryBackground ustify-center fixed top-0 z-40 flex w-full bg-white px-4 pb-1 pt-4">
+        <div className="flex w-full items-center justify-start py-1 font-bold text-purple-700">
           <div className="flex space-x-4" style={{ minWidth: '180px' }}>
             <button
               onClick={() => setFeedContent('all')}
-              className={`${feedContent === 'all' ? 'font-bold text-purple-700 dark:text-darkModeHeader' : 'text-purple-400 dark:text-darkModeSecondaryBackground'} px-2 underline`}
+              className={`${feedContent === 'all' ? 'dark:text-darkModeHeader font-bold text-purple-700' : 'dark:text-darkModeSecondaryBackground text-purple-400'} px-2 underline`}
             >
               All Posts
             </button>
             <button
               onClick={() => setFeedContent('following')}
-              className={`${feedContent === 'following' ? 'font-bold text-purple-700 dark:text-darkModeHeader' : 'text-purple-400 dark:text-darkModeSecondaryBackground'} px-2 underline`}
+              className={`${feedContent === 'following' ? 'dark:text-darkModeHeader font-bold text-purple-700' : 'dark:text-darkModeSecondaryBackground text-purple-400'} px-2 underline`}
             >
               For You
             </button>
           </div>
           <button
             onClick={() => setSortOrder(!sortOrder)}
-            className={'bg-purple-700 dark:bg-darkModePurpleBtn text-white flex ml-8 rounded-md p-1'}
+            className={
+              'dark:bg-darkModePurpleBtn ml-8 flex rounded-md bg-purple-700 p-1 text-white'
+            }
           >
             {sortOrder ? (
               <>
@@ -80,7 +80,7 @@ export default function Feed() {
           </button>
         </div>
       </div>
-      <div className="mt-8 flex flex-col p-4">
+      <div className="mt-8 flex flex-col items-center p-4">
         {feedContent === 'all'
           ? sortedPosts.length > 0 &&
             sortedPosts.map((post) => (

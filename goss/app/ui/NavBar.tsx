@@ -1,5 +1,4 @@
-'use client'; // Keep this as a client component
-
+'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   HiOutlineHome,
@@ -30,13 +29,13 @@ function NavBar() {
   const unreadCount = notifications?.filter((n) => !n.is_read).length || 0;
 
   return (
-    <nav className="dark:bg-darkModePrimaryBackground dark:text-darkModeParaText fixed bottom-0 w-full bg-gray-50 text-gray-500 shadow-md md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-auto md:flex-col md:items-center md:justify-start md:space-y-8 md:px-16 md:py-8">
+    <nav className="dark:bg-darkModePrimaryBackground dark:text-darkModeParaText fixed bottom-0 w-full bg-gray-50 text-gray-500 shadow-md lg:fixed lg:left-0 lg:top-0 lg:flex lg:h-screen lg:w-auto lg:flex-col lg:items-center lg:justify-start lg:space-y-8 lg:px-16 lg:py-8">
       {/* Mobile Record Post Button */}
-      <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform md:hidden">
+      <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform lg:hidden">
         <RecordPost />
       </div>
 
-      <div className="flex justify-between md:flex-col md:items-center md:space-y-8">
+      <div className="flex justify-between lg:flex-col lg:items-center lg:space-y-8">
         {/* Home */}
         <NavItem
           href="/home"
@@ -45,7 +44,7 @@ function NavBar() {
           label="Home"
         >
           {/* Conditionally render the label on desktop */}
-          <span className="hidden md:ml-2 md:block">Home</span>
+          <span className="hidden lg:ml-2 lg:block">Home</span>
         </NavItem>
 
         {/* Search */}
@@ -56,7 +55,7 @@ function NavBar() {
           label="Search"
         >
           {/* Conditionally render the label on desktop */}
-          <span className="hidden md:ml-2 md:block">Search</span>
+          <span className="hidden lg:ml-2 lg:block">Search</span>
         </NavItem>
 
         {/* Notifications */}
@@ -67,12 +66,20 @@ function NavBar() {
           label="Notifications"
         >
           {!isLoading && unreadCount > 0 && (
-            <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
+            <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white lg:hidden">
               {unreadCount}
             </span>
           )}
-          {/* Conditionally render the label on desktop */}
-          <span className="hidden md:ml-2 md:block">Notifications</span>
+          <span className="hidden lg:ml-2 lg:flex lg:items-center">
+            Notifications
+            <span
+              className={`ml-2 flex items-center justify-center rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white ${
+                unreadCount > 0 ? 'visible' : 'invisible'
+              }`}
+            >
+              {unreadCount}
+            </span>
+          </span>
         </NavItem>
 
         {/* Profile */}
@@ -95,14 +102,14 @@ function NavBar() {
             />
           )}
           {/* Conditionally render the label on desktop */}
-          <span className="hidden md:ml-2 md:block">Profile</span>
+          <span className="hidden lg:ml-2 lg:block">Profile</span>
         </NavItem>
 
         {/* Record Post Button for Desktop */}
-        <div className="hidden w-full md:block">
+        <div className="hidden w-full lg:block">
           <button
             onClick={handleCreatePostClick}
-            className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 md:rounded-xl"
+            className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 lg:rounded-xl"
           >
             <RecordPost />
             <span>Record Post</span>
