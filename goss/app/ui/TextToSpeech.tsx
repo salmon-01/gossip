@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FiPlay, FiPause } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaPlay, FaPause } from 'react-icons/fa';
 
 const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [text, setText] = useState('');
@@ -12,6 +12,46 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(null);
+
+  // ? Moving border experiment
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (audio) {
+      const handlePlay = () => setIsAudioPlaying(true);
+      const handlePause = () => setIsAudioPlaying(false);
+
+      // Attach event listeners to handle play/pause updates
+      audio.addEventListener('play', handlePlay);
+      audio.addEventListener('pause', handlePause);
+
+      // Clean up event listeners when component unmounts
+      return () => {
+        audio.removeEventListener('play', handlePlay);
+        audio.removeEventListener('pause', handlePause);
+      };
+    }
+  }, []);
+
+  const handlePlayPauseAudio = () => {
+    const audio = audioRef.current;
+    if (isAudioPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsAudioPlaying(!isAudioPlaying);
+  };
+
+  const handleTimeUpdate = () => {
+    const audio = audioRef.current;
+    const percentage = (audio.currentTime / audio.duration) * 100;
+    setProgress(percentage);
+  };
 
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -72,6 +112,8 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
 
   const handleDelete = () => {
     setAudioUrl(null);
+    setProgress(0);
+    setIsAudioPlaying(false);
     toast.success('Audio deleted', {
       style: {
         border: '1px solid',
@@ -162,7 +204,32 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
             </h2>
             <div className="mt-2 flex items-center justify-between">
               <div className="flex-1">
-                <audio controls src={audioUrl} className="w-full" />
+                <audio
+                  ref={audioRef}
+                  src={audioUrl}
+                  onTimeUpdate={handleTimeUpdate}
+                  onEnded={() => setIsAudioPlaying(false)}
+                  className="hidden"
+                />
+                <div className="relative">
+                  <button
+                    onClick={handlePlayPauseAudio}
+                    className="relative flex h-12 w-12 items-center justify-center rounded-full border-4 border-gray-300"
+                    style={{
+                      borderImage: `conic-gradient(
+                  from 0deg,
+                  #4ade80 ${progress}%,
+                  #d1d5db ${progress}%
+                ) 1`,
+                    }}
+                  >
+                    {isAudioPlaying ? (
+                      <FaPause className="text-white" />
+                    ) : (
+                      <FaPlay className="text-white" />
+                    )}
+                  </button>
+                </div>
               </div>
               <button
                 onClick={handleDelete}
