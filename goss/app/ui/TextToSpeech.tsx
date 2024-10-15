@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FiPlay, FiPause } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import voices from '../api/speech/voices.json';
 import toast from 'react-hot-toast';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaPlay, FaPause } from 'react-icons/fa';
 
 const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [text, setText] = useState('');
@@ -12,6 +12,52 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(null);
+
+  // ? Moving border experiment
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (!audioRef.current || !audioUrl) return;
+
+    const audio = audioRef.current;
+    const updateProgress = () => {
+      if (audio.duration) {
+        setProgress((audio.currentTime / audio.duration) * 100);
+      }
+    };
+
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', () => setIsAudioPlaying(false));
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateProgress);
+      audio.removeEventListener('ended', () => setIsAudioPlaying(false));
+    };
+  }, [audioUrl]);
+
+  const handlePlayPauseAudio = () => {
+    if (!audioRef.current) return;
+
+    if (isAudioPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsAudioPlaying(!isAudioPlaying);
+  };
+
+  const radius = 18; // Adjust this value to change the size of the circle
+  const svgSize = 50;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  // const handleTimeUpdate = () => {
+  //   const audio = audioRef.current;
+  //   const percentage = (audio.currentTime / audio.duration) * 100;
+  //   setProgress(percentage);
+  // };
 
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -72,6 +118,8 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
 
   const handleDelete = () => {
     setAudioUrl(null);
+    setProgress(0);
+    setIsAudioPlaying(false);
     toast.success('Audio deleted', {
       style: {
         border: '1px solid',
@@ -157,25 +205,74 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
         </button>
         {audioUrl && (
           <>
-            <div style={{ marginTop: '20px' }}>
-              <h2 className="dark:text-darkModeParaText">
-                Listen to your audio:
-              </h2>
-              <audio controls src={audioUrl} style={{ width: '100%' }} />
+            <h2 className="mb-2 mt-6 dark:text-darkModeParaText">
+              Listen to your audio:
+            </h2>
+            <div className="mt-2 flex items-center justify-between">
+              <div className="relative p-2">
+                <svg className="h-[50px] w-[50px] -rotate-90 transform">
+                  <circle
+                    cx={svgSize / 2}
+                    cy={svgSize / 2}
+                    r={radius}
+                    stroke="#d1d5db"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <circle
+                    cx={svgSize / 2}
+                    cy={svgSize / 2}
+                    r={radius}
+                    stroke="#4ade80"
+                    strokeWidth="4"
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <button
+                  onClick={handlePlayPauseAudio}
+                  className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-100"
+                >
+                  {isAudioPlaying ? (
+                    <FaPause className="text-gray-700" />
+                  ) : (
+                    <FaPlay className="text-gray-700" />
+                  )}
+                </button>
+              </div>
+              <div className="mx-4 flex-grow">
+                {' '}
+                {/* Added margin and flex-grow */}
+                <div className="h-2 rounded bg-gray-200">
+                  <div
+                    className="h-full rounded bg-green-400"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+              </div>
+              <audio ref={audioRef} src={audioUrl} className="hidden" />
+              <button
+                onClick={handleDelete}
+                aria-label="Delete Recording"
+                className="ml-4 flex items-center justify-center rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
+              >
+                <FaTrash className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              onClick={handleDelete}
-              aria-label="Delete Recording"
-              className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
-            >
-              <FaTrash className="h-5 w-5" />
-            </button>
           </>
         )}
       </div>
       {audioUrl && (
-        <div className="">
-          <button onClick={sendPostToDB}>Post</button>
+        <div className="mt-4 text-center">
+          <button
+            onClick={sendPostToDB}
+            className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+            disabled={loading}
+          >
+            Post
+          </button>
         </div>
       )}
     </>
