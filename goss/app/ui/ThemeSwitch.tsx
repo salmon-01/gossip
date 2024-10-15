@@ -1,6 +1,9 @@
 'use client';
 
 import { FiSun, FiMoon } from 'react-icons/fi';
+import { RiMoonClearFill } from 'react-icons/ri';
+import { IoMdSunny } from 'react-icons/io';
+import { FaSun } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -37,7 +40,7 @@ export default function ThemeSwitch() {
             aria-label="Switch to light theme"
             onClick={() => setTheme('light')}
           >
-            <FiSun className="h-6 w-6 text-yellow-200" />
+            <FaSun className="h-5 w-5 text-yellow-200" />
           </button>
         </div>
       </>
@@ -56,7 +59,7 @@ export default function ThemeSwitch() {
             aria-label="Switch to dark theme"
             onClick={() => setTheme('dark')}
           >
-            <FiMoon className="h-6 w-6 text-gray-800" />
+            <RiMoonClearFill className="h-5 w-5 text-slate-800" />
           </button>
         </div>
       </>
