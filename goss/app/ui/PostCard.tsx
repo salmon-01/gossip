@@ -14,7 +14,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const user = post.profiles;
 
   return (
-    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow ">
+    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow dark:bg-darkModeSecondaryBackground">
       <div className="flex items-center">
         <img
           src={user.profile_img}
@@ -24,11 +24,13 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         <Link href={`post/${post.id}`}>
           <div className="ml-3 flex flex-col">
             {/* <p className="font-semibold">{post.caption}</p> */}
-            <p className="max-w-72 truncate pr-4 font-semibold">
+            <p className="max-w-72 truncate pr-4 font-semibold dark:text-darkModeParaText">
               {post.caption}
             </p>{' '}
             {/* Apply truncation */}
-            <p className="text-gray-500">@{user.username}</p>
+            <p className="text-gray-500 dark:text-darkModeDimText">
+              @{user.username}
+            </p>
           </div>
         </Link>
       </div>
