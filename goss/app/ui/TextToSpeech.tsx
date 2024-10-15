@@ -64,12 +64,12 @@ const AIVoiceGenerator = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-lg rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-bold">
-          Select a Voice and Enter Text
+      <div className="dark:bg-experimentBG mx-auto mt-2 max-w-96 rounded-lg bg-white p-6 shadow">
+        <h2 className="text-md mb-3 font-medium dark:text-darkModeHeader">
+          Select a voice for your audio note
         </h2>
         <button
-          className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+          className="mb-4 rounded bg-gray-700 px-4 py-2 text-sm text-white"
           onClick={toggleDropdown}
         >
           {selectedVoice
@@ -116,38 +116,33 @@ const AIVoiceGenerator = () => {
         )}
       </div>
       <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-        <h1 className="dark:text-darkModeParaText">Text to Audio Note</h1>
+        <h1 className="mb-1 dark:text-darkModeParaText">Your text</h1>
         <textarea
           value={text}
           onChange={handleTextChange}
           placeholder="Enter text here"
-          style={{
-            width: '100%',
-            height: '100px',
-            marginBottom: '20px',
-            padding: '10px',
-            fontSize: '16px',
-          }}
-          className="dark:text-white"
+          style={
+            {
+              // height: '100px',
+            }
+          }
+          className="h-32 w-full resize-none rounded-lg p-2 dark:text-white"
         />
         <button
           onClick={handleTextToSpeech}
           disabled={loading || !text.trim()}
+          className="rounded-sm bg-darkModeSecondaryBackground p-3 text-sm text-white"
           style={{
-            padding: '10px 20px',
-            fontSize: '16px',
             cursor: loading ? 'not-allowed' : 'pointer',
-            backgroundColor: '#0070f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
           }}
         >
           {loading ? 'Generating...' : 'Generate Audio'}
         </button>
         {audioUrl && (
           <div style={{ marginTop: '20px' }}>
-            <h2>Listen to your audio:</h2>
+            <h2 className="dark:text-darkModeParaText">
+              Listen to your audio:
+            </h2>
             <audio controls src={audioUrl} style={{ width: '100%' }} />
           </div>
         )}

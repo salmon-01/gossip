@@ -19,6 +19,7 @@ const config: Config = {
         darkModeHeader: '#E2E8F0',
         darkModeParaText: '#e9e9e9',
         darkModePurpleBtn: '#7d1fc0',
+        experimentBG: '#1b1b1b',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
