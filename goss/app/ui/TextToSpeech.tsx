@@ -157,25 +157,33 @@ const AIVoiceGenerator = ({ onAudioSave, onSubmitPost }) => {
         </button>
         {audioUrl && (
           <>
-            <div style={{ marginTop: '20px' }}>
-              <h2 className="dark:text-darkModeParaText">
-                Listen to your audio:
-              </h2>
-              <audio controls src={audioUrl} style={{ width: '100%' }} />
+            <h2 className="mb-2 mt-6 dark:text-darkModeParaText">
+              Listen to your audio:
+            </h2>
+            <div className="mt-2 flex items-center justify-between">
+              <div className="flex-1">
+                <audio controls src={audioUrl} className="w-full" />
+              </div>
+              <button
+                onClick={handleDelete}
+                aria-label="Delete Recording"
+                className="ml-4 flex items-center justify-center rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
+              >
+                <FaTrash className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              onClick={handleDelete}
-              aria-label="Delete Recording"
-              className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
-            >
-              <FaTrash className="h-5 w-5" />
-            </button>
           </>
         )}
       </div>
       {audioUrl && (
-        <div className="">
-          <button onClick={sendPostToDB}>Post</button>
+        <div className="mt-4 text-center">
+          <button
+            onClick={sendPostToDB}
+            className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+            disabled={loading}
+          >
+            Post
+          </button>
         </div>
       )}
     </>
