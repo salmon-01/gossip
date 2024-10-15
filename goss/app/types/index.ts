@@ -38,6 +38,7 @@ export interface Post {
   caption: string;
   user_id: string;
   transcription: string;
+  comments: Comment[];
 }
 
 export interface Session {
