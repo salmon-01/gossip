@@ -5,12 +5,17 @@ import { fetchMessages } from '../api/MessagesData';
 import Loading from '../(main)/loading';
 import { useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { groupMessagesByDate } from '../(main)/chats/time';
+import { formatMessageTime } from '../(main)/chats/time';
 
 const supabase = createClient();
-
-export default function ChatMessages({ conversationId, loggedInUserId }) {
+interface ChatMessagesProps {
+  conversationId: string;
+  loggedInUserId: string;
+}
+export default function ChatMessages({ conversationId, loggedInUserId }: ChatMessagesProps) {
   const queryClient = useQueryClient();
-  const messagesEndRef =  useRef<HTMLDivElement | null>(null); 
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
 
   const {
@@ -33,8 +38,6 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
         filter: `conversation_id=eq.${conversationId}`,
       }, (payload) => {
         console.log('New message received: ', payload.new);
-
-
         queryClient.invalidateQueries({ queryKey: ['conversationMessages', conversationId] });
       })
       .subscribe();
@@ -44,6 +47,8 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
       supabase.removeChannel(messageSubscription);
     };
   }, [conversationId, queryClient]);
+
+  
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -61,34 +66,50 @@ export default function ChatMessages({ conversationId, loggedInUserId }) {
 
 
   const messages = Array.isArray(messagesData) ? messagesData : [];
+  const groupedMessages = groupMessagesByDate(messages);
+
 
 
   return (
-    <div className='flex flex-col space-y-3 p-4 overflow-auto h-full  '>
-      {messages.map((message) => (
-        <div
-          key={message.id}
-          className={`p-3 rounded-lg max-w-xs ${message.sender_id === loggedInUserId
-              ? "bg-purple-700 text-white self-end shadow-md"
-              : "bg-purple-100 shadow-md text-black self-start"
-            }`}
-        >
-          <div>{message.content}</div>
-          <div className='text-xs mt-3 text-right'>
-            {new Date(message.created_at).toLocaleString('en-GB', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
+    <div className="flex flex-col space-y-3 p-4 overflow-auto h-full">
+      {Object.keys(groupedMessages).map((dateKey) => (
+        <div key={dateKey} className="space-y-2">
+          {/* Banner for the date */}
+          <div className="text-center text-gray-700 mx-auto rounded-xl text-xs bg-white w-fit py-1 px-3 shadow-md">
+            {dateKey}
           </div>
+          {/* Render the messages for this date */}
+          {groupedMessages[dateKey].map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${message.sender_id === loggedInUserId ? 'justify-end' : 'justify-start'}`}
+            >
+              <div
+                className={`p-2 rounded-lg max-w-xs min-w-20  ${message.sender_id === loggedInUserId
+                  ? 'bg-purple-700 text-white shadow-md'
+                  : 'bg-purple-100 shadow-md text-black'
+                  }`}
+              >
+                <div>{message.content}</div>
+                <div className="text-xs mt-1 text-right">
+                  {formatMessageTime(message.created_at)}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ))}
+      {/* Scroll to the bottom of the chat */}
       <div ref={messagesEndRef} />
     </div>
 
+
   );
 }
+
+
+
+
+
+
 

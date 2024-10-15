@@ -103,7 +103,7 @@ export default function ProfilePage() {
       toast.error('Error updating profile.');
     } else {
       queryClient.invalidateQueries({ queryKey: ['profile', username] });
-      queryClient.invalidateQueries({ queryKey: ['profileId', username] });
+      queryClient.invalidateQueries({ queryKey: ['session'] });
 
       router.push(`/${username}`);
 
@@ -132,7 +132,7 @@ export default function ProfilePage() {
           {'\u2190'}
         </button>
 
-        <h2 className="px-4 text-2xl font-bold dark:text-white">Edit Profile</h2>
+        <h2 className="px-4 text-2xl font-bold dark:text-darkModeHeader">Edit Profile</h2>
       </div>
 
       <div className="relative mb-4 h-36 w-36">
@@ -167,7 +167,7 @@ export default function ProfilePage() {
         />
       </div>
 
-      <label htmlFor="name" className="mb-1 block">
+      <label htmlFor="name" className="mb-1 block dark:text-darkModeParaText">
         Name
       </label>
       <input
@@ -180,7 +180,7 @@ export default function ProfilePage() {
         onChange={handleChange}
       />
 
-      <label htmlFor="badge" className="mb-1 block">
+      <label htmlFor="badge" className="mb-1 block dark:text-darkModeParaText">
         Badge
       </label>
       <input
@@ -193,7 +193,7 @@ export default function ProfilePage() {
         onChange={handleChange}
       />
 
-      <label htmlFor="bio" className="mb-1 block">
+      <label htmlFor="bio" className="mb-1 block dark:text-darkModeParaText">
         Bio
       </label>
       <textarea

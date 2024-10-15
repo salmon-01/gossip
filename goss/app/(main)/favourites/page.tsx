@@ -3,12 +3,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchFavourites } from '@/app/api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
+import { HiArrowLongLeft } from "react-icons/hi2";
 import PostComponent from '@/app/ui/Post';
+import Link from 'next/link';
 
 export default function FavouritesPage() {
 
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
+  const username = session?.profile.username;
 
   const {
     data: favourites = [],
@@ -19,6 +22,9 @@ export default function FavouritesPage() {
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
+    refetchOnWindowFocus: true, 
+    refetchOnMount: true,        
+    staleTime: 0,  
   });
 
   if (isLoading) {
@@ -56,10 +62,19 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-white pb-2 pl-4 pt-4 mb-2 text-base text-purple-500 font-bold">
-      Favourites
+    <div className='flex fixed max-w-[430px] w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
+        <div className="flex max-w-[430px] w-full text-purple-700 dark:text-darkModeParaText font-bold">
+          <Link href={`/${username}`}>
+            <button className='bg-purple-700 dark:bg-darkModePurpleBtn rounded px-1 text-white mr-3 hover:bg-purple-500'>
+              <HiArrowLongLeft size={25} strokeWidth={0.5}/>
+            </button>
+          </Link>
+          <div>
+            Saved
+          </div>
+        </div>
     </div>
-    <div className="flex min-h-screen w-full items-center justify-center mt-4 bg-white">
+    <div className="flex min-h-screen w-full justify-center mt-8 bg-white dark:bg-darkModePrimaryBackground">
       <div className="space-y-4 w-full p-4">
         {sortedFavourites.map((favourite) => (
               <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />

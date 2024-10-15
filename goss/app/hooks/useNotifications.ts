@@ -47,7 +47,7 @@ const useNotifications = () => {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
-          toast(`New notification received: ${payload.new.context}`, {
+          toast(`New notification received!`, {
             icon: '🔔',
           });
 

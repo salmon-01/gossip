@@ -38,6 +38,14 @@ export interface Post {
   caption: string;
   user_id: string;
   transcription: string;
+  comments: Comment[];
+  reactions: Reaction[];
+}
+
+export interface Reaction {
+  reaction: string;
+  count: number;
+  userHasReacted: boolean;
 }
 
 export interface Session {
@@ -66,4 +74,23 @@ export interface Favourite {
   created_at: Date;
   user_id: string;
   post_id: string;
+}
+
+export interface FollowResponse {
+  success: boolean;
+  status: 'active' | 'inactive';
+  userId: string;
+  targetUserId: string;
+}
+
+export interface FollowContextType {
+  handleFollowToggle: (
+    userId: string,
+    targetUserId: string,
+    targetUserName: string
+  ) => void;
+  isLoading: boolean;
+  followingData: any;
+  isFollowingLoading: boolean;
+  refetchFollowing: () => void;
 }

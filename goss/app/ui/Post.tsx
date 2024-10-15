@@ -2,17 +2,20 @@ import {
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineBookmark,
   HiBookmark,
+  HiTrash,
 } from 'react-icons/hi2';
 import moment from 'moment';
 import VoiceNote from './VoiceNote';
 import Reactions from './Reactions';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { User, Post, Favourite } from '@/app/types';
-import { fetchCommentsByPostId } from '../api/post';
+import { deletePostById } from '../api/post';
 import { createFavourite, deleteFavourite } from '../api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { useState } from 'react';
+import DeletePostModal from '@/app/ui/DeletePostModal';
+import toast from 'react-hot-toast';
 
 interface PostProps {
   user: User;
@@ -21,63 +24,62 @@ interface PostProps {
 }
 
 export default function PostComponent({ user, post, favourites }: PostProps) {
-  const { data: session } = useSessionContext();
-  const currentUserId = session?.user.id;
   const [favouriteSelect, setFavouriteSelect] = useState(true);
-  
-
+  const [showModal, setShowModal] = useState(false);
+  const queryClient = useQueryClient();
   const [showTranscription, setShowTranscription] = useState(false);
 
-  const {
-    data: comments = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<Post[]>({
-    queryKey: ['comments', post.id],
-    queryFn: () => fetchCommentsByPostId(post.id),
-    enabled: !!post,
+  const { data: session } = useSessionContext();
+  const currentUserId = session?.user.id;
+
+  const deletePostMutation = useMutation({
+    mutationFn: async () => {
+      if (!currentUserId) return;
+      await deletePostById(post.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      toast.success('Post deleted');
+    },
+    onError: (error) => {
+      console.error('Error deleting post:', error);
+    },
   });
 
-  if (isLoading) {
-    return <div className="space-y-4">Loading comments...</div>;
-  }
+  const comments = post.comments;
 
-  if (isError) {
-    return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-        <p className="text-red-800">
-          Error loading comments: {(error as Error).message}
-        </p>
-      </div>
-    );
-  }
-
-  async function handleCreateFavourite () {
+  async function handleCreateFavourite() {
     if (!currentUserId) {
       return;
     }
     try {
       await createFavourite(currentUserId, post.id);
+      toast.success('Saved to favourites');
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  async function handleDeleteFavourite () {
+  async function handleDeleteFavourite() {
     if (!currentUserId) {
       return;
     }
     try {
       await deleteFavourite(currentUserId, post.id);
+      toast.success('Removed from favourites');
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+
+  async function handleDeletePost() {
+    deletePostMutation.mutate();
+    setShowModal(false);
+  }
 
   return (
     <>
-      <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6">
+      <div className="my-1 flex w-full flex-col rounded-md bg-gray-100 dark:bg-darkModePostBackground dark:text-darkModeParaText p-2 px-6 pt-6">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
             <img
@@ -88,8 +90,8 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <div className="items-center text-sm font-medium">
               {user.display_name}
             </div>
-            <div className="mx-2 text-sm text-gray-500">@{user.username}</div>
-            <div className="ml-auto flex items-center space-x-2 text-sm text-gray-500">
+            <div className="mx-2 text-sm text-gray-500 dark:text-darkModeDimText">@{user.username}</div>
+            <div className="ml-auto flex items-center space-x-2 text-sm text-gray-500 dark:text-darkModeDimText">
               {moment(post.created_at).fromNow()}
             </div>
           </div>
@@ -110,32 +112,75 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           <div className="mt-4 text-sm text-gray-700">{post.transcription}</div>
         )}
         <div className="mb-2 w-full">
-          <Reactions postId={post.id} postAuthorId={post.user_id} />
+          <Reactions postId={post.id} postAuthorId={post.user_id} post={post} />
         </div>
         <div className="w-full">
           <div className="relative flex items-center">
             <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
           </div>
-
           <div className="flex items-center pt-2">
-            <HiOutlineChatBubbleLeftEllipsis color="#9333ea" size={16} />
             <Link href={`/post/${post.id}`}>
-              <div className="ml-2 flex items-center text-base font-medium text-purple-600">
-                Comment {comments.length > 0 ? `(${comments.length})` : null}
+            <HiOutlineChatBubbleLeftEllipsis className={'text-[#9333ea] dark:text-darkModeHeader'} size={16} />
+            </Link>
+            <Link href={`/post/${post.id}`}>
+              <div className="ml-2 flex items-center text-base font-medium text-purple-600 dark:text-darkModeHeader">
+                Comment
+                {post.comments?.length > 0 ? `(${post.comments.length})` : null}
               </div>
             </Link>
-            {favourites.some((favourite) => favourite.post_id === post.id) ? (
-              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleDeleteFavourite() : handleCreateFavourite()}; {setFavouriteSelect(!favouriteSelect)}}}>
-                {favouriteSelect ? <HiBookmark color="#9333ea" size={18} /> : <HiOutlineBookmark color="#9333ea" size={18} />}
-              </div>
-            ) : (
-              <div className="ml-auto" onClick={() => {{favouriteSelect ? handleCreateFavourite() : handleDeleteFavourite()}; setFavouriteSelect(!favouriteSelect)}}>
-                {favouriteSelect? <HiOutlineBookmark color="#9333ea" size={18} /> : <HiBookmark color="#9333ea" size={18} />}
-              </div>
-            )}
+            <div className="ml-auto flex">
+              {post.user_id === currentUserId && (
+                <button onClick={() => setShowModal(true)} className="mr-4">
+                  <HiTrash className={'text-[#9333ea] dark:text-darkModeHeader'} size={18} />
+                </button>
+              )}
+              {favourites.some((favourite) => favourite.post_id === post.id) ? (
+                <button
+                  onClick={() => {
+                    {
+                      favouriteSelect
+                        ? handleDeleteFavourite()
+                        : handleCreateFavourite();
+                    }
+                    {
+                      setFavouriteSelect(!favouriteSelect);
+                    }
+                  }}
+                >
+                  {favouriteSelect ? (
+                    <HiBookmark className={'text-[#9333ea] dark:text-darkModeHeader'} size={18} />
+                  ) : (
+                    <HiOutlineBookmark className={'text-[#9333ea] dark:text-darkModeHeader'} size={18} />
+                  )}
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    {
+                      favouriteSelect
+                        ? handleCreateFavourite()
+                        : handleDeleteFavourite();
+                    }
+                    setFavouriteSelect(!favouriteSelect);
+                  }}
+                >
+                  {favouriteSelect ? (
+                    <HiOutlineBookmark className={'text-[#9333ea] dark:text-darkModeHeader'} size={18} />
+                  ) : (
+                    <HiBookmark className={'text-[#9333ea] dark:text-darkModeHeader'} size={18} />
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      <DeletePostModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDeletePost}
+      />
     </>
   );
 }

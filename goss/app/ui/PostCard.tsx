@@ -14,7 +14,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const user = post.profiles;
 
   return (
-    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow">
+    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow ">
       <div className="flex items-center">
         <img
           src={user.profile_img}

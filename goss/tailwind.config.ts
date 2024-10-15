@@ -16,9 +16,12 @@ const config: Config = {
         customBlueGray: '#4f5e7b',
         darkModePrimaryBackground: '#1D283B',
         darkModeSecondaryBackground: '#475569',
+        darkModeThirdBackground: '#0EA5E9',
         darkModeHeader: '#E2E8F0',
         darkModeParaText: '#e9e9e9',
+        darkModeDimText: '#C7C7C7',
         darkModePurpleBtn: '#7d1fc0',
+
         experimentBG: '#1b1b1b',
         experimentSecondaryBG: '#282828',
         card: {
@@ -59,6 +62,8 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        darkModePostBackground: '#77849A',
+
       },
       keyframes: {
         pulse: {

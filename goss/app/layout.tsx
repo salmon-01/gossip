@@ -4,7 +4,7 @@ import Providers from './providers';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
-import { SessionProvider } from './context/SessionContext';
+import NavBar from './ui/NavBar'; // Import NavBar here
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,12 +21,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="mx-auto max-h-[932px] min-h-screen w-full max-w-[430px] bg-gray-100">
-          <Toaster />
-          <Providers>
-            <SessionProvider>{children}</SessionProvider>
-          </Providers>
-        </div>
+        {/* Wrapping the whole content in Providers */}
+        <Providers>
+          <div className="dark:bg-darkModePrimaryBackground mx-auto min-h-screen w-full bg-gray-100 md:grid md:grid-cols-[300px_1fr] lg:gap-8 lg:px-16">
+            {/* Sidebar / NavBar for Desktop */}
+            <div className="hidden md:block">
+              <NavBar />
+            </div>
+
+            {/* Main Content */}
+            <main className="flex w-full flex-col">
+              <Toaster />
+              {children}
+            </main>
+
+            {/* Mobile NavBar at the bottom */}
+            <div className="block md:hidden">
+              <NavBar />
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );

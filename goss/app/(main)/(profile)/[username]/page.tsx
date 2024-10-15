@@ -1,31 +1,21 @@
+
 'use client';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@/utils/supabase/client';
 import PostComponent from '@/app/ui/Post';
-import { fetchpostData, fetchProfileData } from '@/app/api/profileData';
+import { fetchpostData } from '@/app/api/profileData';
 import { useSessionContext } from '@/app/context/SessionContext';
 import { fetchFavourites } from '@/app/api/favourites';
-
-
-const supabase = createClient();
+import { useProfile } from '@/app/context/ProfileContext';
 
 export default function ProfilePost({ params }) {
   const { username } = params;
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
 
-  // how do i hget user_if from the username
+  
+  const profile = useProfile();
 
-  const {
-    data: profile,
-    isLoading: isLoadingProfile,
-    error: profileError,
-  } = useQuery({
-    queryKey: ['profileId', username],
-    queryFn: () => fetchProfileData(username),
-    enabled: !!username, // Only run query if username is available
-  });
 
   const {
     data: favourites = [],
@@ -34,6 +24,8 @@ export default function ProfilePost({ params }) {
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
   });
+    // Get profileData from context
+    
 
   const user_id = profile?.user_id;
 
@@ -47,15 +39,11 @@ export default function ProfilePost({ params }) {
     enabled: !!user_id, // Only run query if user_id is available
   });
 
-  if (isLoadingProfile || isLoadingPost) {
-    return <div>Loading...</div>;
+  if (isLoadingPost) {
+    return <div>Loading posts...</div>;
   }
 
   // Handle errors
-  if (profileError) {
-    return <div>Error fetching profile: {profileError.message}</div>;
-  }
-
   if (postError) {
     return <div>Error fetching posts: {postError.message}</div>;
   }
@@ -63,7 +51,7 @@ export default function ProfilePost({ params }) {
   return (
     <>
       {PostData && PostData.length > 0 ? (
-        <div className="mt-4 p-3">
+        <div className="mt-4 p-3 min-h-[60lvh] bg-white dark:bg-darkModePrimaryBackground">
           {PostData.map((post) => (
             <div key={post.id} className="mb-4">
               <PostComponent user={profile} post={post} favourites={favourites} />
@@ -71,7 +59,7 @@ export default function ProfilePost({ params }) {
           ))}
         </div>
       ) : (
-        <div>No posts found.</div>
+        <div className='pl-4 min-h-[60lvh] bg-white'>No posts found.</div>
       )}
     </>
   );

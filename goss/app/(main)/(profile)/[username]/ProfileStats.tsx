@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useProfile } from '@/app/context/ProfileContext';
 
 interface ProfileStatsProps {
   user: {
@@ -10,21 +11,32 @@ interface ProfileStatsProps {
   };
 }
 
-export default function ProfileStats({ user }: ProfileStatsProps) {
-  const { data: profileData } = useQuery({
-    queryKey: ['profile', user.user_id],
-    initialData: user,
-  });
+export default function ProfileStats() {
+  const profile = useProfile();
+
+  const user = profile;
 
   return (
     <div className="mx-auto my-3 mt-4 w-11/12">
-      <Link href={`/${user.username}/followers`} className="hover:underline">
-        <span>{profileData.following_total}</span>
-        <span className="mr-3 text-gray-600"> Followers</span>
+      <Link
+        href={`/${user.username}/followers`}
+        className="dark:text-darkModeParaText hover:underline"
+      >
+        <span>{profile.follower_count}</span>
+        <span className="dark:text-darkModeParaText mr-3 text-gray-600">
+          {' '}
+          Followers
+        </span>
       </Link>
-      <Link href={`/${user.username}/following`} className="hover:underline">
-        <span>{profileData.follower_count}</span>
-        <span className="mr-3 text-gray-600"> Followers</span>
+      <Link
+        href={`/${user.username}/following`}
+        className="dark:text-darkModeParaText hover:underline"
+      >
+        <span>{profile.following_total}</span>
+        <span className="dark:text-darkModeParaText mr-3 text-gray-600">
+          {' '}
+          Following
+        </span>
       </Link>
     </div>
   );
