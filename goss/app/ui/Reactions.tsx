@@ -2,34 +2,31 @@
 
 import { createClient } from '@/utils/supabase/client';
 import { useSessionContext } from '../context/SessionContext';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { addReaction, fetchReactions, removeReaction } from '../api/reactions';
+import { addReaction, removeReaction } from '../api/reactions';
+import { Post, Reaction } from '../types';
 
 const supabase = createClient();
 
-interface Reaction {
-  reaction: string;
-  count: number;
-  userHasReacted: boolean;
-}
-
 interface ReactionsProps {
-  postId: string;
   postAuthorId: string;
+  post: Post | null;
 }
 
-const Reactions: React.FC<ReactionsProps> = ({ postId, postAuthorId }) => {
+const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
   const { data: session } = useSessionContext();
   const queryClient = useQueryClient();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const availableEmojis = ['😀', '😢', '❤️', '🔥', '👍', '👎', '🎉', '😮'];
 
-  const { data: reactionsData = [] } = useQuery({
-    queryKey: ['reactions', postId],
-    queryFn: () => fetchReactions(postId),
-  });
+  if (!post) {
+    return <div>Loading reactions...</div>;
+  }
+
+  const postId = post.id;
+  const reactionsData = post.reactions || [];
 
   const reactionsMap: { [key: string]: Reaction } = {};
 
