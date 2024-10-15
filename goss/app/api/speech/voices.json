@@ -1,21 +1,5 @@
 [
   {
-    "id": "s3://voice-cloning-zero-shot/d82d246c-148b-457f-9668-37b789520891/adolfosaad/manifest.json",
-    "name": "Adolfo",
-    "sample": "https://parrot-samples.s3.amazonaws.com/kettle/adolfo.wav",
-    "accent": "american",
-    "age": "adult",
-    "gender": "male",
-    "language": "English (US)",
-    "language_code": "en-US",
-    "loudness": "neutral",
-    "style": "narrative",
-    "tempo": "fast",
-    "texture": "thick",
-    "is_cloned": false,
-    "voice_engine": "PlayHT2.0"
-  },
-  {
     "id": "s3://voice-cloning-zero-shot/a59cb96d-bba8-4e24-81f2-e60b888a0275/charlottenarrativesaad/manifest.json",
     "name": "Charlotte (Narrative)",
     "sample": "https://parrot-samples.s3.amazonaws.com/kettle/charlotte+(narrative).wav",

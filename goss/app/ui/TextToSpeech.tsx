@@ -83,7 +83,7 @@ const AIVoiceGenerator = () => {
                 key={entry.id}
                 className="mb-2 rounded-lg border-slate-500 p-4 last:mb-0 last:border-0 dark:bg-black"
               >
-                <h3 className="text-md mb-2 font-semibold dark:text-darkModeParaText">
+                <h3 className="text-md mb-2 font-semibold capitalize dark:text-darkModeParaText">
                   {entry.name} - {entry.accent}
                 </h3>
                 <div className="flex items-center justify-between p-4">
