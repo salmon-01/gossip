@@ -87,7 +87,7 @@ export default function ProfileHeader() {
               {/* FollowButton with isFollowing and isLoading passed as props */}
               <FollowButton
                 targetUserId={user.user_id}
-                targetUserName={user.display_name}
+                targetUserName={user.username}
               />
               <MessageButton
                 otherUserId={otherUserId}
