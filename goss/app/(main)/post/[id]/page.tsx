@@ -18,7 +18,7 @@ import {
   deleteCommentById,
 } from '@/app/api/post';
 import LoadingSpinner from '@/app/ui/LoadingSpinner';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const supabase = createClient();
 
@@ -68,6 +68,13 @@ export default function PostPage() {
       toast.error('Failed to add comment');
     },
   });
+
+  const handleAddComment = useCallback(
+    (content: string) => {
+      addCommentMutation.mutate({ post_id: postId as string, content });
+    },
+    [postId, addCommentMutation]
+  );
 
   const deleteCommentMutation = useMutation({
     mutationFn: async (commentId: string) => {
@@ -138,12 +145,7 @@ export default function PostPage() {
         <p className="mb-2 mt-6 font-semibold text-black dark:text-white">
           Goss about it
         </p>
-        <AddComment
-          onAddComment={(content: string) =>
-            addCommentMutation.mutate({ post_id: postId as string, content })
-          }
-          postId={postId}
-        />
+        <AddComment onAddComment={handleAddComment} postId={postId} />
         <CommentSection
           comments={postData.comments || []}
           onDeleteComment={(commentId: string) =>
