@@ -99,7 +99,7 @@ export default function PostPage() {
             Back
           </button>
         </div>
-        <div className="rounded-md bg-gray-300 px-6 py-3 dark:bg-darkModeSecondaryBackground">
+        <div className="rounded-md bg-gray-100 px-6 py-3 dark:bg-darkModeSecondaryBackground">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center">
               <img
