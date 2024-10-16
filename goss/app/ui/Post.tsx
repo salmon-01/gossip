@@ -39,7 +39,6 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', post.id] });
-      console.log(post.id);
       toast.success('Post deleted');
     },
     onError: (error) => {
@@ -112,7 +111,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </button>
         </div>
         {showTranscription && post.transcription && (
-          <div className="my-2 text-sm text-slate-200">
+          <div className="my-2 text-sm text-gray-600 dark:text-slate-200">
             {post.transcription}
           </div>
         )}

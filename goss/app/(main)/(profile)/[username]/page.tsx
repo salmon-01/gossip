@@ -19,7 +19,6 @@ export default function ProfilePost({ params }) {
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
   });
-  // Get profileData from context
 
   const user_id = profile?.user_id;
 
@@ -37,7 +36,6 @@ export default function ProfilePost({ params }) {
     return <div>Loading posts...</div>;
   }
 
-  // Handle errors
   if (postError) {
     return <div>Error fetching posts: {postError.message}</div>;
   }
@@ -49,7 +47,7 @@ export default function ProfilePost({ params }) {
           {PostData.map((post) => (
             <div key={post.id} className="mb-4 flex justify-center">
               <PostComponent
-                user={profile}
+                user={post.profiles}
                 post={post}
                 favourites={favourites}
               />

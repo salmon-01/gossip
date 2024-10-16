@@ -1,17 +1,29 @@
 import { createClient } from "@/utils/supabase/client";
 
 const supabase = createClient();
-export async function fetchpostData(user_id) {
-
-  const { data: posts, error } = await supabase
+export const fetchpostData = async (userId: string) => {
+  const { data, error } = await supabase
     .from('posts')
-    .select('*')
-    .eq('user_id', user_id)
+    .select(`
+      *,
+      reactions (
+        reaction,
+        user_id
+      ),
+      profiles:profiles (
+        user_id,
+        display_name,
+        profile_img,
+        username
+      )
+    `)
+    .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
-  return posts;
-}
+
+  return data;
+};
 
 export async function fetchProfileData(username:string) {
   const { data, error } = await supabase
