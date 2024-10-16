@@ -38,7 +38,8 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
       await deletePostById(post.id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['post', post.id] });
+      console.log(post.id);
       toast.success('Post deleted');
     },
     onError: (error) => {
@@ -99,12 +100,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </div>
         </Link>
         <Link href={`/post/${post.id}`}>
-          <div className="mt-6 flex w-full text-base">{post.caption}</div>
+          <div className="mt-6 flex w-full">{post.caption}</div>
         </Link>
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />
           <button
-            className="dark:bg-darkModeSecondaryBtn bg-darkModePrimaryBtn h-8 w-8 rounded text-white"
+            className="h-8 w-8 rounded bg-darkModePrimaryBtn text-white dark:bg-darkModeSecondaryBtn"
             onClick={() => setShowTranscription(!showTranscription)}
           >
             A
