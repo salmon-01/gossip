@@ -1,21 +1,5 @@
 [
   {
-    "id": "s3://mockingbird-prod/william_vo_narrative_0eacdff5-6243-4e26-8b3b-66e03458c1d1/voices/speaker/manifest.json",
-    "name": "William",
-    "sample": "https://peregrine-samples.s3.us-east-1.amazonaws.com/editor-samples/william_vo_narrative.wav",
-    "accent": "🇺🇸",
-    "age": "adult",
-    "gender": "male",
-    "language": "English (US)",
-    "language_code": "en-US",
-    "loudness": "neutral",
-    "style": "narrative",
-    "tempo": "neutral",
-    "texture": "round",
-    "is_cloned": false,
-    "voice_engine": "PlayHT1.0"
-  },
-  {
     "id": "s3://voice-cloning-zero-shot/a59cb96d-bba8-4e24-81f2-e60b888a0275/charlottenarrativesaad/manifest.json",
     "name": "Charlotte",
     "sample": "https://parrot-samples.s3.amazonaws.com/kettle/charlotte+(narrative).wav",
