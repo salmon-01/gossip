@@ -14,14 +14,13 @@ const config: Config = {
         foreground: 'hsl(var(--foreground))',
         customPurple: '#1b1a57',
         customBlueGray: '#4f5e7b',
-        darkModePrimaryBackground: '#1D283B',
-        darkModeSecondaryBackground: '#475569',
+        darkModePrimaryBackground: '#0a0d14',
+        darkModeSecondaryBackground: '#101621',
         darkModeThirdBackground: '#0EA5E9',
         darkModeHeader: '#E2E8F0',
         darkModeParaText: '#e9e9e9',
         darkModeDimText: '#C7C7C7',
-        darkModePurpleBtn: '#7d1fc0',
-
+        darkModePurpleBtn: '#5c74ad',
         experimentBG: '#1b1b1b',
         experimentSecondaryBG: '#282828',
         card: {
@@ -63,7 +62,6 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
         darkModePostBackground: '#77849A',
-
       },
       keyframes: {
         pulse: {
