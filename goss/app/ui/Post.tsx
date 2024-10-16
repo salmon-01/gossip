@@ -125,12 +125,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           <div className="flex items-center pt-2">
             <Link href={`/post/${post.id}`}>
               <HiOutlineChatBubbleLeftEllipsis
-                className={'text-[#9333ea] dark:text-darkModeHeader'}
+                className={'text-[#464548] dark:text-darkModeHeader'}
                 size={16}
               />
             </Link>
             <Link href={`/post/${post.id}`}>
-              <div className="ml-2 flex items-center text-base font-medium text-purple-600 dark:text-darkModeHeader">
+              <div className="ml-2 flex items-center text-base font-medium text-gray-500 dark:text-darkModeHeader">
                 Comment
                 {post.comments?.length > 0 ? `(${post.comments.length})` : null}
               </div>
@@ -139,7 +139,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
               {post.user_id === currentUserId && (
                 <button onClick={() => setShowModal(true)} className="mr-4">
                   <HiTrash
-                    className={'text-[#9333ea] dark:text-darkModeHeader'}
+                    className={'text-[#464548] dark:text-darkModeHeader'}
                     size={18}
                   />
                 </button>
@@ -159,12 +159,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                 >
                   {favouriteSelect ? (
                     <HiBookmark
-                      className={'text-[#9333ea] dark:text-darkModeHeader'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   ) : (
                     <HiOutlineBookmark
-                      className={'text-[#9333ea] dark:text-darkModeHeader'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   )}
@@ -182,12 +182,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                 >
                   {favouriteSelect ? (
                     <HiOutlineBookmark
-                      className={'text-[#9333ea] dark:text-darkModeHeader'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   ) : (
                     <HiBookmark
-                      className={'text-[#9333ea] dark:text-darkModeHeader'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   )}
