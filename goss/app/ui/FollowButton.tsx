@@ -40,10 +40,10 @@ const FollowButton = ({ targetUserId, targetUserName }: FollowButtonProps) => {
   return (
     <button
       onClick={debouncedHandleClick}
-      className={`flex w-32 items-center justify-center rounded-lg border px-5 py-3 drop-shadow-2xl ${
+      className={`flex w-32 items-center justify-center rounded-lg border px-5 py-3 drop-shadow-xl ${
         isFollowing
           ? 'bg-gray-300 text-black'
-          : 'dark:bg-darkModePrimaryBtn text-white dark:text-darkModeParaText'
+          : 'dark:bg-darkModePrimaryBtn bg-darkModeSecondaryBtn text-white dark:text-darkModeParaText'
       } cursor-pointer`}
     >
       {isFollowing ? 'Unfollow' : 'Follow'}
