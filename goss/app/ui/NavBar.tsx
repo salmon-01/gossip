@@ -96,7 +96,7 @@ function NavBar() {
             />
           ) : (
             <HiOutlineUser
-              color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
+              // color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
               size={32}
               style={{ strokeWidth: isActive(`/${username}`) ? 2.5 : 1 }}
             />
