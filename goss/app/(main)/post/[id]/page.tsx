@@ -11,7 +11,6 @@ import VoiceNote from '@/app/ui/VoiceNote';
 import toast from 'react-hot-toast';
 import {
   fetchPostById,
-  fetchCommentsByPostId,
   addComment,
   fetchPostOwner,
   createNotification,
@@ -138,7 +137,6 @@ export default function PostPage() {
           )}
           <div className="mt-4">
             <Reactions
-              postId={postId as string}
               postAuthorId={postData.profiles.user_id}
               post={postData}
             />
