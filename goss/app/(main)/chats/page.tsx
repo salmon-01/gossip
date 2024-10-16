@@ -77,15 +77,15 @@ export default function ChatsPage() {
                 />
                 <div className="flex-1">
                   <div className="flex justify-between items-center w-[60lvw] max-w-[60lvw]  lg:max-w-[40lvw]">
-                    <span className="font-semibold text-customPurple dark:text-gray-100">
+                    <span className="font-semibold text-customPurple dark:text-darkModeParaText">
                       {otherParticipant.display_name}
                     </span>
-                    <span className="text-gray-600 text-sm dark:text-gray-400 absolute top-4 right-4 ">
+                    <span className="text-gray-600 text-sm dark:text-darkModeParaText absolute top-4 right-4 ">
                       {formatDate(new Date(conversation.last_message_time).setHours(new Date(conversation.last_message_time).getHours() + 1))}
                     </span>
 
                   </div>
-                  <p className="text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate dark:text-gray-400 lg:max-w-[38lvw]">
+                  <p className="text-customBlueGray text-sm mt-1 max-w-[60lvw] truncate dark:text-darkModeParaText lg:max-w-[38lvw]">
                     {conversation.last_message}
                   </p>
                 </div>
