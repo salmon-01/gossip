@@ -14,7 +14,7 @@ export const createFavourite = async (userId: string, postId: string) => {
       throw error;
     }
 
-    if (existingFavourite.length > 0) {
+    if (!existingFavourite || existingFavourite.length > 0) {
       return; 
     }
 
@@ -45,7 +45,7 @@ export const deleteFavourite = async (userId: string, postId: string) => {
 
   if (error) {
     console.error('Error deleting favourite:', error);
-    throw error;
+    throw new Error('Delete error');
   }
   return data; 
 };
