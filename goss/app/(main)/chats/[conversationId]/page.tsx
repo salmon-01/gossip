@@ -15,7 +15,7 @@ export default function Chat({params}) {
   
   return (
     <>
-<div className="flex flex-col h-[calc(100vh-64px)] bg-gray-100 dark:bg-darkModeSecondaryBackground">
+<div className="flex flex-col h-[calc(100vh-64px)] ml-3 w-full bg-gray-100 dark:bg-darkModeSecondaryBackground">
   <ChatHeader conversationId={conversationId} loggedInUserId={loggedInUserId} />
   
   <div className="flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">

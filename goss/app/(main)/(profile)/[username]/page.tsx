@@ -57,7 +57,7 @@ export default function ProfilePost({ params }) {
           ))}
         </div>
       ) : (
-        <div className="min-h-[60lvh] bg-white pl-4 dark:bg-darkModePrimaryBackground dark:text-darkModeParaText">
+        <div className="min-h-[60lvh] bg-white pl-4 lg:ml-5 dark:bg-darkModePrimaryBackground dark:text-darkModeParaText">
           No posts available.
         </div>
       )}
