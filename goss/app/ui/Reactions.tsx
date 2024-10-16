@@ -52,7 +52,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     mutationFn: (reaction: string) =>
       addReaction(postId, session!.user.id, reaction, postAuthorId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reactions', postId] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
@@ -60,7 +60,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     mutationFn: (reaction: string) =>
       removeReaction(postId, session!.user.id, reaction),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reactions', postId] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
