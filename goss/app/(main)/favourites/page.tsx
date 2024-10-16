@@ -57,8 +57,8 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className='flex fixed w-full top-0 z-40 justify-center items-center dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
-        <div className="flex w-full dark:text-darkModeParaText font-bold ml-3">
+      <div className="fixed top-0 z-40 flex w-full items-center justify-center pb-1 pl-4 pt-4 dark:bg-darkModePrimaryBackground">
+        <div className="ml-3 flex w-full font-bold dark:text-darkModeParaText">
           <Link href={`/${username}`}>
             <button className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn ml-5 rounded dark:bg-darkModePurpleBtn dark:text-darkModeHeader">
               <HiArrowLongLeft size={25} strokeWidth={0.5} />
@@ -69,7 +69,7 @@ export default function FavouritesPage() {
           </div>
         </div>
       </div>
-      <div className="flex min-h-screen w-full justify-center bg-white pt-20 dark:bg-darkModePrimaryBackground max-sm:pt-8">
+      <div className="mb-10 flex min-h-screen w-full justify-center bg-white pt-20 dark:bg-darkModePrimaryBackground max-sm:pt-8">
         <div className="mx-auto w-full p-4 lg:w-9/12">
           {sortedFavourites.map((favourite) => (
             <PostComponent
