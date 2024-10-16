@@ -53,6 +53,8 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
       addReaction(postId, session!.user.id, reaction, postAuthorId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      console.log(postId);
+      queryClient.invalidateQueries({ queryKey: ['post', postId.toString()] });
     },
   });
 
@@ -61,6 +63,10 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
       removeReaction(postId, session!.user.id, reaction),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      console.log(postId);
+      queryClient.invalidateQueries({
+        queryKey: ['post', postId.toString()],
+      });
     },
   });
 
