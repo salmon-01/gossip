@@ -105,7 +105,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />
           <button
-            className="h-8 w-8 rounded bg-darkModePrimaryBtn text-white dark:bg-darkModeSecondaryBtn"
+            className="bg-darkModePrimaryBtn dark:bg-darkModeSecondaryBtn h-8 w-8 rounded text-white"
             onClick={() => setShowTranscription(!showTranscription)}
           >
             A
@@ -198,7 +198,6 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </div>
         </div>
       </div>
-
       <DeletePostModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

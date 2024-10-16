@@ -28,12 +28,16 @@ function NavBar() {
   // Filter unread notifications from fetched data
   const unreadCount = notifications?.filter((n) => !n.is_read).length || 0;
 
+  const hideRecordPost = pathname === '/create-post';
+
   return (
     <nav className="fixed bottom-0 w-full bg-gray-50 text-gray-500 shadow-md dark:bg-darkModePrimaryBackground dark:text-darkModeParaText lg:fixed lg:left-0 lg:top-0 lg:flex lg:h-screen lg:w-auto lg:flex-col lg:items-center lg:justify-start lg:space-y-8 lg:px-16 lg:py-8">
       {/* Mobile Record Post Button */}
-      <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform lg:hidden">
-        <RecordPost />
-      </div>
+      {!hideRecordPost && (
+        <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform lg:hidden">
+          <RecordPost />
+        </div>
+      )}
 
       <div className="flex justify-between lg:flex-col lg:items-center lg:space-y-8">
         {/* Home */}
