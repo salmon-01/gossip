@@ -58,7 +58,7 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
       <input
         type="text"
         placeholder='Write a message...'
-        className='flex-grow p-3 rounded-xl bg-purple-50   shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500'
+        className='flex-grow p-3 rounded-xl bg-purple-50 lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />

@@ -32,7 +32,7 @@ export default function ChatHeader({ conversationId, loggedInUserId }) {
     <div className="p-3  sticky top-0 flex items-center shadow dark:shadow-xl bg-white dark:bg-darkModePrimaryBackground z-20">
       <Link href="/chats" className="flex items-center text-lg font-bold text-gray-700 hover:text-gray-900 transition duration-200">
 
-        <span className="text-3xl mb-1 mr-2">{'\u2190'}</span>
+        <span className="text-3xl mb-1 mr-2 dark:text-darkModeHeader dark:hover:text-darkModeThirdBackground">{'\u2190'}</span>
       </Link>
 
 
