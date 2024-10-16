@@ -111,11 +111,11 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </button>
         </div>
         {showTranscription && post.transcription && (
-          <div className="mt-4 text-sm text-slate-200">
+          <div className="mb-4 mt-4 text-sm text-slate-800 dark:text-slate-200">
             {post.transcription}
           </div>
         )}
-        <div className="mb-2 w-full">
+        <div className="mb-2 mt-3 w-full">
           <Reactions postId={post.id} postAuthorId={post.user_id} post={post} />
         </div>
         <div className="w-full">
