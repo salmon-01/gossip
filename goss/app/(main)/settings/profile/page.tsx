@@ -78,14 +78,11 @@ export default function ProfilePage() {
         return;
       }
 
-      const { data: publicURL, error: urlError } = supabase.storage
+      const { data: publicURL} = supabase.storage
         .from('avatars')
         .getPublicUrl(`${file.name}`);
 
-      if (urlError) {
-        console.error('Error getting file URL:', urlError);
-        return;
-      }
+     
 
       profileImageUrl = publicURL;
     }
