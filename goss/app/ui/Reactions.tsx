@@ -86,9 +86,9 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
         <button
           key={reaction.reaction}
           onClick={() => handleToggleReaction(reaction.reaction)}
-          className={`flex items-center rounded-xl bg-gray-200 px-1 py-px dark:bg-darkModePrimaryBackground ${
+          className={`flex items-center rounded-xl px-1 py-px dark:bg-darkModePrimaryBackground ${
             reaction.userHasReacted
-              ? 'bg-darkModeSecondaryBtn text-black dark:bg-darkModePrimaryBackground dark:text-white'
+              ? 'bg-darkModeSecondaryBtn text-black dark:bg-gray-600 dark:text-white'
               : 'bg-gray-200'
           }`}
         >

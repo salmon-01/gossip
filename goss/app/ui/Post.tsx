@@ -112,16 +112,16 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </button>
         </div>
         {showTranscription && post.transcription && (
-          <div className="mb-4 mt-4 text-sm text-slate-800 dark:text-slate-200">
+          <div className="my-2 text-sm text-slate-200">
             {post.transcription}
           </div>
         )}
-        <div className="mb-2 mt-3 w-full">
-          <Reactions postId={post.id} postAuthorId={post.user_id} post={post} />
+        <div className="mb-2 w-full">
+          <Reactions postAuthorId={post.user_id} post={post} />
         </div>
         <div className="w-full">
           <div className="relative flex items-center">
-            <div className="-mx-6 w-full flex-grow border-t border-gray-200"></div>
+            <div className="-mx-6 w-full flex-grow border-t border-gray-200 dark:border-gray-700"></div>
           </div>
           <div className="flex items-center pt-2">
             <Link href={`/post/${post.id}`}>
