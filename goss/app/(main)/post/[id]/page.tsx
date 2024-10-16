@@ -116,7 +116,7 @@ export default function PostPage() {
           <div className="flex items-center">
             <VoiceNote audioUrl={postData.audio} />
             <button
-              className="dark:bg-darkModeSecondaryBtn bg-darkModeSecondaryBtn h-8 w-8 rounded text-white dark:text-white"
+              className="h-8 w-8 rounded bg-darkModeSecondaryBtn text-white dark:bg-darkModeSecondaryBtn dark:text-white"
               onClick={() => setShowTranscription(!showTranscription)}
             >
               A
@@ -142,6 +142,7 @@ export default function PostPage() {
           onAddComment={(content: string) =>
             addCommentMutation.mutate({ post_id: postId as string, content })
           }
+          postId={postId}
         />
         <CommentSection
           comments={postData.comments || []}

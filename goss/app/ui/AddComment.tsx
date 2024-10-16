@@ -1,18 +1,29 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FaComment } from 'react-icons/fa';
 
 interface AddCommentProps {
   onAddComment: (content: string) => void;
+  postId: string;
 }
 
-const AddComment: React.FC<AddCommentProps> = ({ onAddComment }) => {
+const AddComment: React.FC<AddCommentProps> = ({ onAddComment, postId }) => {
   const [comment, setComment] = useState('');
+  const queryClient = useQueryClient();
+
+  const addCommentMutation = useMutation({
+    mutationFn: (comment: string) => onAddComment(comment), // Assuming you have an addComment function
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      setComment(''); // Clear the comment input after success
+      console.log('invalidated:', postId);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (comment.trim()) {
-      onAddComment(comment);
-      setComment('');
+      addCommentMutation.mutate(comment); // Trigger the mutation with the comment
     }
   };
 
@@ -30,7 +41,7 @@ const AddComment: React.FC<AddCommentProps> = ({ onAddComment }) => {
           <FaComment className="absolute left-3 top-1/3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
           <button
             type="submit"
-            className="dark:bg-darkModeSecondaryBtn absolute right-1 top-1/3 mt-0.5 -translate-y-1/2 transform rounded-full bg-darkModePostBackground px-4 py-3 text-white"
+            className="absolute right-1 top-1/3 mt-0.5 -translate-y-1/2 transform rounded-full bg-darkModePostBackground px-4 py-3 text-white dark:bg-darkModeSecondaryBtn"
           >
             Post
           </button>
