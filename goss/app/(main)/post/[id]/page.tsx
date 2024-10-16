@@ -86,49 +86,56 @@ export default function PostPage() {
     <div className="min-h-screen w-full">
       <div className="mx-auto w-full max-w-md p-4">
         <div className="mb-4">
-          <button onClick={() => window.history.back()} className="text-xl">
+          <button
+            onClick={() => window.history.back()}
+            className="text-xl text-white"
+          >
             Back
           </button>
         </div>
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <img
-              src={postData.profiles.profile_img}
-              alt={`${postData.profiles.display_name}'s profile`}
-              className="h-16 w-16 rounded-full"
-            />
-            <div className="ml-3 flex flex-col">
-              <p className="font-semibold">{postData.profiles.display_name}</p>
-              <p className="text-gray-500">@{postData.profiles.username}</p>
+        <div className="rounded-md p-3 dark:bg-darkModeSecondaryBackground">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center">
+              <img
+                src={postData.profiles.profile_img}
+                alt={`${postData.profiles.display_name}'s profile`}
+                className="h-16 w-16 rounded-full"
+              />
+              <div className="ml-3 flex flex-col">
+                <p className="font-semibold text-white">
+                  {postData.profiles.display_name}
+                </p>
+                <p className="text-gray-400">@{postData.profiles.username}</p>
+              </div>
+            </div>
+            <div className="text-sm text-gray-500">
+              {moment(postData.created_at).fromNow()}
             </div>
           </div>
-          <div className="text-sm text-gray-500">
-            {moment(postData.created_at).fromNow()}
+          <div>{postData.caption}</div>
+          <div className="flex items-center">
+            <VoiceNote audioUrl={postData.audio} />
+            <button
+              className="dark:bg-darkModeSecondaryBtn h-8 w-8 rounded text-white"
+              onClick={() => setShowTranscription(!showTranscription)}
+            >
+              A
+            </button>
+          </div>
+          {showTranscription && postData.transcription && (
+            <div className="mt-4 text-sm text-white">
+              {postData.transcription}
+            </div>
+          )}
+          <div className="mt-4">
+            <Reactions
+              postId={postId as string}
+              postAuthorId={postData.profiles.user_id}
+              post={postData}
+            />
           </div>
         </div>
-        <div>{postData.caption}</div>
-        <div className="flex items-center">
-          <VoiceNote audioUrl={postData.audio} />
-          <button
-            className="h-8 w-8 rounded bg-purple-600 bg-opacity-50 text-white hover:bg-purple-400"
-            onClick={() => setShowTranscription(!showTranscription)}
-          >
-            A
-          </button>
-        </div>
-        {showTranscription && postData.transcription && (
-          <div className="mt-4 text-sm text-gray-700">
-            {postData.transcription}
-          </div>
-        )}
-        <div className="mt-4">
-          <Reactions
-            postId={postId as string}
-            postAuthorId={postData.profiles.user_id}
-            post={postData}
-          />
-        </div>
-        <p className="mb-2 mt-6 font-semibold">Goss about it</p>
+        <p className="mb-2 mt-6 font-semibold text-white">Goss about it</p>
         <AddComment
           onAddComment={(content: string) =>
             addCommentMutation.mutate({ post_id: postId as string, content })

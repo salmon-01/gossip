@@ -41,7 +41,7 @@ export default function CommentSection({
 
   return (
     <div className="mt-4">
-      <h3 className="mb-2 text-lg font-semibold">Comments</h3>
+      <h3 className="mb-2 text-lg font-semibold text-gray-200">Comments</h3>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
           <div
@@ -104,7 +104,7 @@ export default function CommentSection({
           </div>
         ))
       ) : (
-        <p>No comments yet. Be the first to comment!</p>
+        <p className="text-white">No comments yet. Be the first to comment!</p>
       )}
     </div>
   );
