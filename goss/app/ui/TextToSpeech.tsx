@@ -171,7 +171,7 @@ const AIVoiceGenerator = ({
                     />
                   </div>
                   <button
-                    className="dark:bg-darkModePrimaryBtn rounded bg-purple-700 px-3 py-1.5 text-sm text-white lg:px-5 lg:py-3"
+                    className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn rounded px-3 py-1.5 text-sm text-white lg:px-5 lg:py-3"
                     onClick={() => handleVoiceSelect(entry.id)}
                   >
                     Select

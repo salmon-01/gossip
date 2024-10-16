@@ -109,7 +109,7 @@ function NavBar() {
         <div className="hidden w-full lg:block">
           <button
             onClick={handleCreatePostClick}
-            className="dark:bg-darkModePrimaryBtn flex w-full items-center justify-center space-x-2 rounded-md px-4 py-2 text-white hover:scale-110 lg:rounded-xl"
+            className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn flex w-full items-center justify-center space-x-2 rounded-md px-4 py-2 text-white hover:scale-110 lg:rounded-xl"
           >
             <RecordPost />
             <span>Record Post</span>
