@@ -1,5 +1,21 @@
 [
   {
+    "id": "s3://peregrine-voices/oliver_narrative2_parrot_saad/manifest.json",
+    "name": "David",
+    "sample": "https://peregrine-samples.s3.amazonaws.com/parrot-samples/oliver+narrative.wav",
+    "accent": "🇬🇧",
+    "age": "adult",
+    "gender": "male",
+    "language": "English (GB)",
+    "language_code": "en-GB",
+    "loudness": "high",
+    "style": "narrative",
+    "tempo": "neutral",
+    "texture": "round",
+    "is_cloned": false,
+    "voice_engine": "PlayHT2.0"
+  },
+  {
     "id": "s3://voice-cloning-zero-shot/a59cb96d-bba8-4e24-81f2-e60b888a0275/charlottenarrativesaad/manifest.json",
     "name": "Charlotte",
     "sample": "https://parrot-samples.s3.amazonaws.com/kettle/charlotte+(narrative).wav",
@@ -76,22 +92,6 @@
     "style": null,
     "tempo": null,
     "texture": null,
-    "is_cloned": false,
-    "voice_engine": "PlayHT2.0"
-  },
-  {
-    "id": "s3://peregrine-voices/oliver_narrative2_parrot_saad/manifest.json",
-    "name": "Oliver",
-    "sample": "https://peregrine-samples.s3.amazonaws.com/parrot-samples/oliver+narrative.wav",
-    "accent": "🇬🇧",
-    "age": "adult",
-    "gender": "male",
-    "language": "English (GB)",
-    "language_code": "en-GB",
-    "loudness": "high",
-    "style": "narrative",
-    "tempo": "neutral",
-    "texture": "round",
     "is_cloned": false,
     "voice_engine": "PlayHT2.0"
   },
