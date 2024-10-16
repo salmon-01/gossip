@@ -54,11 +54,11 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
 
 
   return (
-    <form onSubmit={handleSubmit} className="flex bg-white p-2 items-center w-full ">
+    <form onSubmit={handleSubmit} className="flex bg-white dark:bg-darkModePrimaryBackground p-2 items-center w-full ">
       <input
         type="text"
         placeholder='Write a message...'
-        className='flex-grow p-3 rounded-xl bg-purple-50 dark:bg-darkModeParaText lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn'
+        className='flex-grow p-3 rounded-xl bg-purple-50 dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
