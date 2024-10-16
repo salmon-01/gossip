@@ -4,10 +4,31 @@ import { createClient } from '@/utils/supabase/client';
 const supabase = createClient();
 import { useQueryClient } from '@tanstack/react-query';
 import { FaRegPaperPlane } from "react-icons/fa";
+import { fetchConversationProfile } from '../api/MessagesData';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function ChatInput({ conversationId, loggedInUserId}) {
   const [message, setMessage] = useState("")
   const queryClient = useQueryClient(); 
+
+  const {
+    data: profileData,
+    isLoading: isLoadingProfile,
+    error: profileError,
+  } = useQuery({
+    queryKey: ['conversationProfile', loggedInUserId, conversationId],
+    queryFn: () => fetchConversationProfile(loggedInUserId, conversationId),
+    enabled: !!loggedInUserId && !!conversationId,
+  });
+
+  if (profileError) {
+    return <div>Error loading profile: {profileError.message}</div>; // Display profile error
+  }
+  if (isLoadingProfile) {
+    return <LoadingSpinner />; // Display loading state for profile data
+  }
+
 
 
 
@@ -28,15 +49,25 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
       console.error('Error inserting message:', error);
     } else {
       setMessage('');
-      // Clear the input field after sending the message
+      
+      const { data:notification, error:notificationError } = await supabase
+      .from('notifications')
+      .insert([
+        { type: "message", user_id:profileData?.user_id , sender_id: loggedInUserId },
+      ])
+
+
+    if (notificationError) {
+      console.error('Error inserting notification:', notificationError);
+    } 
 
       const { error: updateError } = await supabase
         .from('conversations')
         .update({
           last_message: message,
-          last_message_time: new Date().toISOString(), // Use ISO string for the timestamp
+          last_message_time: new Date().toISOString(), 
         })
-        .eq('id', conversationId); // Ensure you are using the correct field to match
+        .eq('id', conversationId); 
 
 
       if (updateError) {
