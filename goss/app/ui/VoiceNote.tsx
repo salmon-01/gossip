@@ -67,7 +67,7 @@ const VoiceNote = ({ audioUrl }: Audio) => {
         <>
           <button
             onClick={handlePlayPause}
-            className={`rounded-full ${isPlaying ? 'dark:bg-darkModePrimaryBtn bg-purple-400' : 'dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn'} m-2 flex h-16 w-16 items-center justify-center text-white`}
+            className={`rounded-full ${isPlaying ? 'dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn' : 'dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn'} m-2 flex h-16 w-16 items-center justify-center text-white`}
           >
             {isPlaying ? (
               <HiOutlinePause size={25} />
@@ -77,7 +77,7 @@ const VoiceNote = ({ audioUrl }: Audio) => {
           </button>
 
           {/* Show waveform only when play button is clicked */}
-          {showWaveSurfer && <div className="w-full" ref={waveformRef}></div>}
+          {showWaveSurfer && <div className="w-96" ref={waveformRef}></div>}
         </>
       ) : (
         <p>No audio found!</p>
