@@ -84,7 +84,7 @@ export default function PostPage() {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="mx-auto w-full max-w-md p-4">
+      <div className="mx-auto w-full max-w-7xl p-4 lg:p-10">
         <div className="mb-4">
           <button
             onClick={() => window.history.back()}

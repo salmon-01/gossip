@@ -40,7 +40,7 @@ export default function CommentSection({
   if (!session) return <div>Not logged in</div>;
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 lg:max-w-6xl">
       <h3 className="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-200">
         Comments
       </h3>
