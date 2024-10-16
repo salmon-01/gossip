@@ -197,7 +197,7 @@ const AIVoiceGenerator = ({
           value={text}
           onChange={handleTextChange}
           placeholder="Enter text here"
-          className="h-32 w-full resize-none rounded-lg border-gray-300 p-2 outline-none transition duration-200 focus:ring-0 focus:ring-slate-500 dark:border dark:border-gray-700 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-500"
+          className="h-32 w-full resize-none rounded-lg border border-gray-300 p-2 outline-none transition duration-200 focus:ring-0 focus:ring-slate-500 dark:border dark:border-gray-700 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-500"
         />
         <button
           onClick={handleTextToSpeech}
