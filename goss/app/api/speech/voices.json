@@ -64,22 +64,6 @@
     "voice_engine": "PlayHT2.0"
   },
   {
-    "id": "wilbur",
-    "name": "Wilbur",
-    "sample": "https://peregrine-samples.s3.amazonaws.com/editor-samples/wilbur.wav",
-    "accent": "🇺🇸",
-    "age": "youth",
-    "gender": "male",
-    "language": "English (US)",
-    "language_code": "en-US",
-    "loudness": "neutral",
-    "style": "narrative",
-    "tempo": "neutral",
-    "texture": "smooth",
-    "is_cloned": false,
-    "voice_engine": "PlayHT1.0"
-  },
-  {
     "id": "s3://voice-cloning-zero-shot/f8af54e1-1534-4f68-ad8a-260cc132f820/original/manifest.json",
     "name": "Nigel",
     "sample": "https://parrot-samples.s3.amazonaws.com/gargamel/Nigel.wav",
@@ -126,22 +110,6 @@
     "texture": "gravelly",
     "is_cloned": false,
     "voice_engine": "PlayHT2.0"
-  },
-  {
-    "id": "s3://peregrine-voices/nolan saad parrot/manifest.json",
-    "name": "Nolan",
-    "sample": "https://peregrine-samples.s3.amazonaws.com/parrot-samples/nolan.wav",
-    "accent": "🇬🇧",
-    "age": "adult",
-    "gender": "male",
-    "language": "English (US)",
-    "language_code": "en-US",
-    "loudness": "high",
-    "style": "videos",
-    "tempo": "neutral",
-    "texture": "round",
-    "is_cloned": false,
-    "voice_engine": "PlayHT1.0"
   },
   {
     "id": "s3://voice-cloning-zero-shot/44f32760-8f41-4dfb-b192-ca077fc501ea/original/manifest.json",
