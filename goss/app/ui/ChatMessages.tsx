@@ -84,7 +84,7 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
             >
               <div
                 className={`p-2 rounded-lg max-w-xs min-w-20 lg:min-w-28 ${message.sender_id === loggedInUserId
-                  ? 'bg-darkModePrimaryBtn dark:bg-darkChatBackground dark:text-darkModeParaText lg:mr-4 text-white shadow-md'
+                  ? 'bg-darkModePostBackground dark:bg-darkChatBackground dark:text-darkModeParaText lg:mr-4 text-white shadow-md'
                   : 'bg-white dark:bg-darkModePrimaryBtn dark:text-darkModeParaText lg:ml-4 shadow-md text-black'
                   }`}
               >
