@@ -1,5 +1,5 @@
 // ProfileLayout.js
-"use client";
+'use client';
 import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import ProfileNav from './profileNav';

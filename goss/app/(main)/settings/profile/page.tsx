@@ -127,12 +127,14 @@ export default function ProfilePage() {
         <button
           type="button"
           onClick={handleCancel}
-          className="mb-2 text-3xl font-bold text-gray-600"
+          className="mb-2 text-3xl font-bold text-gray-600 dark:text-darkModeHeader"
         >
           {'\u2190'}
         </button>
 
-        <h2 className="px-4 text-2xl font-bold dark:text-darkModeHeader">Edit Profile</h2>
+        <h2 className="px-4 text-2xl font-bold dark:text-darkModeHeader">
+          Edit Profile
+        </h2>
       </div>
 
       <div className="relative mb-4 h-36 w-36">

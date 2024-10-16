@@ -1,6 +1,12 @@
 'use client';
 
 import { FiSun, FiMoon } from 'react-icons/fi';
+import { RiMoonClearFill } from 'react-icons/ri';
+import { IoMdSunny } from 'react-icons/io';
+import { FaSun } from 'react-icons/fa';
+import { CiLight } from 'react-icons/ci';
+import { MdLightMode } from 'react-icons/md';
+import { IoSunny } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -27,23 +33,39 @@ export default function ThemeSwitch() {
 
   if (resolvedTheme === 'dark') {
     return (
-      <FiSun
-        className="mt-5"
-        data-testid="sun-icon"
-        aria-label="Switch to light theme"
-        onClick={() => setTheme('light')}
-      />
+      <>
+        <div className="flex items-center space-x-2">
+          <p className="text-base text-white">Switch theme</p>
+          <button
+            className="flex items-center justify-center rounded-full bg-gray-700 p-2 shadow-md transition duration-300 ease-in-out hover:bg-gray-600 focus:outline-none"
+            data-testid="sun-icon"
+            type="button"
+            aria-label="Switch to light theme"
+            onClick={() => setTheme('light')}
+          >
+            <IoSunny className="h-5 w-5 text-yellow-100" />
+          </button>
+        </div>
+      </>
     );
   }
 
   if (resolvedTheme === 'light') {
     return (
-      <FiMoon
-        className="mt-5"
-        data-testid="moon-icon"
-        aria-label="Switch to dark theme"
-        onClick={() => setTheme('dark')}
-      />
+      <>
+        <div className="flex items-center space-x-2">
+          <p className="text-base text-black">Switch theme</p>
+          <button
+            className="flex items-center justify-center rounded-full bg-gray-300 p-2 shadow-md transition duration-300 ease-in-out hover:bg-gray-400 focus:outline-none"
+            data-testid="moon-icon"
+            type="button"
+            aria-label="Switch to dark theme"
+            onClick={() => setTheme('dark')}
+          >
+            <RiMoonClearFill className="h-5 w-5 text-slate-800" />
+          </button>
+        </div>
+      </>
     );
   }
 }

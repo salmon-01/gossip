@@ -147,8 +147,8 @@ const AIVoiceGenerator = ({
                 key={entry.id}
                 className="mb-2 rounded-lg border border-slate-500 bg-white p-4 last:mb-0 last:border-0 dark:bg-black"
               >
-                <h3 className="text-md mb-2 font-semibold capitalize dark:text-darkModeParaText">
-                  {entry.name} - {entry.accent}
+                <h3 className="mb-2 text-xl font-semibold capitalize dark:text-darkModeParaText">
+                  {entry.name} <span>{entry.accent}</span>
                 </h3>
                 <div className="flex items-center justify-between p-4">
                   <div className="flex items-center space-x-4">
@@ -171,7 +171,7 @@ const AIVoiceGenerator = ({
                     />
                   </div>
                   <button
-                    className="rounded bg-purple-700 px-3 py-1.5 text-sm text-white dark:bg-darkModePurpleBtn"
+                    className="rounded bg-purple-700 px-3 py-1.5 text-sm text-white dark:bg-darkModePurpleBtn lg:px-5 lg:py-3"
                     onClick={() => handleVoiceSelect(entry.id)}
                   >
                     Select
