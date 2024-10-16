@@ -14,19 +14,19 @@ const ProfileCard = ({ user, isLoading }: ProfileCardProps) => {
   const currentUserId = session?.profile.user_id;
 
   return (
-    <div className="dark:bg-darkModeSecondaryBackground flex items-center justify-between rounded-lg bg-white p-4 shadow">
+    <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow dark:bg-darkModeSecondaryBackground">
       <div className="flex items-center">
         <img
           src={user.profile_img}
           alt={`${user.display_name}'s profile`}
-          className="h-16 w-16 rounded-full"
+          className="h-10 w-10 rounded-full"
         />
         <Link href={`/${user.username}`}>
           <div className="ml-3 flex flex-col">
-            <p className="dark:text-darkModeParaText font-semibold">
+            <p className="font-semibold dark:text-darkModeParaText">
               {user.display_name}
             </p>
-            <p className="dark:text-darkModeDimText text-gray-500">
+            <p className="text-gray-500 dark:text-darkModeDimText">
               @{user.username}
             </p>
           </div>
