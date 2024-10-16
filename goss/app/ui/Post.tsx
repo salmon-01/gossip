@@ -99,7 +99,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           </div>
         </Link>
         <Link href={`/post/${post.id}`}>
-          <div className="mt-6 flex w-full text-base">{post.caption}</div>
+          <div className="mt-6 flex w-full">{post.caption}</div>
         </Link>
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />

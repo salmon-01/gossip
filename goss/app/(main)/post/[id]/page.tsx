@@ -93,7 +93,7 @@ export default function PostPage() {
             Back
           </button>
         </div>
-        <div className="rounded-md bg-gray-300 p-3 dark:bg-darkModeSecondaryBackground">
+        <div className="rounded-md bg-gray-300 px-6 py-3 dark:bg-darkModeSecondaryBackground">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center">
               <img
@@ -112,11 +112,13 @@ export default function PostPage() {
               {moment(postData.created_at).fromNow()}
             </div>
           </div>
-          <div className="text-white">{postData.caption}</div>
+          <div className="text-gray-700 dark:text-gray-200">
+            {postData.caption}
+          </div>
           <div className="flex items-center">
             <VoiceNote audioUrl={postData.audio} />
             <button
-              className="h-8 w-8 rounded bg-darkModeSecondaryBtn text-white dark:bg-darkModeSecondaryBtn dark:text-white"
+              className="bg-darkModeSecondaryBtn dark:bg-darkModeSecondaryBtn h-8 w-8 rounded text-white dark:text-white"
               onClick={() => setShowTranscription(!showTranscription)}
             >
               A
