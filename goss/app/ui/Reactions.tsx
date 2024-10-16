@@ -54,6 +54,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       console.log(postId);
+      queryClient.invalidateQueries({ queryKey: ['posts', postAuthorId] });
       queryClient.invalidateQueries({ queryKey: ['post', postId.toString()] });
     },
   });
@@ -64,6 +65,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       console.log(postId);
+      queryClient.invalidateQueries({ queryKey: ['posts', postAuthorId] });
       queryClient.invalidateQueries({
         queryKey: ['post', postId.toString()],
       });
