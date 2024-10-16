@@ -39,7 +39,6 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', post.id] });
-      console.log(post.id);
       toast.success('Post deleted');
     },
     onError: (error) => {
