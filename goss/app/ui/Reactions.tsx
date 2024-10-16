@@ -52,7 +52,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     mutationFn: (reaction: string) =>
       addReaction(postId, session!.user.id, reaction, postAuthorId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['reactions', postId]);
+      queryClient.invalidateQueries({ queryKey: ['reactions', postId] });
     },
   });
 
@@ -60,7 +60,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
     mutationFn: (reaction: string) =>
       removeReaction(postId, session!.user.id, reaction),
     onSuccess: () => {
-      queryClient.invalidateQueries(['reactions', postId]);
+      queryClient.invalidateQueries({ queryKey: ['reactions', postId] });
     },
   });
 
@@ -80,8 +80,10 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
         <button
           key={reaction.reaction}
           onClick={() => handleToggleReaction(reaction.reaction)}
-          className={`flex items-center rounded-xl bg-gray-200 dark:bg-darkModePrimaryBackground px-1 py-px ${
-            reaction.userHasReacted ? 'bg-purple-600 dark:bg-darkModePrimaryBackground text-white' : 'bg-gray-200'
+          className={`flex items-center rounded-xl bg-gray-200 px-1 py-px dark:bg-darkModePrimaryBackground ${
+            reaction.userHasReacted
+              ? 'bg-purple-600 text-white dark:bg-darkModePrimaryBackground'
+              : 'bg-gray-200'
           }`}
         >
           <span className="text-xl">{reaction.reaction}</span>
@@ -93,12 +95,12 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
         <div className="relative">
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="rounded-xl bg-gray-200 dark:bg-darkModePrimaryBackground px-2 py-1"
+            className="rounded-xl bg-gray-200 px-2 py-1 dark:bg-darkModePrimaryBackground"
           >
             ...
           </button>
           {showEmojiPicker && (
-            <div className="absolute z-10 mt-2 flex space-y-1 rounded-xl border bg-white dark:bg-darkModePrimaryBackground shadow-lg">
+            <div className="absolute z-10 mt-2 flex space-y-1 rounded-xl border bg-white shadow-lg dark:bg-darkModePrimaryBackground">
               {availableEmojis
                 .filter((emoji) => !reactionsMap[emoji])
                 .map((emoji) => (
