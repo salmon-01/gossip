@@ -15,12 +15,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div
       className={`fixed inset-0 flex items-center justify-center ${bgColor}`}
     >
-      <img
-        src="/loadingImg.png"
-        alt="Profile"
-        className="mb-4 h-24 w-24 animate-spin rounded-full"
-      />
-      {/* <svg
+      <svg
         width={size}
         height={size}
         viewBox="0 0 24 24"
@@ -46,7 +41,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
             repeatCount="indefinite"
           />
         </circle>
-      </svg> */}
+      </svg>
     </div>
   );
 };
