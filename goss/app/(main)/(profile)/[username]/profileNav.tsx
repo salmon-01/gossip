@@ -12,7 +12,7 @@ export default function ProfileNav({ username }: { username: string }) {
         href={`/${username}`}
         className={
           pathname === `/${username}`
-            ? 'text-xl font-bold text-purple-600 dark:text-darkModeHeader'
+            ? 'text-xl font-bold text-ds dark:text-darkModeHeader'
             : 'text-gray-500'
         }
       >

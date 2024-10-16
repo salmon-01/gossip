@@ -181,7 +181,7 @@ export default function ProfilePage() {
         name="name"
         type="text"
         placeholder="Name"
-        className="w-full rounded border border-gray-300 bg-white dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText p-2 shadow-sm"
+        className="w-full rounded border border-gray-300 bg-white dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText p-2 shadow-sm  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn"
         value={profile.name}
         onChange={handleChange}
       />
@@ -194,7 +194,7 @@ export default function ProfilePage() {
         name="badge"
         type="text"
         placeholder="Badge"
-        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn"
         value={profile.badge}
         onChange={handleChange}
       />
@@ -206,7 +206,7 @@ export default function ProfilePage() {
         id="bio"
         name="bio"
         placeholder="Bio"
-        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn dark:text-darkModeParaText"
         rows={4}
         value={profile.bio}
         onChange={handleChange}
@@ -214,7 +214,7 @@ export default function ProfilePage() {
       <ThemeSwitch />
       <button
         type="submit"
-        className="mt-10 w-full rounded bg-darkModePrimaryBtn p-2 text-white hover:bg-purple-800"
+        className="mt-10 w-full rounded bg-darkModePrimaryBtn p-2 text-white "
       >
         Update Profile
       </button>
