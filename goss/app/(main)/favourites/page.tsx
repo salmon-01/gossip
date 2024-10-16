@@ -3,12 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchFavourites } from '@/app/api/favourites';
 import { useSessionContext } from '@/app/context/SessionContext';
-import { HiArrowLongLeft } from "react-icons/hi2";
+import { HiArrowLongLeft } from 'react-icons/hi2';
 import PostComponent from '@/app/ui/Post';
 import Link from 'next/link';
 
 export default function FavouritesPage() {
-
   const { data: session } = useSessionContext();
   const currentUserId = session?.user.id;
   const username = session?.profile.username;
@@ -22,17 +21,13 @@ export default function FavouritesPage() {
     queryKey: ['favourites', currentUserId],
     queryFn: () => fetchFavourites(currentUserId as string),
     enabled: !!currentUserId,
-    refetchOnWindowFocus: true, 
-    refetchOnMount: true,        
-    staleTime: 0,  
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    staleTime: 0,
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        Loading followers...
-      </div>
-    );
+    return <div className="space-y-4">Loading followers...</div>;
   }
 
   if (isError) {
@@ -62,25 +57,30 @@ export default function FavouritesPage() {
 
   return (
     <>
-    <div className='flex fixed w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
-        <div className="flex w-full dark:text-darkModeParaText font-bold">
+      <div className="fixed top-0 z-40 flex w-full items-center justify-center bg-white pb-1 pl-4 pt-4 dark:bg-darkModePrimaryBackground">
+        <div className="flex w-full font-bold dark:text-darkModeParaText">
           <Link href={`/${username}`}>
-            <button className='dark:bg-darkModePurpleBtn rounded px-1 dark:text-darkModeHeader mr-3 hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn'>
-              <HiArrowLongLeft size={25} strokeWidth={0.5}/>
+            <button className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn ml-5 rounded dark:bg-darkModePurpleBtn dark:text-darkModeHeader">
+              <HiArrowLongLeft size={25} strokeWidth={0.5} />
             </button>
           </Link>
           <div>
-            Saved
+            <p className="ml-2 text-xl">Favourites</p>
           </div>
         </div>
-    </div>
-    <div className="flex min-h-screen w-full justify-center mt-8 bg-white dark:bg-darkModePrimaryBackground">
-      <div className="space-y-4 w-full p-4 lg:w-9/12 mx-auto">
-        {sortedFavourites.map((favourite) => (
-              <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />
-            ))}
       </div>
-    </div>
+      <div className="flex min-h-screen w-full justify-center bg-white pt-20 dark:bg-darkModePrimaryBackground">
+        <div className="mx-auto w-full p-4 lg:w-9/12">
+          {sortedFavourites.map((favourite) => (
+            <PostComponent
+              key={favourite.post_id}
+              post={favourite.posts}
+              user={favourite.posts.profiles}
+              favourites={favourites}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
