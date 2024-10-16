@@ -5,7 +5,7 @@ function RecordPost() {
   return (
     <div>
       <Link href="/create-post">
-        <div className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-white bg-purple-600 drop-shadow-2xl dark:border-none dark:bg-darkModePurpleBtn md:h-auto md:w-auto md:border-none md:bg-inherit md:py-4 md:dark:bg-inherit">
+        <div className="dark:bg-darkModePrimaryBtn bg-darkModeSecondaryBtn flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-white drop-shadow-2xl dark:border-none lg:h-auto lg:w-auto lg:border-none lg:bg-inherit lg:py-4 lg:dark:bg-inherit">
           <HiOutlineMicrophone
             className="text-white"
             size={28}

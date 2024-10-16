@@ -186,7 +186,7 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
             <div className="mt-2 flex justify-center">
               <button
                 type="submit"
-                className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+                className="bg-darkModeSecondaryBtn dark:bg-darkModePrimaryBtn rounded-full px-10 py-2 text-xl text-white"
                 disabled={loading}
               >
                 Post
