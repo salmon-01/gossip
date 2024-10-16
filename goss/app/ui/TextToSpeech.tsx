@@ -137,7 +137,7 @@ const AIVoiceGenerator = ({
           onClick={toggleDropdown}
         >
           {selectedVoice
-            ? `Selected Voice: ${voices.find((voice) => voice.id === selectedVoice)?.name}`
+            ? `Selected Voice: ${voices.find((voice) => voice.id === selectedVoice)?.name} ${voices.find((voice) => voice.id === selectedVoice)?.accent}`
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
