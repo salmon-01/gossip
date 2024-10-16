@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import Reactions from './Reactions';
-import { useSessionContext } from '../context/SessionContext';
 import {
   useMutation,
   useQueryClient,
