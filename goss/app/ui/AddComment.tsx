@@ -13,9 +13,10 @@ const AddComment: React.FC<AddCommentProps> = ({ onAddComment, postId }) => {
 
   const addCommentMutation = useMutation({
     mutationFn: (comment: string) => onAddComment(comment), // Assuming you have an addComment function
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', postId] });
+    onSettled: () => {
       setComment(''); // Clear the comment input after success
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      queryClient.refetchQueries({ queryKey: ['post', postId] });
       console.log('invalidated:', postId);
     },
   });
