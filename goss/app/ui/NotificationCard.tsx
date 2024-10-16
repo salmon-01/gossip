@@ -32,6 +32,9 @@ const NotificationCard: React.FC<NotificationProps> = ({
     if (notification.type === 'tagged_comment') {
       return `tagged you in a comment.`;
     }
+    if (notification.type === 'message') {
+      return `Sent you a message.`;
+    }
     return notification.context;
   };
 
