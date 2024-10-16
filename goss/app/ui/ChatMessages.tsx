@@ -7,12 +7,10 @@ import { useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { groupMessagesByDate } from '../(main)/chats/time';
 import { formatMessageTime } from '../(main)/chats/time';
+import { ChatMessagesProps } from '../types';
 
 const supabase = createClient();
-interface ChatMessagesProps {
-  conversationId: string;
-  loggedInUserId: string;
-}
+
 export default function ChatMessages({ conversationId, loggedInUserId }: ChatMessagesProps) {
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -86,8 +84,8 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
             >
               <div
                 className={`p-2 rounded-lg max-w-xs min-w-20 lg:min-w-28 ${message.sender_id === loggedInUserId
-                  ? 'bg-purple-700 dark:bg-darkChatBackground dark:text-darkModeParaText lg:mr-4 text-white shadow-md'
-                  : 'bg-purple-100 dark:bg-darkModePrimaryBtn dark:text-darkModeParaText lg:ml-4 shadow-md text-black'
+                  ? 'bg-darkModePostBackground dark:bg-darkChatBackground dark:text-darkModeParaText lg:mr-4 text-white shadow-md'
+                  : 'bg-white dark:bg-darkModePrimaryBtn dark:text-darkModeParaText lg:ml-4 shadow-md text-black'
                   }`}
               >
                 <div>{message.content}</div>

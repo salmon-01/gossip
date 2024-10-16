@@ -7,8 +7,9 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { fetchConversationProfile } from '../api/MessagesData';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from './LoadingSpinner';
+import { ChatMessagesProps } from '../types';
 
-export default function ChatInput({ conversationId, loggedInUserId}) {
+export default function ChatInput({ conversationId, loggedInUserId}: ChatMessagesProps) {
   const [message, setMessage] = useState("")
   const queryClient = useQueryClient(); 
 
@@ -32,7 +33,7 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
 
 
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (message.trim() === "") {
       return; 
@@ -85,17 +86,17 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
 
 
   return (
-    <form onSubmit={handleSubmit} className="flex bg-white dark:bg-darkModePrimaryBackground p-2 items-center w-full ">
+    <form onSubmit={handleSubmit} className="flex  dark:bg-darkModePrimaryBackground p-2 items-center w-full ">
       <input
         type="text"
         placeholder='Write a message...'
-        className='flex-grow p-3 rounded-xl bg-purple-50 dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn'
+        className='flex-grow p-3 rounded-xl bg-white dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
       <button
         type="submit"
-        className='ml-2 p-3 rounded-full bg-purple-700 dark:bg-darkModePrimaryBtn text-white hover:bg-purple-900 focus:outline-none focus:ring-0 focus:ring-purple-400'
+        className='ml-2 p-3 rounded-full bg-darkModeSecondaryBtn dark:bg-darkModePrimaryBtn text-white hover:bg-darkModePostBackground focus:outline-none focus:ring-0 focus:ring-purple-400'
       >
         <FaRegPaperPlane />
 

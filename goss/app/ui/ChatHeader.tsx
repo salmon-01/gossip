@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { fetchConversationProfile } from '../api/MessagesData'
 import { useQuery } from '@tanstack/react-query'
 import Loading from '../(main)/loading'
+import { ChatMessagesProps } from '../types'
 
 
-
-export default function ChatHeader({ conversationId, loggedInUserId }) {
+export default function ChatHeader({ conversationId, loggedInUserId }: ChatMessagesProps) {
 
   const {
     data: profileData,

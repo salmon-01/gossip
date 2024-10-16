@@ -67,7 +67,7 @@ export default function ChatsPage() {
           : conversation.participant_1_profile;
 
         return (
-          <div key={conversation.id} className="flex items-center relative p-2 mx-auto  rounded-md w-11/12 mb-3 lg:w-9/12 md:w-9/12 border-gray-200 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:hover:bg-blue-900 transition duration-200">
+          <div key={conversation.id} className="flex items-center relative p-2 mx-auto  bg-white rounded-md w-11/12 mb-3 lg:w-9/12 md:w-9/12 border-gray-200 hover:bg-darkModeParaText dark:bg-darkModeSecondaryBackground dark:hover:bg-blue-900 transition duration-200">
             <Link href={`/chats/${conversation.id}`}>
               <div className="flex items-center w-full cursor-pointer ">
                 <img
