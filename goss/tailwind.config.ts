@@ -9,6 +9,9 @@ const config: Config = {
   darkMode: ['class'],
   theme: {
     extend: {
+      screens: {
+        'max-sm': { max: '639px' },
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

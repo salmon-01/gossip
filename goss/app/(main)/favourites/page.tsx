@@ -69,7 +69,7 @@ export default function FavouritesPage() {
           </div>
         </div>
       </div>
-      <div className="flex min-h-screen w-full justify-center bg-white pt-20 dark:bg-darkModePrimaryBackground">
+      <div className="flex min-h-screen w-full justify-center bg-white pt-20 dark:bg-darkModePrimaryBackground max-sm:pt-8">
         <div className="mx-auto w-full p-4 lg:w-9/12">
           {sortedFavourites.map((favourite) => (
             <PostComponent
