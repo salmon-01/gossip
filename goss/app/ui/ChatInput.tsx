@@ -96,7 +96,7 @@ export default function ChatInput({ conversationId, loggedInUserId}: ChatMessage
       />
       <button
         type="submit"
-        className='ml-2 p-3 rounded-full bg-darkModePrimaryBtn dark:bg-darkModePrimaryBtn text-white hover:bg-purple-900 focus:outline-none focus:ring-0 focus:ring-purple-400'
+        className='ml-2 p-3 rounded-full bg-darkModeSecondaryBtn dark:bg-darkModePrimaryBtn text-white hover:bg-darkModePostBackground focus:outline-none focus:ring-0 focus:ring-purple-400'
       >
         <FaRegPaperPlane />
 
