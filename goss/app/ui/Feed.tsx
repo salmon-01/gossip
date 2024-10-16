@@ -64,6 +64,7 @@ export default function Feed() {
           </div>
           <button
             onClick={() => setSortOrder(!sortOrder)}
+            aria-label='Sort posts'
             className={
               'dark:bg-darkModeSecondaryBtn bg-darkModeSecondaryBtn ml-8 flex rounded-md p-1 text-white'
             }
