@@ -137,7 +137,7 @@ const AIVoiceGenerator = ({
           onClick={toggleDropdown}
         >
           {selectedVoice
-            ? `Selected Voice: ${voices.find((voice) => voice.id === selectedVoice)?.name}`
+            ? `Selected Voice: ${voices.find((voice) => voice.id === selectedVoice)?.name} ${voices.find((voice) => voice.id === selectedVoice)?.accent}`
             : 'Select a Voice'}
         </button>
         {isDropdownOpen && (
@@ -171,7 +171,7 @@ const AIVoiceGenerator = ({
                     />
                   </div>
                   <button
-                    className="rounded bg-purple-700 px-3 py-1.5 text-sm text-white dark:bg-darkModePurpleBtn lg:px-5 lg:py-3"
+                    className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn rounded px-3 py-1.5 text-sm text-white lg:px-5 lg:py-3"
                     onClick={() => handleVoiceSelect(entry.id)}
                   >
                     Select
@@ -239,12 +239,12 @@ const AIVoiceGenerator = ({
                 </svg>
                 <button
                   onClick={handlePlayPauseAudio}
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-100"
+                  className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-800"
                 >
                   {isAudioPlaying ? (
-                    <FaPause className="text-gray-700" />
+                    <FaPause className="text-gray-100" />
                   ) : (
-                    <FaPlay className="text-gray-700" />
+                    <FaPlay className="text-gray-100" />
                   )}
                 </button>
               </div>
@@ -273,7 +273,7 @@ const AIVoiceGenerator = ({
         <div className="mt-4 text-center">
           <button
             onClick={sendPostToDB}
-            className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+            className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn rounded-full px-10 py-2 text-xl text-white"
             disabled={loading}
           >
             Post

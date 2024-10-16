@@ -29,7 +29,7 @@ function NavBar() {
   const unreadCount = notifications?.filter((n) => !n.is_read).length || 0;
 
   return (
-    <nav className="dark:bg-darkModePrimaryBackground dark:text-darkModeParaText fixed bottom-0 w-full bg-gray-50 text-gray-500 shadow-md lg:fixed lg:left-0 lg:top-0 lg:flex lg:h-screen lg:w-auto lg:flex-col lg:items-center lg:justify-start lg:space-y-8 lg:px-16 lg:py-8">
+    <nav className="fixed bottom-0 w-full bg-gray-50 text-gray-500 shadow-md dark:bg-darkModePrimaryBackground dark:text-darkModeParaText lg:fixed lg:left-0 lg:top-0 lg:flex lg:h-screen lg:w-auto lg:flex-col lg:items-center lg:justify-start lg:space-y-8 lg:px-16 lg:py-8">
       {/* Mobile Record Post Button */}
       <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 transform lg:hidden">
         <RecordPost />
@@ -96,7 +96,7 @@ function NavBar() {
             />
           ) : (
             <HiOutlineUser
-              color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
+              // color={isActive(`/${username}`) ? '#9333ea' : '#7b53bb'}
               size={32}
               style={{ strokeWidth: isActive(`/${username}`) ? 2.5 : 1 }}
             />
@@ -109,7 +109,7 @@ function NavBar() {
         <div className="hidden w-full lg:block">
           <button
             onClick={handleCreatePostClick}
-            className="flex w-full items-center justify-center space-x-2 rounded-md bg-purple-600 px-4 py-2 text-white hover:scale-110 hover:bg-purple-700 lg:rounded-xl"
+            className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn flex w-full items-center justify-center space-x-2 rounded-md px-4 py-2 text-white hover:scale-110 lg:rounded-xl"
           >
             <RecordPost />
             <span>Record Post</span>

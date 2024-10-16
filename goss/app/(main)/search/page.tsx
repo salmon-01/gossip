@@ -111,8 +111,8 @@ export default function Search() {
       }}
       className={`rounded-t-md px-6 py-3 text-sm font-medium transition-all duration-300 ease-in-out ${
         searchType === type
-          ? 'bg-purple-700 text-white shadow-md dark:bg-darkModePurpleBtn'
-          : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-slate-700 dark:text-white'
+          ? 'bg-darkModeSecondaryBtn dark:bg-darkModePrimaryBtn text-white shadow-md'
+          : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-gray-500 dark:text-white'
       } lg:mt-6 lg:px-12 lg:py-4 lg:text-base`}
     >
       {label}

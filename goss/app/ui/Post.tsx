@@ -79,7 +79,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
 
   return (
     <>
-      <div className="dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText my-3 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6 md:max-w-2xl">
+      <div className="my-3 flex w-full flex-col rounded-md bg-gray-100 p-2 px-6 pt-6 dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText md:max-w-2xl">
         <Link href={`/${user.username}`}>
           <div className="flex h-6 w-full items-center">
             <img
@@ -90,10 +90,10 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <div className="items-center text-sm font-medium">
               {user.display_name}
             </div>
-            <div className="dark:text-darkModeDimText mx-2 text-sm text-gray-500">
+            <div className="mx-2 text-sm text-gray-500 dark:text-darkModeDimText">
               @{user.username}
             </div>
-            <div className="dark:text-darkModeDimText ml-auto flex items-center space-x-2 text-sm text-gray-500">
+            <div className="ml-auto flex items-center space-x-2 text-sm text-gray-500 dark:text-darkModeDimText">
               {moment(post.created_at).fromNow()}
             </div>
           </div>
@@ -104,14 +104,16 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
         <div className="flex items-center">
           <VoiceNote audioUrl={post.audio} />
           <button
-            className="dark:bg-darkModePurpleBtn h-8 w-8 rounded bg-purple-500 text-white hover:bg-purple-400 dark:hover:bg-purple-500"
+            className="dark:bg-darkModeSecondaryBtn bg-darkModePrimaryBtn h-8 w-8 rounded text-white"
             onClick={() => setShowTranscription(!showTranscription)}
           >
             A
           </button>
         </div>
         {showTranscription && post.transcription && (
-          <div className="mt-4 text-sm text-gray-700">{post.transcription}</div>
+          <div className="mt-4 text-sm text-slate-200">
+            {post.transcription}
+          </div>
         )}
         <div className="mb-2 w-full">
           <Reactions postId={post.id} postAuthorId={post.user_id} post={post} />
@@ -123,12 +125,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
           <div className="flex items-center pt-2">
             <Link href={`/post/${post.id}`}>
               <HiOutlineChatBubbleLeftEllipsis
-                className={'dark:text-darkModeHeader text-[#9333ea]'}
+                className={'text-[#464548] dark:text-darkModeHeader'}
                 size={16}
               />
             </Link>
             <Link href={`/post/${post.id}`}>
-              <div className="dark:text-darkModeHeader ml-2 flex items-center text-base font-medium text-purple-600">
+              <div className="ml-2 flex items-center text-base font-medium text-gray-500 dark:text-darkModeHeader">
                 Comment
                 {post.comments?.length > 0 ? `(${post.comments.length})` : null}
               </div>
@@ -137,7 +139,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
               {post.user_id === currentUserId && (
                 <button onClick={() => setShowModal(true)} className="mr-4">
                   <HiTrash
-                    className={'dark:text-darkModeHeader text-[#9333ea]'}
+                    className={'text-[#464548] dark:text-darkModeHeader'}
                     size={18}
                   />
                 </button>
@@ -157,12 +159,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                 >
                   {favouriteSelect ? (
                     <HiBookmark
-                      className={'dark:text-darkModeHeader text-[#9333ea]'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   ) : (
                     <HiOutlineBookmark
-                      className={'dark:text-darkModeHeader text-[#9333ea]'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   )}
@@ -180,12 +182,12 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
                 >
                   {favouriteSelect ? (
                     <HiOutlineBookmark
-                      className={'dark:text-darkModeHeader text-[#9333ea]'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   ) : (
                     <HiBookmark
-                      className={'dark:text-darkModeHeader text-[#9333ea]'}
+                      className={'text-[#464548] dark:text-darkModeHeader'}
                       size={18}
                     />
                   )}

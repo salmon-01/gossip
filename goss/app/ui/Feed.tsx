@@ -46,26 +46,27 @@ export default function Feed() {
 
   return (
     <>
-      <div className="dark:bg-darkModePrimaryBackground ustify-center fixed top-0 z-40 flex w-full bg-white px-4 pb-1 pt-4">
-        <div className="flex w-full items-center justify-start py-1 font-bold text-purple-700">
-          <div className="flex space-x-4" style={{ minWidth: '180px' }}>
+      <div className="fixed top-0 z-40 flex w-full justify-center bg-white px-4 pb-1 pt-4 dark:bg-darkModePrimaryBackground">
+        <div className="flex w-full items-start justify-start py-1 font-bold">
+          <div className="flex space-x-4">
             <button
               onClick={() => setFeedContent('all')}
-              className={`${feedContent === 'all' ? 'dark:text-darkModeHeader font-bold text-purple-700' : 'dark:text-darkModeSecondaryBackground text-purple-400'} px-2 underline`}
+              className={`${feedContent === 'all' ? 'text-darkModeSecondaryBtn font-bold underline dark:text-darkModeHeader' : 'text-gray-300 dark:text-gray-400'} px-2`}
             >
               All Posts
             </button>
             <button
               onClick={() => setFeedContent('following')}
-              className={`${feedContent === 'following' ? 'dark:text-darkModeHeader font-bold text-purple-700' : 'dark:text-darkModeSecondaryBackground text-purple-400'} px-2 underline`}
+              className={`${feedContent === 'following' ? 'text-darkModeSecondaryBtn font-bold underline dark:text-darkModeHeader' : 'text-gray-300 dark:text-gray-400'} px-2`}
             >
               For You
             </button>
           </div>
           <button
             onClick={() => setSortOrder(!sortOrder)}
+            aria-label='Sort posts'
             className={
-              'dark:bg-darkModePurpleBtn ml-8 flex rounded-md bg-purple-700 p-1 text-white'
+              'dark:bg-darkModeSecondaryBtn bg-darkModeSecondaryBtn ml-8 flex rounded-md p-1 text-white'
             }
           >
             {sortOrder ? (

@@ -63,9 +63,9 @@ export default function FavouritesPage() {
   return (
     <>
     <div className='flex fixed w-full top-0 z-40 justify-center items-center bg-white dark:bg-darkModePrimaryBackground pb-1 pl-4 pt-4'>
-        <div className="flex w-full text-purple-700 dark:text-darkModeParaText font-bold">
+        <div className="flex w-full dark:text-darkModeParaText font-bold">
           <Link href={`/${username}`}>
-            <button className='bg-purple-700 dark:bg-darkModePurpleBtn rounded px-1 text-white mr-3 hover:bg-purple-500'>
+            <button className='dark:bg-darkModePurpleBtn rounded px-1 dark:text-darkModeHeader mr-3 hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn'>
               <HiArrowLongLeft size={25} strokeWidth={0.5}/>
             </button>
           </Link>
@@ -75,7 +75,7 @@ export default function FavouritesPage() {
         </div>
     </div>
     <div className="flex min-h-screen w-full justify-center mt-8 bg-white dark:bg-darkModePrimaryBackground">
-      <div className="space-y-4 w-full p-4">
+      <div className="space-y-4 w-full p-4 lg:w-9/12 mx-auto">
         {sortedFavourites.map((favourite) => (
               <PostComponent key={favourite.post_id} post={favourite.posts} user={favourite.posts.profiles} favourites={favourites} />
             ))}

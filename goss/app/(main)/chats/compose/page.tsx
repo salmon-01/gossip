@@ -103,7 +103,7 @@ export default function Page() {
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search people"
-          className="w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-darkModeParaText"
+          className="w-full p-3 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-darkModeSecondaryBtn dark:text-darkModeParaText"
         />
       </form>
 
@@ -116,7 +116,7 @@ export default function Page() {
               key={result.user_id}
               onClick={() => pick(result.user_id)}
               className="flex items-center p-3 bg-white shadow-sm rounded-lg w-11/12 
-              mx-auto mb-3 hover:bg-purple-100 dark:bg-darkModeSecondaryBackground dark:text-darkModeHeader cursor-pointer"
+              mx-auto mb-3 hover:bg-purple-100 dark:hover:bg-darkhoverBackground dark:bg-darkModeSecondaryBackground dark:text-darkModeHeader cursor-pointer"
             >
               <img
                 src={result.profile_img || '/default-avatar.png'} // Fallback image

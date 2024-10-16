@@ -85,9 +85,9 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
               className={`flex ${message.sender_id === loggedInUserId ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`p-2 rounded-lg max-w-xs min-w-20  ${message.sender_id === loggedInUserId
-                  ? 'bg-purple-700 text-white shadow-md'
-                  : 'bg-purple-100 shadow-md text-black'
+                className={`p-2 rounded-lg max-w-xs min-w-20 lg:min-w-28 ${message.sender_id === loggedInUserId
+                  ? 'bg-purple-700 dark:bg-darkChatBackground dark:text-darkModeParaText lg:mr-4 text-white shadow-md'
+                  : 'bg-purple-100 dark:bg-darkModePrimaryBtn dark:text-darkModeParaText lg:ml-4 shadow-md text-black'
                   }`}
               >
                 <div>{message.content}</div>

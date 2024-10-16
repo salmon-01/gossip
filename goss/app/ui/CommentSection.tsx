@@ -40,13 +40,15 @@ export default function CommentSection({
   if (!session) return <div>Not logged in</div>;
 
   return (
-    <div className="mt-4">
-      <h3 className="mb-2 text-lg font-semibold">Comments</h3>
+    <div className="mt-4 lg:max-w-6xl">
+      <h3 className="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-200">
+        Comments
+      </h3>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
           <div
             key={comment.id}
-            className="relative mb-4 rounded bg-gray-100 p-3"
+            className="relative mb-4 rounded bg-gray-100 p-3 dark:bg-darkModeSecondaryBackground"
           >
             {/* Three dots menu in the top-right corner of each individual comment */}
             {user?.user_id === comment.user_id && (
@@ -92,7 +94,7 @@ export default function CommentSection({
                 </div>
               )}
               <div>
-                <p className="font-semibold">
+                <p className="font-semibold dark:text-gray-200">
                   {comment.profiles?.display_name}
                 </p>
                 <p className="text-xs text-gray-500">
@@ -100,11 +102,13 @@ export default function CommentSection({
                 </p>
               </div>
             </div>
-            <p>{comment.content}</p>
+            <p className="dark:text-gray-200">{comment.content}</p>
           </div>
         ))
       ) : (
-        <p>No comments yet. Be the first to comment!</p>
+        <p className="text-gray-600 dark:text-white">
+          No comments yet. Be the first to comment!
+        </p>
       )}
     </div>
   );

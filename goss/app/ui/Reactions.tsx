@@ -82,12 +82,14 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
           onClick={() => handleToggleReaction(reaction.reaction)}
           className={`flex items-center rounded-xl bg-gray-200 px-1 py-px dark:bg-darkModePrimaryBackground ${
             reaction.userHasReacted
-              ? 'bg-purple-600 text-white dark:bg-darkModePrimaryBackground'
+              ? 'bg-darkModeSecondaryBtn text-black dark:bg-darkModePrimaryBackground dark:text-white'
               : 'bg-gray-200'
           }`}
         >
           <span className="text-xl">{reaction.reaction}</span>
-          <span className="ml-1 text-sm">{reaction.count}</span>
+          <span className="ml-1 text-sm text-black dark:text-white">
+            {reaction.count}
+          </span>
         </button>
       ))}
 
@@ -95,7 +97,7 @@ const Reactions: React.FC<ReactionsProps> = ({ postAuthorId, post }) => {
         <div className="relative">
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="rounded-xl bg-gray-200 px-2 py-1 dark:bg-darkModePrimaryBackground"
+            className="rounded-xl bg-gray-200 px-2 py-1 dark:bg-darkModePrimaryBackground dark:text-white"
           >
             ...
           </button>

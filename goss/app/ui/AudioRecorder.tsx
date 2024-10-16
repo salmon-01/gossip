@@ -187,10 +187,10 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
           disabled={!!recordedBlob}
           className={`mr-2 mt-4 rounded-full px-4 py-4 font-bold text-white ${
             recordedBlob
-              ? 'cursor-not-allowed bg-gray-300 dark:bg-purple-300 dark:opacity-50'
+              ? 'cursor-not-allowed bg-gray-300 dark:bg-slate-500 dark:opacity-50'
               : isRecording
                 ? 'bg-red-500 hover:bg-red-600'
-                : 'bg-purple-500 hover:bg-purple-600'
+                : 'dark:bg-darkModePrimaryBtn bg-darkModeSecondaryBtn'
           }`}
         >
           {isRecording ? (
@@ -249,7 +249,7 @@ export default function AudioRecorder({ onAudioSave, audioBlob }) {
             <button
               aria-label={isPlaying ? 'Pause Playback' : 'Play Recording'}
               onClick={handlePlayPause}
-              className="mr-2 rounded bg-purple-500 px-4 py-2 font-bold text-white hover:bg-purple-600"
+              className="mr-2 rounded bg-darkModePostBackground px-4 py-2 font-bold text-white"
             >
               {isPlaying ? (
                 <FaPause className="h-4 w-4" />

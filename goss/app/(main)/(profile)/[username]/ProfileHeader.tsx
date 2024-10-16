@@ -34,7 +34,7 @@ export default function ProfileHeader() {
           />
 
           <div className="ml-4">
-            <div className="dark:text-darkModeHeader text-xl font-bold">
+            <div className="text-xl font-bold dark:text-darkModeHeader">
               {user.display_name}
             </div>
             <p className="text-sm text-gray-500">@{user.username}</p>
@@ -46,21 +46,21 @@ export default function ProfileHeader() {
           <div>
             <Link
               href={`/settings/profile`}
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-purple-700"
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlinePencilSquare className="inline" />
             </Link>
             <Link
               href={`/favourites`}
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-purple-700"
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlineBookmark className="inline" />
             </Link>
             <Link
               href={`/chats`}
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-purple-700"
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlineEnvelope className="inline" />
@@ -72,13 +72,13 @@ export default function ProfileHeader() {
       </div>
 
       <div className="mx-auto my-3 w-11/12">
-        <p className="dark:text-darkModeParaText mx-auto my-3 text-sm text-gray-900">
+        <p className="mx-auto my-3 text-sm text-gray-900 dark:text-darkModeParaText">
           {user.bio}
         </p>
 
         {/* Badge display for the logged-in user */}
         {user.username === loggedInUsername ? (
-          <p className="text-md dark:text-darkModeParaText dark:bg-darkModeSecondaryBackground my-3 w-24 rounded border border-gray-200 bg-gray-200 py-1 text-center">
+          <p className="text-md my-3 w-36 rounded border border-gray-200 bg-gray-200 py-1 text-center dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText">
             {user.badge}
           </p>
         ) : (
