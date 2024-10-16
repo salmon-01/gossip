@@ -58,13 +58,13 @@ export default function ChatInput({ conversationId, loggedInUserId}) {
       <input
         type="text"
         placeholder='Write a message...'
-        className='flex-grow p-3 rounded-xl bg-purple-50   shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500'
+        className='flex-grow p-3 rounded-xl bg-purple-50 dark:bg-darkModeParaText lg:ml-3 md:ml-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
       <button
         type="submit"
-        className='ml-2 p-3 rounded-full bg-purple-700 text-white hover:bg-purple-900 focus:outline-none focus:ring-0 focus:ring-purple-400'
+        className='ml-2 p-3 rounded-full bg-purple-700 dark:bg-darkModePrimaryBtn text-white hover:bg-purple-900 focus:outline-none focus:ring-0 focus:ring-purple-400'
       >
         <FaRegPaperPlane />
 

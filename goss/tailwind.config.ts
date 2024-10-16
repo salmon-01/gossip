@@ -23,6 +23,8 @@ const config: Config = {
         darkModePrimaryBtn: '#5c74ad',
         darkModeSecondaryBtn: '#77849A',
         darkModePostBackground: '#77849A',
+        darkChatBackground: '#1E3A8A',
+        darkhoverBackground: '#1E3A8A',
 
         experimentBG: '#1b1b1b',
         experimentSecondaryBG: '#282828',
