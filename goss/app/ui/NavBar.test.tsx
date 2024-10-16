@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import NavBar from './NavBar';
-import NavItem from './NavItem';
-import { usePathname } from 'next/navigation';
 import { useSessionContext } from '../context/SessionContext';
 import { useGlobalNotifications } from '../context/NotificationsContext';
 import { Session } from '../types';
@@ -33,8 +31,8 @@ describe('NavBar component', () => {
   beforeEach(() => {
     // Mock the session context to return a valid session object
     vi.mocked(useSessionContext).mockReturnValue({
-      data: mockSession,
-    });
+      data: mockSession as any,
+    } as any);
 
     // Mock the global notifications context to return mock notifications
     vi.mocked(useGlobalNotifications).mockReturnValue({
