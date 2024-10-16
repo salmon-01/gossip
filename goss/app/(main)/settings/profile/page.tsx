@@ -78,11 +78,9 @@ export default function ProfilePage() {
         return;
       }
 
-      const { data: publicURL} = supabase.storage
+      const { data: publicURL } = supabase.storage
         .from('avatars')
         .getPublicUrl(`${file.name}`);
-
-     
 
       profileImageUrl = publicURL;
     }
@@ -120,101 +118,106 @@ export default function ProfilePage() {
   };
 
   return (
-    <form className="mx-auto h-lvh w-full p-3 px-10" onSubmit={updateProfile}>
-      <div className="mb-3 flex items-center">
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="mb-2 text-3xl font-bold text-gray-600 dark:text-darkModeHeader"
-        >
-          {'\u2190'}
-        </button>
+    <>
+      <form className="mx-auto h-lvh w-full p-3 px-10" onSubmit={updateProfile}>
+        <div className="mb-3 flex items-center">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="mb-2 text-3xl font-bold text-gray-600 dark:text-darkModeHeader"
+          >
+            {'\u2190'}
+          </button>
 
-        <h2 className="px-4 w-full text-2xl font-bold dark:text-darkModeHeader">
-          Edit Profile
-        </h2>
-        <div className='flex justify-end w-full'>
-          <SignOutBtn />
+          <h2 className="w-full px-4 text-2xl font-bold dark:text-darkModeHeader">
+            Edit Profile
+          </h2>
         </div>
-      </div>
 
-      <div className="relative mb-4 h-36 w-36">
-        <label htmlFor="file_input">
-          <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
-            {preview === profileImg ? (
-              <div className="relative flex h-full w-full items-center justify-center">
+        <div className="relative mb-4 h-36 w-36">
+          <label htmlFor="file_input">
+            <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-200">
+              {preview === profileImg ? (
+                <div className="relative flex h-full w-full items-center justify-center">
+                  <img
+                    src={preview}
+                    alt=""
+                    className="absolute left-0 top-0 z-10 h-full w-full object-cover opacity-70"
+                  />
+                  <span className="z-20 rounded-full text-center text-6xl text-white">
+                    +
+                  </span>
+                </div>
+              ) : (
                 <img
                   src={preview}
-                  alt=""
-                  className="absolute left-0 top-0 z-10 h-full w-full object-cover opacity-70"
+                  alt="Profile Preview"
+                  className="h-full w-full object-cover"
                 />
-                <span className="z-20 rounded-full text-center text-6xl text-white">
-                  +
-                </span>
-              </div>
-            ) : (
-              <img
-                src={preview}
-                alt="Profile Preview"
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
+              )}
+            </div>
+          </label>
+          <input
+            id="file_input"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+
+        <label htmlFor="name" className="mb-1 block dark:text-darkModeParaText">
+          Name
         </label>
         <input
-          id="file_input"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Name"
+          className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+          value={profile.name}
+          onChange={handleChange}
         />
+
+        <label
+          htmlFor="badge"
+          className="mb-1 block dark:text-darkModeParaText"
+        >
+          Badge
+        </label>
+        <input
+          id="badge"
+          name="badge"
+          type="text"
+          placeholder="Badge"
+          className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+          value={profile.badge}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="bio" className="mb-1 block dark:text-darkModeParaText">
+          Bio
+        </label>
+        <textarea
+          id="bio"
+          name="bio"
+          placeholder="Bio"
+          className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText"
+          rows={4}
+          value={profile.bio}
+          onChange={handleChange}
+        />
+        <ThemeSwitch />
+        <button
+          type="submit"
+          className="mt-10 w-full rounded bg-darkModePrimaryBtn p-2 text-white"
+        >
+          Update Profile
+        </button>
+      </form>
+      <div className="flex w-full justify-center -mt-36">
+        <SignOutBtn />
       </div>
-
-      <label htmlFor="name" className="mb-1 block dark:text-darkModeParaText">
-        Name
-      </label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        placeholder="Name"
-        className="w-full rounded border border-gray-300 bg-white dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText p-2 shadow-sm  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn"
-        value={profile.name}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="badge" className="mb-1 block dark:text-darkModeParaText">
-        Badge
-      </label>
-      <input
-        id="badge"
-        name="badge"
-        type="text"
-        placeholder="Badge"
-        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground dark:text-darkModeParaText  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn"
-        value={profile.badge}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="bio" className="mb-1 block dark:text-darkModeParaText">
-        Bio
-      </label>
-      <textarea
-        id="bio"
-        name="bio"
-        placeholder="Bio"
-        className="w-full rounded border border-gray-300 bg-white p-2 shadow-sm dark:bg-darkModeSecondaryBackground  focus:outline-none focus:ring-1 focus:ring-darkModePrimaryBtn dark:text-darkModeParaText"
-        rows={4}
-        value={profile.bio}
-        onChange={handleChange}
-      />
-      <ThemeSwitch />
-      <button
-        type="submit"
-        className="mt-10 w-full rounded bg-darkModePrimaryBtn p-2 text-white "
-      >
-        Update Profile
-      </button>
-    </form>
+    </>
   );
 }
