@@ -6,7 +6,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="dark:bg-darkModePrimaryBackground min-h-screen bg-gray-100 pb-16 text-black ">
+    <div className="dark:bg-darkModePrimaryBackground min-h-screen bg-white text-black ">
       {children}
     </div>
   );
