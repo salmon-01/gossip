@@ -88,12 +88,12 @@ export default function PostPage() {
         <div className="mb-4">
           <button
             onClick={() => window.history.back()}
-            className="text-xl text-white"
+            className="text-xl text-gray-700 dark:text-white"
           >
             Back
           </button>
         </div>
-        <div className="rounded-md p-3 dark:bg-darkModeSecondaryBackground">
+        <div className="rounded-md bg-gray-300 p-3 dark:bg-darkModeSecondaryBackground">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center">
               <img
@@ -102,7 +102,7 @@ export default function PostPage() {
                 className="h-16 w-16 rounded-full"
               />
               <div className="ml-3 flex flex-col">
-                <p className="font-semibold text-white">
+                <p className="font-semibold text-gray-700 dark:text-white">
                   {postData.profiles.display_name}
                 </p>
                 <p className="text-gray-400">@{postData.profiles.username}</p>
@@ -112,18 +112,18 @@ export default function PostPage() {
               {moment(postData.created_at).fromNow()}
             </div>
           </div>
-          <div>{postData.caption}</div>
+          <div className="text-white">{postData.caption}</div>
           <div className="flex items-center">
             <VoiceNote audioUrl={postData.audio} />
             <button
-              className="dark:bg-darkModeSecondaryBtn h-8 w-8 rounded text-white"
+              className="dark:bg-darkModeSecondaryBtn bg-darkModeSecondaryBtn h-8 w-8 rounded text-white dark:text-white"
               onClick={() => setShowTranscription(!showTranscription)}
             >
               A
             </button>
           </div>
           {showTranscription && postData.transcription && (
-            <div className="mt-4 text-sm text-white">
+            <div className="mt-4 text-sm text-gray-600 dark:text-white">
               {postData.transcription}
             </div>
           )}
@@ -135,7 +135,9 @@ export default function PostPage() {
             />
           </div>
         </div>
-        <p className="mb-2 mt-6 font-semibold text-white">Goss about it</p>
+        <p className="mb-2 mt-6 font-semibold text-black dark:text-white">
+          Goss about it
+        </p>
         <AddComment
           onAddComment={(content: string) =>
             addCommentMutation.mutate({ post_id: postId as string, content })
