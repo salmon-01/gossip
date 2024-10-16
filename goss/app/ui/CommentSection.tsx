@@ -48,7 +48,7 @@ export default function CommentSection({
         comments.map((comment) => (
           <div
             key={comment.id}
-            className="relative mb-4 rounded bg-gray-100 p-3"
+            className="relative mb-4 rounded bg-gray-100 p-3 dark:bg-darkModeSecondaryBackground"
           >
             {/* Three dots menu in the top-right corner of each individual comment */}
             {user?.user_id === comment.user_id && (
@@ -94,7 +94,7 @@ export default function CommentSection({
                 </div>
               )}
               <div>
-                <p className="font-semibold">
+                <p className="font-semibold dark:text-gray-200">
                   {comment.profiles?.display_name}
                 </p>
                 <p className="text-xs text-gray-500">
@@ -102,7 +102,7 @@ export default function CommentSection({
                 </p>
               </div>
             </div>
-            <p>{comment.content}</p>
+            <p className="dark:text-gray-200">{comment.content}</p>
           </div>
         ))
       ) : (
