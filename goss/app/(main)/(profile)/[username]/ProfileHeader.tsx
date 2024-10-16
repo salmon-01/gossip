@@ -46,29 +46,21 @@ export default function ProfileHeader() {
           <div>
             <Link
               href={`/settings/profile`}
-
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn"
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlinePencilSquare className="inline" />
             </Link>
             <Link
               href={`/favourites`}
-
-              className="mx-1 p-0 text-2xl hover:text-purple-700 dark:text-darkModeParaText"
-
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn"
-
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlineBookmark className="inline" />
             </Link>
             <Link
               href={`/chats`}
-
-
-
-              className="dark:text-darkModeParaText mx-1 p-0 text-2xl hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn"
+              className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn mx-1 p-0 text-2xl dark:text-darkModeParaText"
               prefetch={true}
             >
               <HiOutlineEnvelope className="inline" />

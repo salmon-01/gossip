@@ -239,12 +239,12 @@ const AIVoiceGenerator = ({
                 </svg>
                 <button
                   onClick={handlePlayPauseAudio}
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-100"
+                  className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-800"
                 >
                   {isAudioPlaying ? (
-                    <FaPause className="text-gray-700" />
+                    <FaPause className="text-gray-100" />
                   ) : (
-                    <FaPlay className="text-gray-700" />
+                    <FaPlay className="text-gray-100" />
                   )}
                 </button>
               </div>
@@ -273,7 +273,7 @@ const AIVoiceGenerator = ({
         <div className="mt-4 text-center">
           <button
             onClick={sendPostToDB}
-            className="rounded-full bg-purple-800 px-10 py-2 text-xl text-white hover:bg-purple-700 dark:bg-darkModePurpleBtn dark:hover:bg-purple-700"
+            className="dark:bg-darkModePrimaryBtn bg-darkModePrimaryBtn rounded-full px-10 py-2 text-xl text-white"
             disabled={loading}
           >
             Post
