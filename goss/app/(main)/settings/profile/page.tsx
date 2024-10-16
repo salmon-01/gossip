@@ -7,6 +7,7 @@ import { useSessionContext } from '@/app/context/SessionContext';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import ThemeSwitch from '@/app/ui/ThemeSwitch';
+import SignOutBtn from '@/app/ui/signOutBtn';
 
 interface Profile {
   name: string;
@@ -122,7 +123,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <form className="mx-auto h-lvh w-full p-3" onSubmit={updateProfile}>
+    <form className="mx-auto h-lvh w-full p-3 px-10" onSubmit={updateProfile}>
       <div className="mb-3 flex items-center">
         <button
           type="button"
@@ -132,9 +133,12 @@ export default function ProfilePage() {
           {'\u2190'}
         </button>
 
-        <h2 className="px-4 text-2xl font-bold dark:text-darkModeHeader">
+        <h2 className="px-4 w-full text-2xl font-bold dark:text-darkModeHeader">
           Edit Profile
         </h2>
+        <div className='flex justify-end w-full'>
+          <SignOutBtn />
+        </div>
       </div>
 
       <div className="relative mb-4 h-36 w-36">
