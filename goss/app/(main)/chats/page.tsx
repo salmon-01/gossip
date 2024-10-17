@@ -7,11 +7,14 @@ import Link from 'next/link'
 import Loading from '../loading'
 import { formatDate } from './time'
 import { BsEnvelopePlus } from "react-icons/bs";
+import { createClient } from '@/utils/supabase/client';
+import { useQueryClient } from '@tanstack/react-query'
 
 
 
-
+const supabase = createClient();
 export default function ChatsPage() {
+  const queryClient = useQueryClient();
 
   const { data: session } = useSessionContext();
   const loggedInUserId = session?.profile.user_id
@@ -27,6 +30,26 @@ export default function ChatsPage() {
     queryFn: () => fetchUserConversations(loggedInUserId),
 
   });
+
+  useEffect(() => {
+    const conversationSubscription = supabase
+      .channel('realtime:conversation')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'conversations',
+      }, (payload) => {
+        console.log('New message received: ', payload.new);
+        queryClient.invalidateQueries({ queryKey: ['userConversations', loggedInUserId] });
+      })
+      .subscribe();
+
+
+    return () => {
+      supabase.removeChannel(conversationSubscription);
+    };
+  }, [loggedInUserId, queryClient]);
+
 
   if (Conversations?.length === 0) {
     return (
