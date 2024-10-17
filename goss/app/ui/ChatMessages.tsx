@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchMessages } from '../api/MessagesData';
 import Loading from '../(main)/loading';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { groupMessagesByDate } from '../(main)/chats/time';
 import { formatMessageTime } from '../(main)/chats/time';
@@ -14,6 +14,9 @@ const supabase = createClient();
 export default function ChatMessages({ conversationId, loggedInUserId }: ChatMessagesProps) {
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+
+  const [onlineUsers, setOnlineUsers] = useState<{ [key: string]: boolean }>({});
 
 
   const {
@@ -46,6 +49,7 @@ export default function ChatMessages({ conversationId, loggedInUserId }: ChatMes
     };
   }, [conversationId, queryClient]);
 
+ 
   
 
   useEffect(() => {
