@@ -25,7 +25,7 @@ export default function DeletePostModal({
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-700"
+            className="px-4 py-2 bg-darkModePrimaryBtn text-white rounded hover:bg-darkModeSecondaryBtn"
             onClick={onConfirm}
           >
             Delete

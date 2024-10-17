@@ -132,7 +132,7 @@ export default function PostComponent({ user, post, favourites }: PostProps) {
             <Link href={`/post/${post.id}`}>
               <div className="ml-2 flex items-center text-base font-medium text-gray-500 dark:text-darkModeHeader">
                 Comment
-                {post.comments?.length > 0 ? `(${post.comments.length})` : null}
+                {post.comments?.length > 0 ? ` (${post.comments.length})` : null}
               </div>
             </Link>
             <div className="ml-auto flex">
