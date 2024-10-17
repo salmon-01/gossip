@@ -57,7 +57,7 @@ export default function FavouritesPage() {
 
   return (
     <>
-      <div className="fixed top-0 z-40 flex w-full items-center justify-center pb-1 pl-4 pt-4 dark:bg-darkModePrimaryBackground">
+      <div className="fixed top-0 z-40 flex w-full items-center justify-center pb-1 pl-4 pt-4 dark:bg-darkModePrimaryBackground bg-white">
         <div className="ml-3 flex w-full font-bold dark:text-darkModeParaText">
           <Link href={`/${username}`}>
             <button className="hover:text-darkModePrimaryBtn dark:hover:text-darkModePrimaryBtn ml-5 rounded dark:bg-darkModePurpleBtn dark:text-darkModeHeader">

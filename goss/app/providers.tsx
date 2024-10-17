@@ -31,10 +31,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <FollowProvider>
               <Toaster />
               {children}
-              <ReactQueryDevtools
+              {/* <ReactQueryDevtools
                 initialIsOpen={false}
                 buttonPosition="top-right"
-              />
+              /> */}
             </FollowProvider>
           </NotificationsProvider>
         </SessionProvider>
